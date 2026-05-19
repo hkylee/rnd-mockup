@@ -1,0 +1,59 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "atom/radio",
+  "category": "atom",
+  "description": "라디오 버튼. On/Off × Disabled 상태.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "counterAxisAlignItems": "CENTER",
+      "width": "HUG"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "group",
+        "id": "radio",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "width": "HUG"
+        },
+        "visual": {
+          "cornerRadius": 9.0,
+          "fill": "{component.radio.default.dotColor}",
+          "stroke": "#05001a"
+        }
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "속성-1",
+        "values": [
+          "off",
+          "on"
+        ]
+      },
+      {
+        "name": "속성-2",
+        "values": [
+          "off"
+        ]
+      },
+      {
+        "name": "속성-3",
+        "values": [
+          "off",
+          "on"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

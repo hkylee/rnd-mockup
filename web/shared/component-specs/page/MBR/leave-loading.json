@@ -1,0 +1,28 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/MBR/leave-loading",
+  "category": "page",
+  "description": "회원 탈퇴 처리 중. PR-MBR-CS-003-05 BSS 자동 — FN-LEAVE-005 + POL-LEAVE-009 세션·토큰 종료. 차분 톤.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL", "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}", "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}", "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": { "cornerRadius": 0, "fill": "{semantic.color.background.page-sub}", "stroke": null, "shadow": null },
+    "children": [
+      { "kind": "ref", "id": "status-bar", "component": "ogn/status-bar" },
+      {
+        "kind": "ref", "id": "loading", "component": "ogn/MBR/loading-screen",
+        "props": { "headline": "탈퇴를 처리하고 있어요", "description": "잠시만 기다려 주세요." },
+        "layoutAlign": "STRETCH",
+        "layoutGrow": 1
+      }
+    ]
+  }
+}

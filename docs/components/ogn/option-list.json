@@ -1,0 +1,41 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "ogn/option-list",
+  "category": "ogn",
+  "description": "옵션 선택 목록. Volume/Color 타입.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 4.0,
+      "counterAxisSizingMode": "FIXED",
+      "width": "HUG"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-optionlistitem",
+        "component": ".OptionListItem"
+      },
+      {
+        "kind": "ref",
+        "id": "-optionlistitem",
+        "component": ".OptionListItem"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "속성-1",
+        "values": [
+          "volume",
+          "color"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "10312:49816",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

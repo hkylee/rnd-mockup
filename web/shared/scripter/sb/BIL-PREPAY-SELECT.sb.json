@@ -1,0 +1,169 @@
+{
+  "screenId": "BIL-PREPAY-SELECT",
+  "screenName": "선결제",
+  "screenPath": "page/BIL/prepay-select",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/prepay-select",
+    "spec_input": "specs-input/BIL-pay-prepay.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-prepay-amount-info",
+      "sectionName": "선결제 가능 금액 안내",
+      "sectionDescription": "현재 실시간 사용량을 기반으로 선결제 가능 금액 범위를 표시하고 선결제 개념을 안내한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 선결제 가능 금액 안내\n[규칙:FN-PAY-007] 현재 사용량 기반 예상 금액을 선결제 가능 금액으로 표시한다\n[고지:필수|POL-BIL-PAY-003-09] 선결제 금액은 다음 청구서 발행 시 차감됨을 명시한다\n[고지:필수|POL-BIL-PAY-003-08] 선결제에 사용 가능한 납부수단 조건을 안내한다\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내",
+      "label": "기능 1: 선결제 가능 금액 안내"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-prepay-amount-input",
+      "sectionName": "선결제 금액 입력",
+      "sectionDescription": "선결제할 금액을 직접 입력하거나 제안 금액 중 선택한다. 최소/최대 한도 유효성 검증 포함",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 2,
+      "errorHandling": "유효성 오류 인라인 표시",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/txt",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 선결제 금액 입력\n[규칙:FN-PAY-007] 선결제 금액 입력 또는 선택 UI를 제공한다\n[조건:한도초과] 인라인 오류 메시지 표시 — \"선결제 가능 한도를 초과했습니다\"\n[조건:최소미달] 인라인 오류 메시지 표시 — \"최소 선결제 금액 이상을 입력하세요\"\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내\n[액션:tap 금액선택] 해당 금액으로 설정",
+      "label": "기능 2: 선결제 금액 입력"
+    },
+    {
+      "no": 3,
+      "kind": "body",
+      "sectionId": "section-BIL-prepay-method-select",
+      "sectionName": "납부수단 선택",
+      "sectionDescription": "선결제에 사용할 납부수단을 선택한다. 선결제 불가 수단은 비활성 처리",
+      "container": "vertical",
+      "displayCount": {
+        "min": "N/N (등록 수단 수)",
+        "max": ""
+      },
+      "displayPriority": 3,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/icon",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 납부수단 선택\n[고지:필수|POL-BIL-PAY-003-08] 선결제 불가 납부수단에 \"사용불가\" 태그 표시 및 사유 안내\n[상태:loading] skeleton 표시\n[상태:empty] \"등록된 납부수단이 없습니다\" 안내 + 수단 등록 버튼\n[상태:error] snack-bar 재시도 안내\n[액션:tap 수단선택] 해당 납부수단 선택",
+      "label": "기능 3: 납부수단 선택"
+    },
+    {
+      "no": 4,
+      "kind": "footer",
+      "sectionId": "section-BIL-prepay-cta",
+      "sectionName": "선결제 실행 CTA",
+      "sectionDescription": "선택된 금액·수단으로 선결제를 실행하는 버튼. 금액 또는 수단 미선택 시 비활성",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "버튼 비활성 유지",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 선결제 실행 CTA\n[조건:금액미입력] 버튼 비활성(disabled) 처리\n[조건:수단미선택] 버튼 비활성(disabled) 처리\n[조건:처리중] 버튼 비활성(loading) 처리\n[액션:tap 선결제하기] 선결제 처리 요청 → 성공 시 pay-complete / 실패 시 pay-fail",
+      "label": "기능 4: 선결제 실행 CTA"
+    }
+  ]
+}

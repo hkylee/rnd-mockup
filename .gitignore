@@ -1,0 +1,26 @@
+# Node
+node_modules/
+.next/
+.turbo/
+dist/
+build/
+
+# Env / secrets
+.env
+.env.local
+.env*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Claude local memory (session-only)
+.claude/

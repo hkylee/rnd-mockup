@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=375">
+<title>BIL-BILL-GUIDE — 요금안내서</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, 'Pretendard', sans-serif; }
+  body { background: #f0f0f5; display: flex; justify-content: center; padding: 24px 0 48px; }
+
+  .phone-wrap { display: flex; gap: 32px; align-items: flex-start; }
+
+  /* ── 폰 프레임 ── */
+  .phone { width: 375px; min-height: 812px; background: #fff; border-radius: 44px; overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.08);
+    display: flex; flex-direction: column; position: relative; }
+  .screen { flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+    background: #f8f9fa; padding-bottom: 0; }
+
+  /* ── chrome ── */
+  .status-bar { height: 44px; background: #fff; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 24px; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+  .header { height: 56px; background: #fff; display: flex; align-items: center; padding: 0 20px;
+    border-bottom: 1px solid #f1f3f5; flex-shrink: 0; position: sticky; top: 0; z-index: 10; }
+  .header .back { font-size: 22px; color: #333; margin-right: 8px; cursor: pointer; }
+  .header .title { flex: 1; font-size: 17px; font-weight: 600; color: #212529; }
+  .header .more { font-size: 20px; color: #868e96; }
+
+  /* ── 영역 ── */
+  .area { margin: 0; padding: 0; }
+  .area-header { display: flex; align-items: center; gap: 6px; padding: 12px 16px 6px;
+    background: #fff; border-bottom: 1px solid #f1f3f5; }
+  .area-no { width: 20px; height: 20px; background: #3617CE; color: #fff; border-radius: 50%;
+    font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .area-name { font-size: 12px; font-weight: 600; color: #495057; flex: 1; }
+  .area-badge { font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: 500; }
+  .area-badge.dynamic { background: #e8f4fd; color: #1971C2; }
+  .area-badge.static  { background: #f1f3f5; color: #868e96; }
+  .area-body { padding: 12px 16px; background: #fff; display: flex; flex-direction: column; gap: 8px; }
+  .area-tags { padding: 8px 16px 12px; background: #fff; display: flex; flex-direction: column; gap: 4px;
+    border-bottom: 8px solid #f1f3f5; }
+
+  /* ── 컴포넌트 ── */
+  .comp { width: 100%; }
+  .placeholder { padding: 10px 12px; background: #f8f9fa; border: 1.5px dashed #dee2e6;
+    border-radius: 8px; font-size: 12px; color: #868e96; text-align: center; }
+
+  /* card */
+  .card { background: #f8f9fa; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .card-label { font-size: 12px; color: #868e96; font-weight: 500; }
+  .card-amount { font-size: 26px; font-weight: 700; color: #212529; }
+  .card-meta-row { display: flex; justify-content: space-between; font-size: 13px; }
+  .meta-key { color: #868e96; }
+  .meta-val { color: #212529; font-weight: 500; }
+  .tag-expected { display: inline-flex; align-items: center; background: #fff3bf; color: #e67700;
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .status-processing { font-size: 13px; color: #1971C2; }
+
+  /* card states */
+  .card-warn  { background: #fff9db; border: 1px solid #ffe066; }
+  .card-error { background: #fff5f5; border: 1px solid #ffc9c9; }
+  .result-card { text-align: center; padding: 24px 16px; }
+  .result-icon { font-size: 40px; margin-bottom: 8px; color: #2F9E44; }
+  .result-icon.err { color: #C92A2A; }
+  .result-title { font-size: 18px; font-weight: 700; color: #212529; margin-bottom: 12px; }
+
+  /* bill-summary-card */
+  .bill-summary-card { background: #fff; border: 1.5px solid #e9ecef; }
+
+  /* line-selector */
+  .line-selector { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0; }
+  .line-tab { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500;
+    background: #f1f3f5; color: #495057; white-space: nowrap; flex-shrink: 0; }
+  .line-tab.active { background: #3617CE; color: #fff; }
+
+  /* list */
+  .list-section { display: flex; flex-direction: column; }
+  .list-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0;
+    border-bottom: 1px solid #f1f3f5; font-size: 14px; gap: 8px; }
+  .list-item:last-child { border-bottom: none; }
+  .list-item.selectable { cursor: pointer; }
+  .list-primary { font-weight: 500; color: #212529; flex: 1; }
+  .list-meta { font-size: 12px; color: #868e96; }
+  .list-amount { font-weight: 600; color: #212529; font-size: 14px; }
+  .list-icon { font-size: 20px; }
+  .list-item .right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+
+  /* notice */
+  .notice-card { padding: 12px; border-radius: 8px; background: #f8f9fa; font-size: 12.5px;
+    color: #495057; display: flex; flex-direction: column; gap: 4px; }
+  .notice-card.required { background: #fff9db; }
+  .notice-badge { font-size: 10px; font-weight: 700; color: #e67700; }
+  .pol-id { font-size: 10px; font-family: monospace; color: #868e96; }
+  .notice-text { font-size: 12.5px; color: #495057; }
+  .notice-title { font-size: 12px; font-weight: 600; color: #495057; }
+  .notice-body { font-size: 12.5px; color: #495057; }
+  .notice-card.info { background: #e8f4fd; }
+
+  /* banner */
+  .banner { padding: 12px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+  .banner-warning { background: #fff4e6; color: #e67700; }
+  .banner-info    { background: #e8f4fd; color: #1971C2; }
+  .banner-error   { background: #fff5f5; color: #C92A2A; }
+
+  /* tags */
+  .tag-ok   { font-size: 11px; font-weight: 600; color: #2F9E44; background: #ebfbee; padding: 2px 8px; border-radius: 10px; }
+  .tag-warn { font-size: 11px; font-weight: 600; color: #e67700; background: #fff4e6; padding: 2px 8px; border-radius: 10px; }
+
+  /* month-picker */
+  .month-picker { text-align: center; padding: 10px; font-size: 15px; font-weight: 600; color: #212529;
+    background: #f8f9fa; border-radius: 8px; }
+
+  /* toggle */
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; font-size: 14px; color: #212529; }
+  .toggle { width: 44px; height: 24px; border-radius: 12px; background: #dee2e6; }
+  .toggle.on { background: #3617CE; }
+
+  /* cta */
+  .cta-btn { width: 100%; height: 52px; background: #3617CE; color: #fff; border: none; border-radius: 12px;
+    font-size: 16px; font-weight: 700; cursor: pointer; }
+  .cta-btn-sm { padding: 8px 16px; background: #3617CE; color: #fff; border: none; border-radius: 8px;
+    font-size: 13px; font-weight: 600; cursor: pointer; }
+  .sec-btn { padding: 8px 14px; border: 1.5px solid #3617CE; color: #3617CE; background: #fff; border-radius: 8px;
+    font-size: 13px; font-weight: 600; cursor: pointer; }
+  .sec-btn-sm { padding: 4px 10px; border: 1px solid #dee2e6; color: #495057; background: #fff; border-radius: 6px;
+    font-size: 12px; cursor: pointer; }
+  .sec-btn.danger { border-color: #C92A2A; color: #C92A2A; }
+
+  /* footer */
+  .footer-cta { position: sticky; bottom: 0; padding: 12px 16px; background: #fff;
+    border-top: 1px solid #f1f3f5; z-index: 20; }
+  .tab-bar { height: 64px; background: #fff; border-top: 1px solid #f1f3f5; display: flex;
+    align-items: center; justify-content: space-around; position: sticky; bottom: 0; z-index: 20; flex-shrink: 0; }
+  .tab-bar span { font-size: 12px; color: #868e96; padding: 8px; }
+  .tab-bar span.active { color: #3617CE; font-weight: 600; }
+
+  /* form */
+  .form-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0;
+    border-bottom: 1px solid #f1f3f5; font-size: 14px; }
+  .form-row:last-child { border-bottom: none; }
+  .form-label { color: #495057; }
+  .form-input-mock { color: #868e96; font-size: 13px; }
+
+  /* page-header */
+  .page-header { font-size: 22px; font-weight: 700; color: #212529; padding: 8px 0 4px; }
+  .section-header { font-size: 14px; font-weight: 600; color: #495057; }
+  .post-action { padding: 14px 0; font-size: 15px; color: #3617CE; font-weight: 600; cursor: pointer; }
+  .list-item-link { padding: 14px 0; font-size: 14px; color: #3617CE; cursor: pointer; }
+  .total-amount { padding: 4px 0; }
+  .total-label { font-size: 12px; color: #868e96; }
+  .total-value { font-size: 22px; font-weight: 700; color: #212529; }
+  .pay-amount .card-amount { font-size: 22px; }
+
+  /* muted */
+  .muted { color: #868e96 !important; }
+
+  /* ── 스펙 패널 (오른쪽) ── */
+  .spec-panel { width: 320px; background: #fff; border-radius: 16px; padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.08); display: flex; flex-direction: column; gap: 12px;
+    align-self: flex-start; position: sticky; top: 24px; }
+  .spec-title { font-size: 15px; font-weight: 700; color: #212529; border-bottom: 2px solid #3617CE; padding-bottom: 8px; }
+  .spec-meta { font-size: 12px; color: #868e96; display: flex; flex-wrap: wrap; gap: 4px; }
+  .spec-meta code { background: #f1f3f5; padding: 2px 6px; border-radius: 4px; font-size: 11px; color: #495057; }
+  .spec-area { border: 1px solid #f1f3f5; border-radius: 10px; overflow: hidden; }
+  .spec-area-head { padding: 8px 12px; background: #f8f9fa; display: flex; align-items: center; gap: 6px; }
+  .spec-area-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .desc-tag { font-size: 11.5px; padding: 4px 8px; border-radius: 6px; display: flex; gap: 6px; align-items: flex-start; }
+  .desc-tag.notice   { background: #fff9db; color: #664d03; }
+  .desc-tag.notice.required { background: #fff3cd; }
+  .desc-tag.state    { background: #f1f3f5; color: #495057; }
+  .desc-tag.action   { background: #e8f4fd; color: #1864ab; }
+  .desc-tag.condition { background: #f3f0ff; color: #5f3dc4; }
+  .badge { font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+  .state-badge  { background: #868e96; color: #fff; }
+  .action-badge { background: #1971C2; color: #fff; }
+  .cond-badge   { background: #7950f2; color: #fff; }
+  .spec-orgs { display: flex; flex-direction: column; gap: 2px; }
+  .spec-org { font-size: 11px; font-family: monospace; color: #495057; background: #f8f9fa;
+    padding: 3px 8px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="phone-wrap">
+
+  <!-- 폰 화면 -->
+  <div class="phone">
+    <div class="screen">
+      <div class="status-bar"><span class="time">9:41</span><span class="icons">●●●</span></div>
+      <div class="header"><span class="back">‹</span><span class="title">요금안내서</span><span class="more">⋯</span></div>
+      <div style="flex:1; overflow-y:auto; display:flex; flex-direction:column;">
+        
+    <div class="area" id="section-BIL-bill-guide-view">
+      <div class="area-header">
+        <span class="area-no">1</span>
+        <span class="area-name">요금안내서 조회</span>
+        <span class="area-badge dynamic">dynamic</span>
+      </div>
+      <div class="area-body">
+        <div class="comp list-item-link">인앱 PDF 뷰어 또는 외부 다운로드 ›</div>
+<div class="comp placeholder">button</div>
+<div class="comp month-picker">‹ 2026년 11월 ›</div>
+      </div>
+      <div class="area-tags"><div class="desc-tag condition"><span class="badge cond-badge">안내서없음</span> "해당 월의 요금안내서가 없습니다" empty 안내 + 수신 설정 링크</div>
+<div class="desc-tag state"><span class="badge state-badge">loading</span> skeleton 표시</div>
+<div class="desc-tag state"><span class="badge state-badge">empty</span> 안내 문구 + notice-setting 이동 링크</div>
+<div class="desc-tag state"><span class="badge state-badge">error</span> snack-bar 재시도 안내</div>
+<div class="desc-tag action"><span class="badge action-badge">tap</span> 인앱 PDF 뷰어 또는 외부 다운로드</div></div>
+    </div>
+
+    <div class="area" id="section-BIL-bill-guide-reissue">
+      <div class="area-header">
+        <span class="area-no">2</span>
+        <span class="area-name">요금안내서 재발행</span>
+        <span class="area-badge dynamic">dynamic</span>
+      </div>
+      <div class="area-body">
+        <div class="comp placeholder">button</div>
+<div class="comp notice-card required">
+      <span class="notice-badge">필수</span>
+      <span class="pol-id">POL-BIL-DOC-001-02</span>
+      <span class="notice-body">재발행 요청 전 본인인증 절차를 반드시 수행한다</span>
+    </div>
+      </div>
+      <div class="area-tags"><div class="desc-tag notice required">
+        <span class="badge">🔴 필수</span>
+        <code>POL-BIL-DOC-001-02</code>
+        <span>재발행 요청 전 본인인증 절차를 반드시 수행한다</span>
+      </div>
+<div class="desc-tag state"><span class="badge state-badge">loading</span> 버튼 로딩 스피너 표시</div>
+<div class="desc-tag state"><span class="badge state-badge">error</span> inline 오류 메시지 표시</div>
+<div class="desc-tag action"><span class="badge action-badge">tap</span> 본인인증 플로우 진입 → 인증 성공 후 재발행 요청</div></div>
+    </div>
+
+    <div class="area" id="section-BIL-bill-guide-setting-link">
+      <div class="area-header">
+        <span class="area-no">3</span>
+        <span class="area-name">수신 설정 안내 링크</span>
+        <span class="area-badge static">static</span>
+      </div>
+      <div class="area-body">
+        <div class="comp list-item-link">notice-setting 화면으로 이동 ›</div>
+      </div>
+      <div class="area-tags"><div class="desc-tag action"><span class="badge action-badge">tap</span> notice-setting 화면으로 이동</div></div>
+    </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- 스펙 패널 -->
+  <div class="spec-panel">
+    <div class="spec-title">BIL-BILL-GUIDE</div>
+    <div class="spec-meta">
+      <code>page/BIL/bill-guide</code>
+      <code>v1.0</code>
+      <code>2026.05.06</code>
+    </div>
+    
+    <div class="spec-area">
+      <div class="spec-area-head">
+        <div class="area-no">1</div>
+        <span class="area-name">요금안내서 조회</span>
+        <span class="area-badge dynamic">dynamic</span>
+      </div>
+      <div class="spec-area-body">
+        <div class="spec-orgs">
+          <div class="spec-org">mol/list-item-link</div><div class="spec-org">atom/button</div><div class="spec-org">mol/month-picker</div><div class="spec-org">ogn/header</div>
+        </div>
+        <div class="desc-tag condition"><span class="badge cond-badge">안내서없음</span> "해당 월의 요금안내서가 없습니다" empty 안내 + 수신 설정 링크</div>
+<div class="desc-tag state"><span class="badge state-badge">loading</span> skeleton 표시</div>
+<div class="desc-tag state"><span class="badge state-badge">empty</span> 안내 문구 + notice-setting 이동 링크</div>
+<div class="desc-tag state"><span class="badge state-badge">error</span> snack-bar 재시도 안내</div>
+<div class="desc-tag action"><span class="badge action-badge">tap</span> 인앱 PDF 뷰어 또는 외부 다운로드</div>
+      </div>
+    </div>
+    <div class="spec-area">
+      <div class="spec-area-head">
+        <div class="area-no">2</div>
+        <span class="area-name">요금안내서 재발행</span>
+        <span class="area-badge dynamic">dynamic</span>
+      </div>
+      <div class="spec-area-body">
+        <div class="spec-orgs">
+          <div class="spec-org">atom/button</div><div class="spec-org">mol/notice-card</div>
+        </div>
+        <div class="desc-tag notice required">
+        <span class="badge">🔴 필수</span>
+        <code>POL-BIL-DOC-001-02</code>
+        <span>재발행 요청 전 본인인증 절차를 반드시 수행한다</span>
+      </div>
+<div class="desc-tag state"><span class="badge state-badge">loading</span> 버튼 로딩 스피너 표시</div>
+<div class="desc-tag state"><span class="badge state-badge">error</span> inline 오류 메시지 표시</div>
+<div class="desc-tag action"><span class="badge action-badge">tap</span> 본인인증 플로우 진입 → 인증 성공 후 재발행 요청</div>
+      </div>
+    </div>
+    <div class="spec-area">
+      <div class="spec-area-head">
+        <div class="area-no">3</div>
+        <span class="area-name">수신 설정 안내 링크</span>
+        <span class="area-badge static">static</span>
+      </div>
+      <div class="spec-area-body">
+        <div class="spec-orgs">
+          <div class="spec-org">mol/list-item-link</div>
+        </div>
+        <div class="desc-tag action"><span class="badge action-badge">tap</span> notice-setting 화면으로 이동</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

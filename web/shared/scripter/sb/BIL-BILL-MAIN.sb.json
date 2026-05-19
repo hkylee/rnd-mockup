@@ -1,0 +1,120 @@
+{
+  "screenId": "BIL-BILL-MAIN",
+  "screenName": "청구 메인",
+  "screenPath": "page/BIL/bill-main",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/bill-main",
+    "spec_input": "specs-input/BIL-bill-check.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-bill-summary",
+      "sectionName": "청구 요약 카드",
+      "sectionDescription": "당월 청구액, 납부기한, 미납 여부를 카드 형태로 표시. 미납 시 강조 스타일 적용",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/BIL/bill-summary-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 청구 요약 카드\n[규칙:FN-CHK-001] 당월 청구액·납부기한·미납 여부를 카드에 표시한다\n[규칙:FN-COM-001] 회선 식별자(회선번호·명칭)와 함께 표시한다\n[조건:미납] atom/banner(tone=warning) 노출 — 납부 CTA 버튼 포함\n[고지:필수|POL-BIL-SUSP-001] 정지 위험 안내 문구 배너에 포함\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내\n[액션:tap 청구 상세] bill-detail 화면으로 이동\n[액션:tap 납부하기] pay-target 화면으로 이동",
+      "label": "기능 1: 청구 요약 카드"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-line-selector",
+      "sectionName": "회선 선택",
+      "sectionDescription": "다회선 사용자가 회선을 전환해 각 회선의 청구 요약을 조회한다",
+      "container": "horizontal-scroll",
+      "displayCount": {
+        "min": "N/N (회선 수)",
+        "max": ""
+      },
+      "displayPriority": 2,
+      "errorHandling": "기본 회선 고정 노출",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/BIL/line-selector",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 회선 선택\n[규칙:FN-COM-001] 보유 회선 목록을 탭 형태로 나열한다\n[조건:단일회선] 회선 선택 영역 숨김\n[조건:다회선] 기본 회선 선택 상태로 진입, 탭 전환 시 청구 요약 카드 갱신\n[상태:loading] skeleton 표시\n[상태:error] 영역 숨김, 기본 회선 데이터로 fallback\n[액션:tap 회선탭] 해당 회선의 청구 요약 카드·항목 목록 갱신",
+      "label": "기능 2: 회선 선택"
+    },
+    {
+      "no": 3,
+      "kind": "body",
+      "sectionId": "section-BIL-bill-items",
+      "sectionName": "청구 항목 목록",
+      "sectionDescription": "요금제·부가서비스·기기할부 등 청구 구성 항목을 리스트로 표시",
+      "container": "vertical",
+      "displayCount": {
+        "min": "N",
+        "max": "N"
+      },
+      "displayPriority": 2,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-bill-item",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/tab-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 청구 항목 목록\n[규칙:FN-CHK-001] 요금제·부가서비스·기기할부·콘텐츠이용료 항목을 분류별로 노출한다\n[규칙:FN-CHK-010] 항목별 소계와 합계가 일치해야 한다\n[조건:항목없음] \"청구 항목이 없습니다\" empty 상태 표시\n[상태:loading] skeleton 표시\n[상태:empty] 안내 문구 표시\n[상태:error] snack-bar 재시도 안내\n[액션:tap 항목행] 해당 항목 상세로 이동 또는 expand\n[액션:tap 청구 상세보기] bill-detail 화면으로 이동",
+      "label": "기능 3: 청구 항목 목록"
+    }
+  ]
+}

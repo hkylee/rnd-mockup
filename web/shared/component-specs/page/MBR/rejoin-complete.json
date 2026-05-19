@@ -1,0 +1,55 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/MBR/rejoin-complete",
+  "category": "page",
+  "description": "재가입 완료. FN-REJOIN-006. re-welcome 톤 + 연계/제외 항목 (ogn/MBR/restored-summary) + 후속 액션.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL", "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}", "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}", "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": { "cornerRadius": 0, "fill": "{semantic.color.background.page-sub}", "stroke": null, "shadow": null },
+    "children": [
+      { "kind": "ref", "id": "status-bar", "component": "ogn/status-bar" },
+      {
+        "kind": "group", "id": "content", "layoutAlign": "STRETCH",
+        "layout": {
+          "mode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+          "paddingTop": "{foundation.dimension.spacing.none}", "paddingBottom": "{foundation.dimension.spacing.none}",
+          "paddingLeft": "{foundation.dimension.spacing.none}", "paddingRight": "{foundation.dimension.spacing.none}",
+          "itemSpacing": "{foundation.dimension.spacing.none}",
+          "width": "FILL", "height": "HUG"
+        },
+        "visual": { "cornerRadius": 0, "fill": null, "stroke": null, "shadow": null },
+        "children": [
+          {
+            "kind": "ref", "id": "result", "component": "ogn/MBR/result-summary",
+            "variant": { "tone": "re-welcome" },
+            "props": { "headline": "다시 만나서 반갑습니다", "description": "이전 이용 정보 일부가 복원되었습니다." },
+            "layoutAlign": "STRETCH"
+          },
+          {
+            "kind": "ref", "id": "restored", "component": "ogn/MBR/restored-summary",
+            "layoutAlign": "STRETCH",
+            "_comment": "[고지·필수] FN-MBR-REJOIN-006 — 연계 / 제외 항목"
+          },
+          {
+            "kind": "ref", "id": "post-actions", "component": "ogn/MBR/post-actions",
+            "layoutAlign": "STRETCH",
+            "_comment": "후속 액션 — figma 시점 카드 텍스트 변경 (내 정보 확인 / 첫 혜택)"
+          }
+        ],
+        "layoutGrow": 1
+      },
+      { "kind": "ref", "id": "sticky-footer", "component": "ogn/sticky-footer-cta", "props": { "label": "홈으로" }, "layoutAlign": "STRETCH", "scrollBehavior": "STICKY_SCROLLS" },
+      { "kind": "ref", "id": "footer-cs", "component": "ogn/footer-cs", "layoutAlign": "STRETCH", "scrollBehavior": "STICKY_SCROLLS" }
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "screenId": "BIL-PAY-RESERVE",
+  "screenName": "납부 예약",
+  "screenPath": "page/BIL/pay-reserve",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/pay-reserve",
+    "spec_input": "specs-input/BIL-pay-reserve.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-reserve-current",
+      "sectionName": "기존 예약 상태 표시",
+      "sectionDescription": "기존 납부 예약이 있는 경우 예약 날짜·금액·수단을 표시하고 변경/취소 가능 여부를 안내한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "0-1/1",
+        "max": ""
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 기존 예약 상태 표시\n[고지:필수|POL-BIL-PAY-003-03] 예약 변경은 실행 전날까지만 가능함을 명시\n[고지:필수|POL-BIL-PAY-003-04] 실행 당일 취소 불가 상태 시 취소 버튼 숨김 + 안내 문구 표시\n[조건:기존예약없음] 영역 미노출\n[조건:취소불가] atom/banner(tone=warning) 노출 — 취소 기한 경과 안내\n[상태:loading] skeleton 표시\n[상태:error] 영역 숨김\n[액션:tap 예약변경] 예약 날짜·수단 수정 모드 전환\n[액션:tap 예약취소] 예약 취소 확인 다이얼로그 노출",
+      "label": "기능 1: 기존 예약 상태 표시"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-reserve-input",
+      "sectionName": "예약 날짜·수단 입력",
+      "sectionDescription": "납부 예약 날짜를 선택하고 납부수단을 지정한다. 납부기한 이전 날짜만 선택 가능",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/month-picker",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 예약 날짜·수단 입력\n[규칙:FN-PAY-005] 납부 예약 날짜와 수단을 선택하는 UI를 제공한다\n[고지:필수|POL-BIL-PAY-003-03] 예약 날짜는 납부기한 이전 날짜만 선택 가능하도록 제한\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내\n[액션:tap 날짜선택] 날짜 피커 활성화\n[액션:tap 납부수단 선택] pay-method-select 화면으로 이동",
+      "label": "기능 2: 예약 날짜·수단 입력"
+    },
+    {
+      "no": 3,
+      "kind": "footer",
+      "sectionId": "section-BIL-pay-reserve-cta",
+      "sectionName": "예약 확정 CTA",
+      "sectionDescription": "선택된 날짜·수단으로 납부 예약을 확정하는 버튼. 날짜 또는 수단 미선택 시 비활성",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "버튼 비활성 유지",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 예약 확정 CTA\n[조건:날짜미선택] 버튼 비활성(disabled) 처리\n[조건:수단미선택] 버튼 비활성(disabled) 처리\n[액션:tap 예약하기] 납부 예약 처리 요청 → 성공 시 pay-reserve-complete",
+      "label": "기능 3: 예약 확정 CTA"
+    }
+  ]
+}

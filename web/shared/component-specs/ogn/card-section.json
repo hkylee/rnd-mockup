@@ -1,0 +1,63 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "ogn/card-section",
+  "category": "ogn",
+  "description": "카드 섹션 컨테이너. Type(Medium/Large).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "paddingBottom": 4.0,
+      "counterAxisSizingMode": "FIXED",
+      "width": "HUG"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "group",
+        "id": "card",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 24.0,
+          "paddingTop": 28.0,
+          "paddingRight": 28.0,
+          "paddingBottom": 28.0,
+          "paddingLeft": 28.0,
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "MAX",
+          "width": "HUG"
+        },
+        "visual": {
+          "cornerRadius": 24.0,
+          "fill": "{component.radio.default.dotColor}",
+          "stroke": "{component.radio.default.dotColor}"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-cardsectiontitle",
+            "component": ".CardSectionTitle"
+          },
+          {
+            "kind": "ref",
+            "id": "local_cardcontents",
+            "component": "Local_CardContents"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "type",
+        "values": [
+          "medium",
+          "large"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "screenId": "BIL-PAY-RESERVE-COMPLETE",
+  "screenName": "납부 예약 완료",
+  "screenPath": "page/BIL/pay-reserve-complete",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/pay-reserve-complete",
+    "spec_input": "specs-input/BIL-pay-reserve.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-reserve-result",
+      "sectionName": "예약 결과 표시",
+      "sectionDescription": "납부 예약 성공/실패/취소 결과를 명확히 표시. 성공 시 예약 날짜·수단과 취소 방법 안내",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "최소 실패 상태 항상 노출",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 예약 결과 표시\n[고지:필수|POL-BIL-PAY-003-10] 예약 성공 시 예약 날짜·수단과 함께 취소 방법(경로·기한) 안내\n[고지:필수|POL-BIL-PAY-003-10] 예약 실패 시 실패 사유와 재시도 방법 안내\n[조건:예약성공] mol/notice-card(tone=info) 노출\n[조건:예약실패] mol/notice-card(tone=error) 노출\n[조건:취소완료] 취소 완료 확인 메시지 노출\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내",
+      "label": "기능 1: 예약 결과 표시"
+    },
+    {
+      "no": 2,
+      "kind": "footer",
+      "sectionId": "section-BIL-pay-reserve-complete-actions",
+      "sectionName": "완료 후 액션",
+      "sectionDescription": "예약 결과 확인 후 청구 메인 이동, 예약 취소, 재시도 등 다음 행동 버튼 제공",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "홈 이동 버튼 항상 노출",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 완료 후 액션\n[조건:예약성공] 예약 취소 버튼 노출 (실행 전날까지 활성)\n[조건:예약실패] 재시도 버튼 노출\n[액션:tap 청구메인으로] bill-main 화면으로 이동\n[액션:tap 예약취소] pay-reserve 화면으로 이동 (취소 모드)\n[액션:tap 재시도] pay-reserve 화면으로 이동",
+      "label": "기능 2: 완료 후 액션"
+    }
+  ]
+}

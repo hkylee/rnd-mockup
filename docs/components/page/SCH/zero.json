@@ -1,0 +1,103 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/SCH/zero",
+  "category": "page",
+  "description": "통합 검색 — 제로결과 폴백 (F09). 정책 5 영역 순서 — ① 오타 교정 ② 유사어 chip ③ 인기 카테고리 ④ FAQ (생략) ⑤ 상담 CTA. 시각 균형 — empty hero 강조 / 가운데 작은 시각 / 끝 emphasis 강조 (상담 동선). UXL_SCH_4 안내 우선.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "primaryAxisSizingMode": "FIXED",
+      "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}",
+      "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}",
+      "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": {
+      "cornerRadius": 0,
+      "fill": "{semantic.color.background.page-sub}",
+      "stroke": null,
+      "shadow": null
+    },
+    "children": [
+      { "kind": "ref", "id": "status-bar", "component": "ogn/status-bar" },
+      {
+        "kind": "ref", "id": "search-bar", "component": "ogn/SCH/search-bar",
+        "props": { "placeholder": "존재하지 않는 검색어" },
+        "layoutAlign": "STRETCH",
+        "scrollBehavior": "STICKY_SCROLLS"
+      },
+      {
+        "kind": "group",
+        "id": "content",
+        "layoutAlign": "STRETCH",
+        "layout": {
+          "mode": "VERTICAL",
+          "primaryAxisSizingMode": "AUTO",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "paddingTop":    "{semantic.layout.screen-padding-default}",
+          "paddingBottom": "{semantic.layout.screen-padding-default}",
+          "paddingLeft":   "{semantic.layout.screen-padding-default}",
+          "paddingRight":  "{semantic.layout.screen-padding-default}",
+          "itemSpacing":   "{foundation.dimension.spacing.2xl}",
+          "width": "FILL",
+          "height": "HUG"
+        },
+        "visual": { "cornerRadius": 0, "fill": null, "stroke": null, "shadow": null },
+        "children": [
+          {
+            "kind": "ref", "id": "section-empty-hero", "component": "ogn/SCH/empty-hero",
+            "layoutAlign": "STRETCH",
+            "_comment": "section 1 — empty-state hero. 큰 시각 강조 (icon + 헤딩 + 설명). UXL_SCH_4 안내 우선."
+          },
+          {
+            "kind": "ref", "id": "typo-correction", "component": "mol/notice-card",
+            "variant": { "type": "plain" },
+            "props": { "message": "혹시 '존재하는 검색어' 를 찾으셨나요?  탭하여 재검색" },
+            "layoutAlign": "STRETCH",
+            "_comment": "section 2 — F09 ① 오타 교정. 작은 시각 (plain). UXL_SCH_4."
+          },
+          {
+            "kind": "ref", "id": "section-similar", "component": "ogn/SCH/keyword-chips",
+            "variant": { "type": "similar" },
+            "props": { "label": "이런 검색어는 어떠세요" },
+            "layoutAlign": "STRETCH",
+            "_comment": "section 3 — F09 ② 유사어 chip. 작은 시각."
+          },
+          {
+            "kind": "ref", "id": "section-categories", "component": "ogn/SCH/category-card",
+            "layoutAlign": "STRETCH",
+            "_comment": "section 4 — F09 ③ 인기 카테고리. 중간 시각 (post-action-card × 2 — input 화면과 시각 통일)."
+          },
+          {
+            "kind": "ref", "id": "cs-cta", "component": "mol/notice-card",
+            "variant": { "type": "title-body" },
+            "props": {
+              "title": "원하는 결과가 없으신가요?",
+              "body":  "상담사가 빠르게 도와드릴게요. 1:1 채팅으로 문의해 주세요."
+            },
+            "layoutAlign": "STRETCH",
+            "_comment": "section 5 — F09 ⑤ 상담 CTA. 끝 동선 강조 (title-body 외피). UXL_SCH_2 실행 우선."
+          }
+        ],
+        "layoutGrow": 1
+      },
+      {
+        "kind": "ref",
+        "id": "footer-cs",
+        "component": "ogn/footer-cs",
+        "layoutAlign": "STRETCH",
+        "scrollBehavior": "STICKY_SCROLLS",
+        "_comment": "[고지·필수] 전기통신사업법 § 22-2 — 분쟁 발생 시 연락처 표시 의무"
+      }
+    ]
+  }
+}

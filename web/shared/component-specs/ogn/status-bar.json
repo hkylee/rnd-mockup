@@ -1,0 +1,83 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "ogn/status-bar",
+  "category": "ogn",
+  "description": "시스템 StatusBar.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 221.0,
+      "paddingTop": 20.0,
+      "paddingRight": 24.0,
+      "paddingBottom": 18.0,
+      "paddingLeft": 24.0,
+      "primaryAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "SPACE_BETWEEN",
+      "counterAxisAlignItems": "CENTER",
+      "width": "FILL"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "group",
+        "id": "left-side",
+        "layout": {
+          "mode": "NONE"
+        },
+        "visual": {
+          "cornerRadius": 24.0
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "_statusbar-time",
+            "component": "_StatusBar-time"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "notch",
+        "layout": {
+          "mode": "NONE"
+        },
+        "visual": {
+          "cornerRadius": 0.0
+        }
+      },
+      {
+        "kind": "group",
+        "id": "right-side",
+        "layout": {
+          "mode": "NONE"
+        },
+        "visual": {
+          "cornerRadius": 0.0
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "battery",
+            "layout": {
+              "mode": "NONE"
+            },
+            "visual": {
+              "cornerRadius": 0.0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "state",
+        "values": [
+          "default"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

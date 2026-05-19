@@ -1,0 +1,47 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "mol/list-selected",
+  "category": "mol",
+  "description": "선택형 목록 행. Radio/Checkbox × 서브텍스트.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 8.0,
+      "paddingBottom": 4.0,
+      "primaryAxisSizingMode": "FIXED",
+      "counterAxisAlignItems": "CENTER",
+      "width": "FILL"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-radiotext",
+        "component": ".RadioText"
+      },
+      {
+        "kind": "text",
+        "id": "subtext",
+        "content": "-9,900원",
+        "exposeAs": "subtext"
+      },
+      {
+        "kind": "ref",
+        "id": "-listselectedrightitem",
+        "component": ".ListSelectedRightItem"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "type",
+        "values": [
+          "radio",
+          "checkbox"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

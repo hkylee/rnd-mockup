@@ -1,0 +1,88 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/BIL/payment-delegate-auth",
+  "category": "page",
+  "description": "대리 납부 권한 확인 (대상 선택). US-BIL-PAY-004. ogn/BIL/delegate-target-list + sticky CTA 다음.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "primaryAxisSizingMode": "FIXED",
+      "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}",
+      "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}",
+      "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": {
+      "cornerRadius": 0,
+      "fill": "{semantic.color.background.page-sub}",
+      "stroke": null,
+      "shadow": null
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "status-bar",
+        "component": "ogn/status-bar"
+      },
+      {
+        "kind": "ref",
+        "id": "header",
+        "component": "ogn/header",
+        "props": {
+          "title": "대리 납부"
+        }
+      },
+      {
+        "kind": "group",
+        "id": "content",
+        "layoutAlign": "STRETCH",
+        "layoutGrow": 1,
+        "layout": {
+          "mode": "VERTICAL",
+          "primaryAxisSizingMode": "AUTO",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "paddingTop": "{foundation.dimension.spacing.lg}",
+          "paddingBottom": "{foundation.dimension.spacing.lg}",
+          "paddingLeft": "{foundation.dimension.spacing.none}",
+          "paddingRight": "{foundation.dimension.spacing.none}",
+          "itemSpacing": "{foundation.dimension.spacing.lg}",
+          "width": "FILL",
+          "height": "HUG"
+        },
+        "visual": {
+          "cornerRadius": 0,
+          "fill": null,
+          "stroke": null,
+          "shadow": null
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "target-list",
+            "component": "ogn/BIL/delegate-target-list",
+            "layoutAlign": "STRETCH"
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "sticky-cta",
+        "component": "ogn/sticky-footer-cta",
+        "props": {
+          "label": "다음"
+        },
+        "scrollBehavior": "STICKY_SCROLLS",
+        "layoutAlign": "STRETCH"
+      }
+    ]
+  }
+}

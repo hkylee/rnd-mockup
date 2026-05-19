@@ -1,0 +1,86 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "mol/banner-horizontal",
+  "category": "mol",
+  "description": "가로형 미디엄 배너.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "paddingBottom": 4.0,
+      "counterAxisSizingMode": "FIXED",
+      "counterAxisAlignItems": "CENTER",
+      "width": "HUG"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "group",
+        "id": "banner",
+        "layout": {
+          "mode": "NONE"
+        },
+        "visual": {
+          "cornerRadius": 24.0,
+          "fill": "#fdfdfe",
+          "stroke": "{component.radio.default.dotColor}"
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "image",
+            "layout": {
+              "mode": "NONE"
+            },
+            "visual": {}
+          },
+          {
+            "kind": "group",
+            "id": "textarea",
+            "layout": {
+              "mode": "VERTICAL",
+              "itemSpacing": 4.0,
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "width": "HUG"
+            },
+            "visual": {},
+            "children": [
+              {
+                "kind": "text",
+                "id": "title",
+                "content": "신혼부부 프랜차이즈 무조건 할인",
+                "exposeAs": "title"
+              },
+              {
+                "kind": "text",
+                "id": "subtitle",
+                "content": "기다림은 짧게, 혜택은 특별하게",
+                "exposeAs": "subtitle"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "-indicator",
+        "component": ".Indicator"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "subtitle",
+        "values": [
+          "on"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "9137:104871",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

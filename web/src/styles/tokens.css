@@ -1,0 +1,664 @@
+/*
+ * AUTO-GENERATED — DO NOT EDIT MANUALLY
+ * 생성: web/scripts/build-tokens.mjs
+ * 입력: shared/skt-design-system.json
+ * 명령: npm run build:tokens
+ */
+
+:root {
+  /* === foundation === */
+  --foundation-color-purple-300: #ece8fb;
+  --foundation-color-purple-500: #3617ce;
+  --foundation-color-purple-700: #2a10a8;
+  --foundation-color-gray-0: #ffffff;
+  --foundation-color-gray-50: #f5f6fa;
+  --foundation-color-gray-100: #f2f2f7;
+  --foundation-color-gray-150: #eef0f7;
+  --foundation-color-gray-200: #ebeef6;
+  --foundation-color-gray-250: #ecedef;
+  --foundation-color-gray-300: #e8e8f0;
+  --foundation-color-gray-350: #e0e0e8;
+  --foundation-color-gray-400: #cfd5e5;
+  --foundation-color-gray-500: #c2c4cc;
+  --foundation-color-gray-600: #8e8ea8;
+  --foundation-color-gray-700: #4a4a68;
+  --foundation-color-gray-900: #08002c;
+  --foundation-color-black-default: #000000;
+  --foundation-color-red-50: #fff0f3;
+  --foundation-color-red-500: #e5003b;
+  --foundation-color-green-50: #edfaf4;
+  --foundation-color-green-500: #00a86b;
+  --foundation-color-orange-50: #fff8ec;
+  --foundation-color-orange-500: #f5a623;
+  --foundation-dimension-radius-sm: 8px;
+  --foundation-dimension-radius-md: 16px;
+  --foundation-dimension-radius-lg: 20px;
+  --foundation-dimension-radius-xl: 24px;
+  --foundation-dimension-radius-pill: 999px;
+  --foundation-dimension-radius-chip: 22px;
+  --foundation-dimension-radius-button: 12px;
+  --foundation-dimension-radius-xs: 4px;
+  --foundation-dimension-spacing-none: 0px;
+  --foundation-dimension-spacing-xs: 4px;
+  --foundation-dimension-spacing-sm: 8px;
+  --foundation-dimension-spacing-md: 12px;
+  --foundation-dimension-spacing-lg: 16px;
+  --foundation-dimension-spacing-xl: 20px;
+  --foundation-dimension-spacing-2xl: 24px;
+  --foundation-dimension-spacing-3xl: 32px;
+  --foundation-dimension-size-icon-sm: 16px;
+  --foundation-dimension-size-icon-md: 20px;
+  --foundation-dimension-size-icon-lg: 24px;
+  --foundation-dimension-size-icon-xl: 32px;
+  --foundation-dimension-size-icon-container: 40px;
+  --foundation-dimension-size-thumbnail-sm: 48px;
+  --foundation-dimension-size-thumbnail-md: 64px;
+  --foundation-dimension-size-thumbnail-lg: 80px;
+  --foundation-dimension-size-thumbnail-portrait-h-sm: 72px;
+  --foundation-dimension-size-thumbnail-portrait-h-md: 96px;
+  --foundation-dimension-size-thumbnail-portrait-h-lg: 120px;
+  --foundation-dimension-size-button-xs: 22px;
+  --foundation-dimension-size-button-sm: 36px;
+  --foundation-dimension-size-button-md: 44px;
+  --foundation-dimension-size-button-lg: 52px;
+  --foundation-dimension-size-chip: 34px;
+  --foundation-dimension-size-input: 52px;
+  --foundation-dimension-size-search-bar: 48px;
+  --foundation-dimension-size-header: 116px;
+  --foundation-dimension-size-tab-bar: 84px;
+  --foundation-dimension-size-list-item-min: 52px;
+  --foundation-dimension-size-numbered-badge: 32px;
+  --foundation-dimension-size-progress-height-sm: 4px;
+  --foundation-dimension-size-progress-height-md: 8px;
+  --foundation-dimension-size-divider-weight-hairline: 1px;
+  --foundation-dimension-size-divider-weight-thick: 8px;
+  --foundation-dimension-size-banner-height: 72px;
+  --foundation-dimension-size-thumb-radius-default: 8px;
+  --foundation-dimension-size-textarea-min-height: 96px;
+  --foundation-dimension-size-barcode-height: 80px;
+  --foundation-dimension-size-sticky-footer-height: 72px;
+  --foundation-dimension-size-tab-height: 48px;
+  --foundation-dimension-size-tab-indicator-height: 2px;
+  --foundation-dimension-size-header-compact: 56px;
+  --foundation-dimension-size-screen-mobile: 375px;
+  --foundation-dimension-size-screen-content-width: 327px;
+  --foundation-dimension-size-screen-content-width-home: 351px;
+  --foundation-dimension-size-card-inner-width: 279px;
+  --foundation-dimension-size-input-control: 24px;
+  --foundation-dimension-size-screen-mobile-height: 812px;
+  --foundation-typography-fontfamily-primary: Pretendard;
+  --foundation-typography-fontfamily-fallback: Inter;
+  --foundation-typography-fontsize-tab-label: 9px;
+  --foundation-typography-fontsize-sub-label: 12px;
+  --foundation-typography-fontsize-card-label: 13px;
+  --foundation-typography-fontsize-chip-badge: 13px;
+  --foundation-typography-fontsize-insight: 13px;
+  --foundation-typography-fontsize-body: 15px;
+  --foundation-typography-fontsize-home-md: 18px;
+  --foundation-typography-fontsize-title: 20px;
+  --foundation-typography-fontsize-number-emphasis: 28px;
+  --foundation-typography-lineheight-120: 120%;
+  --foundation-typography-lineheight-140: 140%;
+  --foundation-typography-lineheight-xs: 12px;
+  --foundation-typography-lineheight-sm: 16px;
+  --foundation-typography-lineheight-md: 18px;
+  --foundation-typography-lineheight-lg: 22px;
+  --foundation-typography-lineheight-xl: 28px;
+  --foundation-typography-lineheight-2xl: 36px;
+  --foundation-typography-fontweight-regular: 400;
+  --foundation-typography-fontweight-medium: 500;
+  --foundation-typography-fontweight-semibold: 600;
+  --foundation-typography-fontweight-bold: 700;
+  --foundation-typography-letterspacing-default: 0px;
+  --foundation-typography-letterspacing-tight-sm: -0.3px;
+  --foundation-typography-letterspacing-tight-md: -0.5px;
+  --foundation-shadow-sm: 0px 2px 8px 0px rgba(0, 0, 0, 0.06);
+  --foundation-shadow-md: 0px 4px 16px 0px rgba(0, 0, 0, 0.1);
+  --foundation-shadow-lg: 0px 8px 32px 0px rgba(0, 0, 0, 0.16);
+  --foundation-shadow-elevated: 0px 8px 16px 0px rgba(27, 11, 102, 0.16);
+  --foundation-motion-duration-fast: 150ms;
+  --foundation-motion-duration-base: 250ms;
+  --foundation-motion-duration-slow: 400ms;
+  --foundation-motion-duration-loading: 1200ms;
+  --foundation-motion-easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --foundation-motion-easing-enter: cubic-bezier(0, 0, 0.2, 1);
+  --foundation-motion-easing-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* === semantic === */
+  --semantic-color-brand-primary: var(--foundation-color-purple-500);
+  --semantic-color-brand-light: var(--foundation-color-purple-300);
+  --semantic-color-brand-dark: var(--foundation-color-purple-700);
+  --semantic-color-brand-on-brand: var(--foundation-color-gray-0);
+  --semantic-color-background-default: var(--foundation-color-gray-100);
+  --semantic-color-background-subtle: var(--foundation-color-gray-200);
+  --semantic-color-background-overlay: var(--foundation-color-black-default);
+  --semantic-color-background-page-home: var(--semantic-color-surface-secondary);
+  --semantic-color-background-page-sub: var(--semantic-color-surface-primary);
+  --semantic-color-surface-primary: var(--foundation-color-gray-0);
+  --semantic-color-surface-secondary: var(--foundation-color-gray-50);
+  --semantic-color-surface-tooltip: var(--foundation-color-gray-900);
+  --semantic-color-text-primary: var(--foundation-color-black-default);
+  --semantic-color-text-strong: var(--foundation-color-gray-900);
+  --semantic-color-text-secondary: var(--foundation-color-gray-700);
+  --semantic-color-text-muted: var(--foundation-color-gray-600);
+  --semantic-color-text-brand: var(--semantic-color-brand-primary);
+  --semantic-color-text-on-dark: var(--foundation-color-gray-0);
+  --semantic-color-text-disabled: var(--foundation-color-gray-500);
+  --semantic-color-text-price-original: var(--foundation-color-gray-600);
+  --semantic-color-text-emphasis: var(--semantic-color-brand-primary);
+  --semantic-color-border-default: var(--foundation-color-gray-350);
+  --semantic-color-border-subtle: var(--foundation-color-gray-50);
+  --semantic-color-border-focus: var(--semantic-color-brand-primary);
+  --semantic-color-border-active: var(--semantic-color-brand-primary);
+  --semantic-color-state-disabled-bg: var(--foundation-color-gray-300);
+  --semantic-color-state-disabled-text: var(--semantic-color-text-disabled);
+  --semantic-color-state-pressed: var(--semantic-color-brand-dark);
+  --semantic-color-state-hover-bg: var(--foundation-color-purple-300);
+  --semantic-color-state-selected-bg: var(--semantic-color-brand-light);
+  --semantic-color-feedback-error: var(--foundation-color-red-500);
+  --semantic-color-feedback-error-bg: var(--foundation-color-red-50);
+  --semantic-color-feedback-success: var(--foundation-color-green-500);
+  --semantic-color-feedback-success-bg: var(--foundation-color-green-50);
+  --semantic-color-feedback-warning: var(--foundation-color-orange-500);
+  --semantic-color-feedback-warning-bg: var(--foundation-color-orange-50);
+  --semantic-color-feedback-info: var(--semantic-color-brand-primary);
+  --semantic-color-feedback-info-bg: var(--semantic-color-brand-light);
+  --semantic-color-icon-container-default: var(--foundation-color-gray-250);
+  --semantic-color-icon-container-document: var(--foundation-color-gray-150);
+  --semantic-color-icon-container-brand: var(--semantic-color-brand-primary);
+  --semantic-color-icon-default: var(--foundation-color-gray-900);
+  --semantic-color-icon-muted: var(--foundation-color-gray-600);
+  --semantic-color-icon-on-gray: var(--semantic-color-brand-primary);
+  --semantic-color-icon-on-brand: var(--semantic-color-brand-on-brand);
+  --semantic-color-icon-quick-action: var(--foundation-color-gray-400);
+  --semantic-color-page-my-home-background: var(--foundation-color-gray-100);
+  --semantic-color-page-shopping-background: var(--foundation-color-gray-200);
+  --semantic-color-page-search-background: var(--foundation-color-gray-200);
+  --semantic-color-chip-default-bg: var(--foundation-color-gray-0);
+  --semantic-color-chip-selected-bg: var(--semantic-color-brand-primary);
+  --semantic-color-tab-divider: #ecf1ff;
+  --semantic-color-skeleton-base: var(--foundation-color-gray-200);
+  --semantic-color-skeleton-shimmer: var(--foundation-color-gray-100);
+  --semantic-color-progress-track: var(--foundation-color-gray-200);
+  --semantic-color-progress-fill: var(--semantic-color-brand-primary);
+  --semantic-color-link-default: var(--semantic-color-brand-primary);
+  --semantic-color-link-pressed: var(--semantic-color-brand-dark);
+  --semantic-color-link-visited: var(--foundation-color-purple-700);
+  --semantic-color-banner-info-bg: var(--semantic-color-brand-light);
+  --semantic-color-banner-warning-bg: var(--foundation-color-orange-50);
+  --semantic-color-banner-error-bg: var(--foundation-color-red-50);
+  --semantic-color-banner-success-bg: var(--foundation-color-green-50);
+  --semantic-color-divider-hairline: var(--semantic-color-border-subtle);
+  --semantic-color-divider-section: var(--foundation-color-gray-150);
+  --semantic-motion-fast: var(--foundation-motion-duration-fast);
+  --semantic-motion-base: var(--foundation-motion-duration-base);
+  --semantic-motion-slow: var(--foundation-motion-duration-slow);
+  --semantic-motion-loading: var(--foundation-motion-duration-loading);
+  --semantic-motion-easing-default: var(--foundation-motion-easing-default);
+  --semantic-motion-easing-enter: var(--foundation-motion-easing-enter);
+  --semantic-motion-easing-exit: var(--foundation-motion-easing-exit);
+  --semantic-layout-screen-padding-default: var(--foundation-dimension-spacing-2xl);
+  --semantic-layout-screen-padding-home: var(--foundation-dimension-spacing-md);
+  --semantic-layout-screen-padding-search: var(--foundation-dimension-spacing-xl);
+  --semantic-layout-card-gap: var(--foundation-dimension-spacing-xs);
+  --semantic-layout-section-gap: var(--foundation-dimension-spacing-3xl);
+  --semantic-layout-inner-gap-sm: var(--foundation-dimension-spacing-sm);
+  --semantic-layout-inner-gap-md: var(--foundation-dimension-spacing-md);
+  --semantic-layout-inner-gap-lg: var(--foundation-dimension-spacing-lg);
+
+  /* === component === */
+  --component-page-my-home-background: var(--semantic-color-page-my-home-background);
+  --component-page-shopping-background: var(--semantic-color-page-shopping-background);
+  --component-page-search-background: var(--semantic-color-page-search-background);
+  --component-card-default-background: var(--semantic-color-surface-primary);
+  --component-card-default-radius: var(--foundation-dimension-radius-md);
+  --component-card-default-padding: var(--foundation-dimension-spacing-2xl);
+  --component-card-default-shadow: var(--foundation-shadow-sm);
+  --component-card-default-main-title-fontsize: var(--foundation-typography-fontsize-title);
+  --component-card-default-main-title-lineheight: var(--foundation-typography-lineheight-120);
+  --component-card-default-main-title-fontweight: var(--foundation-typography-fontweight-bold);
+  --component-card-default-main-title-letterspacing: var(--foundation-typography-letterspacing-tight-md);
+  --component-card-default-main-titlecolor: var(--semantic-color-text-primary);
+  --component-card-shopping-outer-background: var(--semantic-color-surface-primary);
+  --component-card-shopping-outer-radius: var(--foundation-dimension-radius-xl);
+  --component-card-shopping-inner-background: var(--semantic-color-surface-primary);
+  --component-card-shopping-inner-radius: var(--foundation-dimension-radius-lg);
+  --component-card-content-background: var(--semantic-color-surface-secondary);
+  --component-result-default-background: var(--semantic-color-surface-primary);
+  --component-result-default-radius: var(--foundation-dimension-radius-lg);
+  --component-result-default-shadow: var(--foundation-shadow-sm);
+  --component-result-default-paddingy: var(--foundation-dimension-spacing-3xl);
+  --component-result-default-paddingx: var(--foundation-dimension-spacing-2xl);
+  --component-result-default-itemspacing: var(--foundation-dimension-spacing-lg);
+  --component-result-default-description-fontsize: var(--foundation-typography-fontsize-body);
+  --component-result-default-description-lineheight: var(--foundation-typography-lineheight-lg);
+  --component-result-default-description-fontweight: var(--foundation-typography-fontweight-regular);
+  --component-result-default-description-letterspacing: var(--foundation-typography-letterspacing-default);
+  --component-result-default-descriptioncolor: var(--semantic-color-text-secondary);
+  --component-button-primary-height: var(--foundation-dimension-size-button-lg);
+  --component-button-primary-radius: var(--foundation-dimension-radius-button);
+  --component-button-primary-paddinghorizontal: var(--foundation-dimension-spacing-2xl);
+  --component-button-primary-background: var(--semantic-color-brand-primary);
+  --component-button-primary-text: var(--semantic-color-brand-on-brand);
+  --component-button-primary-textstyle: var(--semantic-typography-button);
+  --component-button-primary-pressedbackground: var(--semantic-color-state-pressed);
+  --component-button-primary-disabledbackground: var(--semantic-color-state-disabled-bg);
+  --component-button-primary-disabledtext: var(--semantic-color-state-disabled-text);
+  --component-button-small-elevated-height: var(--foundation-dimension-size-button-sm);
+  --component-button-small-elevated-radius: var(--foundation-dimension-radius-button);
+  --component-button-small-elevated-paddinghorizontal: var(--foundation-dimension-spacing-lg);
+  --component-button-small-elevated-background: var(--semantic-color-brand-primary);
+  --component-button-small-elevated-text: var(--semantic-color-brand-on-brand);
+  --component-button-small-elevated-textstyle: var(--semantic-typography-btn-small);
+  --component-button-small-elevated-pressedbackground: var(--semantic-color-state-pressed);
+  --component-button-small-elevated-disabledbackground: var(--semantic-color-state-disabled-bg);
+  --component-button-small-elevated-disabledtext: var(--semantic-color-state-disabled-text);
+  --component-button-small-elevated-shadow: var(--foundation-shadow-elevated);
+  --component-button-primary-elevated-height: var(--foundation-dimension-size-button-lg);
+  --component-button-primary-elevated-radius: var(--foundation-dimension-radius-button);
+  --component-button-primary-elevated-paddinghorizontal: var(--foundation-dimension-spacing-xl);
+  --component-button-primary-elevated-background: var(--semantic-color-brand-primary);
+  --component-button-primary-elevated-text: var(--semantic-color-brand-on-brand);
+  --component-button-primary-elevated-textstyle: var(--semantic-typography-home-button);
+  --component-button-primary-elevated-pressedbackground: var(--semantic-color-state-pressed);
+  --component-button-primary-elevated-disabledbackground: var(--semantic-color-state-disabled-bg);
+  --component-button-primary-elevated-disabledtext: var(--semantic-color-state-disabled-text);
+  --component-button-primary-elevated-shadow: var(--foundation-shadow-elevated);
+  --component-button-secondary-height: var(--foundation-dimension-size-button-lg);
+  --component-button-secondary-radius: var(--foundation-dimension-radius-pill);
+  --component-button-secondary-paddinghorizontal: var(--foundation-dimension-spacing-2xl);
+  --component-button-secondary-background: var(--semantic-color-surface-primary);
+  --component-button-secondary-border: var(--semantic-color-border-default);
+  --component-button-secondary-text: var(--semantic-color-text-primary);
+  --component-button-secondary-textstyle: var(--semantic-typography-button);
+  --component-button-small-height: var(--foundation-dimension-size-button-sm);
+  --component-button-small-radius: var(--foundation-dimension-radius-pill);
+  --component-button-small-paddinghorizontal: var(--foundation-dimension-spacing-md);
+  --component-button-small-textstyle: var(--semantic-typography-chip-badge);
+  --component-button-inline-height: var(--foundation-dimension-size-button-xs);
+  --component-button-inline-radius: var(--foundation-dimension-radius-pill);
+  --component-button-inline-paddinghorizontal: var(--foundation-dimension-spacing-sm);
+  --component-button-inline-background: var(--semantic-color-brand-primary);
+  --component-button-inline-text: var(--semantic-color-brand-on-brand);
+  --component-button-inline-textstyle: var(--semantic-typography-sub-label);
+  --component-button-inline-pressedbackground: var(--semantic-color-state-pressed);
+  --component-button-inline-disabledbackground: var(--semantic-color-state-disabled-bg);
+  --component-button-inline-disabledtext: var(--semantic-color-state-disabled-text);
+  --component-button-destructive-height: var(--foundation-dimension-size-button-lg);
+  --component-button-destructive-radius: var(--foundation-dimension-radius-button);
+  --component-button-destructive-paddinghorizontal: var(--foundation-dimension-spacing-2xl);
+  --component-button-destructive-background: var(--semantic-color-feedback-error);
+  --component-button-destructive-text: var(--semantic-color-brand-on-brand);
+  --component-button-destructive-textstyle: var(--semantic-typography-button);
+  --component-button-destructive-pressedbackground: var(--semantic-color-feedback-error);
+  --component-button-destructive-disabledbackground: var(--semantic-color-state-disabled-bg);
+  --component-button-destructive-disabledtext: var(--semantic-color-state-disabled-text);
+  --component-chip-default-height: var(--foundation-dimension-size-chip);
+  --component-chip-default-radius: var(--foundation-dimension-radius-pill);
+  --component-chip-default-paddinghorizontal: var(--foundation-dimension-spacing-md);
+  --component-chip-default-background: var(--semantic-color-chip-default-bg);
+  --component-chip-default-border: var(--semantic-color-border-default);
+  --component-chip-default-text: var(--semantic-color-text-secondary);
+  --component-chip-default-textstyle: var(--semantic-typography-chip-badge);
+  --component-chip-selected-height: var(--foundation-dimension-size-chip);
+  --component-chip-selected-radius: var(--foundation-dimension-radius-pill);
+  --component-chip-selected-paddinghorizontal: var(--foundation-dimension-spacing-md);
+  --component-chip-selected-background: var(--semantic-color-chip-selected-bg);
+  --component-chip-selected-text: var(--semantic-color-brand-on-brand);
+  --component-chip-selected-textstyle: var(--semantic-typography-chip-badge);
+  --component-chip-search-height: var(--foundation-dimension-size-chip);
+  --component-chip-search-radius: var(--foundation-dimension-radius-chip);
+  --component-chip-search-paddinghorizontal: var(--foundation-dimension-spacing-md);
+  --component-list-item-default-minheight: var(--foundation-dimension-size-list-item-min);
+  --component-list-item-default-paddingvertical: var(--foundation-dimension-spacing-md);
+  --component-list-item-default-gap: var(--foundation-dimension-spacing-md);
+  --component-list-item-default-alignitems: center;
+  --component-list-item-default-background: var(--semantic-color-surface-primary);
+  --component-list-item-default-text: var(--semantic-color-text-primary);
+  --component-list-item-default-textstyle: var(--semantic-typography-list-label);
+  --component-list-item-default-divider: var(--semantic-color-border-subtle);
+  --component-list-item-numbered-minheight: var(--foundation-dimension-size-list-item-min);
+  --component-list-item-numbered-paddingvertical: var(--foundation-dimension-spacing-md);
+  --component-list-item-numbered-gap: var(--foundation-dimension-spacing-md);
+  --component-list-item-numbered-alignitems: center;
+  --component-list-item-numbered-badge-size: var(--foundation-dimension-size-numbered-badge);
+  --component-list-item-numbered-badge-radius: var(--foundation-dimension-radius-pill);
+  --component-list-item-numbered-badge-background: var(--semantic-color-brand-light);
+  --component-list-item-numbered-badge-text: var(--semantic-color-brand-primary);
+  --component-list-item-numbered-badge-textstyle: var(--semantic-typography-chip-badge);
+  --component-list-item-numbered-text: var(--semantic-color-text-primary);
+  --component-list-item-numbered-textstyle: var(--semantic-typography-list-label);
+  --component-list-item-icon-minheight: var(--foundation-dimension-size-list-item-min);
+  --component-list-item-icon-paddingvertical: var(--foundation-dimension-spacing-md);
+  --component-list-item-icon-gap: var(--foundation-dimension-spacing-md);
+  --component-list-item-icon-alignitems: center;
+  --component-list-item-icon-iconsize: var(--foundation-dimension-size-icon-md);
+  --component-list-item-icon-iconcolor: var(--semantic-color-icon-default);
+  --component-list-item-icon-text: var(--semantic-color-text-primary);
+  --component-list-item-icon-textstyle: var(--semantic-typography-list-label);
+  --component-badge-default-height: 20px;
+  --component-badge-default-radius: var(--foundation-dimension-radius-pill);
+  --component-badge-default-paddinghorizontal: var(--foundation-dimension-spacing-xs);
+  --component-badge-default-background: var(--semantic-color-brand-light);
+  --component-badge-default-text: var(--semantic-color-brand-primary);
+  --component-badge-default-textstyle: var(--semantic-typography-sub-label);
+  --component-badge-emphasis-height: 22px;
+  --component-badge-emphasis-radius: var(--foundation-dimension-radius-pill);
+  --component-badge-emphasis-paddinghorizontal: var(--foundation-dimension-spacing-sm);
+  --component-badge-emphasis-background: var(--semantic-color-brand-primary);
+  --component-badge-emphasis-text: var(--semantic-color-brand-on-brand);
+  --component-badge-emphasis-textstyle: var(--semantic-typography-sub-label);
+  --component-badge-neutral-height: 22px;
+  --component-badge-neutral-radius: var(--foundation-dimension-radius-pill);
+  --component-badge-neutral-paddinghorizontal: var(--foundation-dimension-spacing-sm);
+  --component-badge-neutral-background: var(--foundation-color-gray-200);
+  --component-badge-neutral-text: var(--semantic-color-text-secondary);
+  --component-badge-neutral-textstyle: var(--semantic-typography-sub-label);
+  --component-input-default-height: var(--foundation-dimension-size-input);
+  --component-input-default-radius: var(--foundation-dimension-radius-md);
+  --component-input-default-paddinghorizontal: var(--foundation-dimension-spacing-lg);
+  --component-input-default-background: var(--semantic-color-surface-secondary);
+  --component-input-default-text: var(--semantic-color-text-primary);
+  --component-input-default-placeholder: var(--semantic-color-text-muted);
+  --component-input-default-border: var(--semantic-color-border-default);
+  --component-input-default-focusborder: var(--semantic-color-border-focus);
+  --component-input-default-textstyle: var(--semantic-typography-body);
+  --component-input-error-border: var(--semantic-color-feedback-error);
+  --component-input-disabled-background: var(--semantic-color-state-disabled-bg);
+  --component-input-disabled-text: var(--semantic-color-state-disabled-text);
+  --component-input-disabled-border: var(--semantic-color-border-subtle);
+  --component-search-bar-default-height: var(--foundation-dimension-size-search-bar);
+  --component-search-bar-default-radius: var(--foundation-dimension-radius-pill);
+  --component-search-bar-default-paddinghorizontal: var(--foundation-dimension-spacing-lg);
+  --component-search-bar-default-background: var(--semantic-color-surface-secondary);
+  --component-search-bar-default-text: var(--semantic-color-text-primary);
+  --component-search-bar-default-placeholder: var(--semantic-color-text-muted);
+  --component-search-bar-default-textstyle: var(--semantic-typography-body);
+  --component-tab-bar-default-height: var(--foundation-dimension-size-tab-bar);
+  --component-tab-bar-default-divider: var(--semantic-color-tab-divider);
+  --component-tab-bar-default-background: var(--semantic-color-surface-primary);
+  --component-tab-bar-default-labelstyle: var(--semantic-typography-tab-label);
+  --component-tab-bar-default-iconactive: var(--semantic-color-brand-primary);
+  --component-tab-bar-default-icondefault: var(--semantic-color-icon-muted);
+  --component-header-default-height: var(--foundation-dimension-size-header);
+  --component-header-default-background: var(--semantic-color-surface-primary);
+  --component-header-default-titlecolor: var(--semantic-color-text-primary);
+  --component-icon-container-size: var(--foundation-dimension-size-icon-container);
+  --component-icon-container-radius: var(--foundation-dimension-radius-lg);
+  --component-icon-container-background-default: var(--semantic-color-icon-container-default);
+  --component-icon-container-background-document: var(--semantic-color-icon-container-document);
+  --component-icon-container-background-brand: var(--semantic-color-icon-container-brand);
+  --component-icon-symbol-sm: var(--foundation-dimension-size-icon-sm);
+  --component-icon-symbol-md: var(--foundation-dimension-size-icon-md);
+  --component-icon-symbol-lg: var(--foundation-dimension-size-icon-lg);
+  --component-icon-symbol-xl: var(--foundation-dimension-size-icon-xl);
+  --component-icon-symbol-default: var(--semantic-color-icon-default);
+  --component-icon-symbol-muted: var(--semantic-color-icon-muted);
+  --component-icon-symbol-on-gray: var(--semantic-color-icon-on-gray);
+  --component-icon-symbol-on-brand: var(--semantic-color-icon-on-brand);
+  --component-tooltip-default-background: var(--semantic-color-surface-tooltip);
+  --component-tooltip-default-text: var(--semantic-color-text-on-dark);
+  --component-tooltip-default-radius: var(--foundation-dimension-radius-sm);
+  --component-tooltip-default-padding: var(--foundation-dimension-spacing-sm);
+  --component-tooltip-default-textstyle: var(--semantic-typography-sub-label);
+  --component-bottom-sheet-default-radius-top: var(--foundation-dimension-radius-xl);
+  --component-bottom-sheet-default-background: var(--semantic-color-surface-primary);
+  --component-bottom-sheet-default-shadow: var(--foundation-shadow-lg);
+  --component-bottom-sheet-default-overlay: var(--semantic-color-background-overlay);
+  --component-skeleton-default-background: var(--semantic-color-skeleton-base);
+  --component-skeleton-default-shimmer: var(--semantic-color-skeleton-shimmer);
+  --component-skeleton-default-radius: var(--foundation-dimension-radius-sm);
+  --component-skeleton-default-animationduration: var(--semantic-motion-loading);
+  --component-progress-default-height: var(--foundation-dimension-size-progress-height-md);
+  --component-progress-default-radius: var(--foundation-dimension-radius-pill);
+  --component-progress-default-track: var(--semantic-color-progress-track);
+  --component-progress-default-fill: var(--semantic-color-progress-fill);
+  --component-progress-small-height: var(--foundation-dimension-size-progress-height-sm);
+  --component-progress-small-radius: var(--foundation-dimension-radius-pill);
+  --component-progress-small-track: var(--semantic-color-progress-track);
+  --component-progress-small-fill: var(--semantic-color-progress-fill);
+  --component-divider-default-thickness: var(--foundation-dimension-size-divider-weight-hairline);
+  --component-divider-default-color: var(--semantic-color-border-subtle);
+  --component-banner-info-height: var(--foundation-dimension-size-banner-height);
+  --component-banner-info-background: var(--semantic-color-banner-info-bg);
+  --component-banner-info-text: var(--semantic-color-text-primary);
+  --component-banner-info-radius: var(--foundation-dimension-radius-md);
+  --component-banner-info-padding: var(--foundation-dimension-spacing-lg);
+  --component-banner-info-textstyle: var(--semantic-typography-body);
+  --component-banner-warning-height: var(--foundation-dimension-size-banner-height);
+  --component-banner-warning-background: var(--semantic-color-banner-warning-bg);
+  --component-banner-warning-text: var(--semantic-color-text-primary);
+  --component-banner-warning-radius: var(--foundation-dimension-radius-md);
+  --component-banner-warning-padding: var(--foundation-dimension-spacing-lg);
+  --component-banner-warning-textstyle: var(--semantic-typography-body);
+  --component-banner-error-height: var(--foundation-dimension-size-banner-height);
+  --component-banner-error-background: var(--semantic-color-banner-error-bg);
+  --component-banner-error-text: var(--semantic-color-feedback-error);
+  --component-banner-error-radius: var(--foundation-dimension-radius-md);
+  --component-banner-error-padding: var(--foundation-dimension-spacing-lg);
+  --component-banner-error-textstyle: var(--semantic-typography-body);
+  --component-banner-success-height: var(--foundation-dimension-size-banner-height);
+  --component-banner-success-background: var(--semantic-color-banner-success-bg);
+  --component-banner-success-text: var(--semantic-color-feedback-success);
+  --component-banner-success-radius: var(--foundation-dimension-radius-md);
+  --component-banner-success-padding: var(--foundation-dimension-spacing-lg);
+  --component-banner-success-textstyle: var(--semantic-typography-body);
+  --component-link-default-text: var(--semantic-color-link-default);
+  --component-link-default-pressed: var(--semantic-color-link-pressed);
+  --component-link-default-visited: var(--semantic-color-link-visited);
+  --component-link-default-textstyle: var(--semantic-typography-body-medium);
+  --component-thumb-default-radius: var(--foundation-dimension-size-thumb-radius-default);
+  --component-thumb-default-background: var(--semantic-color-surface-secondary);
+  --component-thumb-default-size-sm: var(--foundation-dimension-size-thumbnail-sm);
+  --component-thumb-default-size-md: var(--foundation-dimension-size-thumbnail-md);
+  --component-thumb-default-size-lg: var(--foundation-dimension-size-thumbnail-lg);
+  --component-thumb-portrait-radius: var(--foundation-dimension-size-thumb-radius-default);
+  --component-thumb-portrait-background: var(--semantic-color-surface-secondary);
+  --component-thumb-portrait-width-sm: var(--foundation-dimension-size-thumbnail-sm);
+  --component-thumb-portrait-height-sm: var(--foundation-dimension-size-thumbnail-portrait-h-sm);
+  --component-thumb-portrait-width-md: var(--foundation-dimension-size-thumbnail-md);
+  --component-thumb-portrait-height-md: var(--foundation-dimension-size-thumbnail-portrait-h-md);
+  --component-thumb-portrait-width-lg: var(--foundation-dimension-size-thumbnail-lg);
+  --component-thumb-portrait-height-lg: var(--foundation-dimension-size-thumbnail-portrait-h-lg);
+  --component-textarea-default-minheight: var(--foundation-dimension-size-textarea-min-height);
+  --component-textarea-default-radius: var(--foundation-dimension-radius-md);
+  --component-textarea-default-background: var(--semantic-color-surface-secondary);
+  --component-textarea-default-text: var(--semantic-color-text-primary);
+  --component-textarea-default-placeholder: var(--semantic-color-text-muted);
+  --component-textarea-default-border: var(--semantic-color-border-default);
+  --component-textarea-default-focusborder: var(--semantic-color-border-focus);
+  --component-textarea-default-padding: var(--foundation-dimension-spacing-lg);
+  --component-textarea-default-textstyle: var(--semantic-typography-body);
+  --component-barcode-default-height: var(--foundation-dimension-size-barcode-height);
+  --component-barcode-default-background: var(--foundation-color-gray-0);
+  --component-barcode-default-stripe: var(--foundation-color-black-default);
+  --component-barcode-default-radius: var(--foundation-dimension-radius-sm);
+  --component-accordion-default-headerminheight: var(--foundation-dimension-size-list-item-min);
+  --component-accordion-default-paddinghorizontal: var(--foundation-dimension-spacing-2xl);
+  --component-accordion-default-paddingvertical: var(--foundation-dimension-spacing-md);
+  --component-accordion-default-itemspacing: var(--foundation-dimension-spacing-md);
+  --component-accordion-default-background: var(--semantic-color-surface-primary);
+  --component-accordion-default-titlestyle: var(--semantic-typography-body-medium);
+  --component-accordion-default-titlecolor: var(--semantic-color-text-primary);
+  --component-accordion-default-chevronsize: var(--foundation-dimension-size-icon-md);
+  --component-accordion-default-chevroncolor: var(--semantic-color-icon-default);
+  --component-accordion-default-dividercolor: var(--semantic-color-divider-hairline);
+  --component-accordion-default-dividerweight: var(--foundation-dimension-size-divider-weight-hairline);
+  --component-accordion-default-bodypaddingtop: var(--foundation-dimension-spacing-xs);
+  --component-accordion-default-bodypaddingbottom: var(--foundation-dimension-spacing-lg);
+  --component-accordion-default-bodystyle: var(--semantic-typography-body);
+  --component-accordion-default-bodycolor: var(--semantic-color-text-secondary);
+  --component-btn-icon-default-containersize: var(--foundation-dimension-size-icon-container);
+  --component-btn-icon-default-iconsize: var(--foundation-dimension-size-icon-lg);
+  --component-btn-icon-default-radius: var(--foundation-dimension-radius-pill);
+  --component-btn-icon-default-iconcolor: var(--semantic-color-text-primary);
+  --component-btn-icon-default-pressedbackground: var(--foundation-color-gray-100);
+  --component-btn-icon-default-pressediconcolor: var(--semantic-color-text-primary);
+  --component-btn-icon-default-disablediconcolor: var(--semantic-color-text-disabled);
+  --component-tab-default-height: var(--foundation-dimension-size-tab-height);
+  --component-tab-default-paddinghorizontal: var(--foundation-dimension-spacing-lg);
+  --component-tab-default-labelstyle: var(--semantic-typography-body-medium);
+  --component-tab-default-labeldefault: var(--semantic-color-text-muted);
+  --component-tab-default-labelactive: var(--semantic-color-text-primary);
+  --component-tab-default-indicatorheight: var(--foundation-dimension-size-tab-indicator-height);
+  --component-tab-default-indicatorcolor: var(--semantic-color-brand-primary);
+  --component-tab-default-dividercolor: var(--semantic-color-divider-hairline);
+  --component-feedback-error-text: var(--semantic-color-feedback-error);
+  --component-feedback-error-background: var(--semantic-color-feedback-error-bg);
+  --component-feedback-success-text: var(--semantic-color-feedback-success);
+  --component-feedback-success-background: var(--semantic-color-feedback-success-bg);
+  --component-feedback-warning-text: var(--semantic-color-feedback-warning);
+  --component-feedback-warning-background: var(--semantic-color-feedback-warning-bg);
+  --component-feedback-info-text: var(--semantic-color-feedback-info);
+  --component-feedback-info-background: var(--semantic-color-feedback-info-bg);
+  --component-checkbox-default-size: var(--foundation-dimension-size-input-control);
+  --component-checkbox-default-radius: var(--foundation-dimension-radius-xs);
+  --component-checkbox-default-border: var(--semantic-color-border-default);
+  --component-checkbox-default-fillunchecked: var(--semantic-color-surface-primary);
+  --component-checkbox-default-fillchecked: var(--semantic-color-brand-primary);
+  --component-checkbox-default-iconcolor: var(--semantic-color-brand-on-brand);
+  --component-checkbox-disabled-background: var(--semantic-color-state-disabled-bg);
+  --component-checkbox-disabled-iconcolor: var(--semantic-color-state-disabled-text);
+  --component-radio-default-size: var(--foundation-dimension-size-input-control);
+  --component-radio-default-border: var(--semantic-color-border-default);
+  --component-radio-default-fillunselected: var(--semantic-color-surface-primary);
+  --component-radio-default-fillselected: var(--semantic-color-brand-primary);
+  --component-radio-default-dotcolor: var(--semantic-color-brand-on-brand);
+  --component-radio-disabled-background: var(--semantic-color-state-disabled-bg);
+  --component-radio-disabled-dotcolor: var(--semantic-color-state-disabled-text);
+  --component-checkbox-list-default-itemspacing: var(--foundation-dimension-spacing-md);
+  --component-checkbox-list-default-paddingy: var(--semantic-layout-screen-padding-default);
+  --component-checkbox-list-default-paddingx: var(--semantic-layout-screen-padding-default);
+  --component-notice-card-list-default-padding: var(--component-card-default-padding);
+  --component-notice-card-list-default-itemspacing: var(--foundation-dimension-spacing-lg);
+  --component-notice-card-list-default-radius: var(--component-card-default-radius);
+  --component-notice-card-list-default-fill: var(--semantic-color-surface-secondary);
+}
+
+/* === typography composite (class) === */
+.typography-hero-headline {
+  font-size: var(--foundation-typography-fontsize-number-emphasis);
+  line-height: var(--foundation-typography-lineheight-xl);
+  font-weight: var(--foundation-typography-fontweight-bold);
+  letter-spacing: var(--foundation-typography-letterspacing-tight-sm);
+}
+
+.typography-card-title {
+  font-size: var(--foundation-typography-fontsize-title);
+  line-height: var(--foundation-typography-lineheight-120);
+  font-weight: var(--foundation-typography-fontweight-bold);
+  letter-spacing: var(--foundation-typography-letterspacing-tight-md);
+}
+
+.typography-number-emphasis {
+  font-size: var(--foundation-typography-fontsize-number-emphasis);
+  line-height: var(--foundation-typography-lineheight-2xl);
+  font-weight: var(--foundation-typography-fontweight-bold);
+  letter-spacing: var(--foundation-typography-letterspacing-tight-md);
+}
+
+.typography-price-original {
+  font-size: var(--foundation-typography-fontsize-card-label);
+  line-height: var(--foundation-typography-lineheight-md);
+  font-weight: var(--foundation-typography-fontweight-regular);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+  text-decoration: line-through;
+}
+
+.typography-body {
+  font-size: var(--foundation-typography-fontsize-body);
+  line-height: var(--foundation-typography-lineheight-lg);
+  font-weight: var(--foundation-typography-fontweight-regular);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+}
+
+.typography-body-medium {
+  font-size: var(--foundation-typography-fontsize-body);
+  line-height: var(--foundation-typography-lineheight-lg);
+  font-weight: var(--foundation-typography-fontweight-medium);
+  letter-spacing: var(--foundation-typography-letterspacing-tight-sm);
+}
+
+.typography-body-bold {
+  font-size: var(--foundation-typography-fontsize-body);
+  line-height: var(--foundation-typography-lineheight-lg);
+  font-weight: var(--foundation-typography-fontweight-bold);
+  letter-spacing: var(--foundation-typography-letterspacing-tight-sm);
+}
+
+.typography-button {
+  font-size: var(--foundation-typography-fontsize-body);
+  line-height: var(--foundation-typography-lineheight-lg);
+  font-weight: var(--foundation-typography-fontweight-semibold);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+}
+
+.typography-card-label {
+  font-size: var(--foundation-typography-fontsize-card-label);
+  line-height: var(--foundation-typography-lineheight-md);
+  font-weight: var(--foundation-typography-fontweight-regular);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+}
+
+.typography-chip-badge {
+  font-size: var(--foundation-typography-fontsize-chip-badge);
+  line-height: var(--foundation-typography-lineheight-md);
+  font-weight: var(--foundation-typography-fontweight-medium);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+}
+
+.typography-sub-label {
+  font-size: var(--foundation-typography-fontsize-sub-label);
+  line-height: var(--foundation-typography-lineheight-sm);
+  font-weight: var(--foundation-typography-fontweight-regular);
+  letter-spacing: var(--foundation-typography-letterspacing-tight-sm);
+}
+
+.typography-card-header-label {
+  font-size: var(--foundation-typography-fontsize-sub-label);
+  line-height: var(--foundation-typography-lineheight-sm);
+  font-weight: var(--foundation-typography-fontweight-semibold);
+  letter-spacing: var(--foundation-typography-letterspacing-tight-sm);
+}
+
+.typography-insight {
+  font-size: var(--foundation-typography-fontsize-insight);
+  line-height: var(--foundation-typography-lineheight-md);
+  font-weight: var(--foundation-typography-fontweight-regular);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+}
+
+.typography-tab-label {
+  font-size: var(--foundation-typography-fontsize-tab-label);
+  line-height: var(--foundation-typography-lineheight-xs);
+  font-weight: var(--foundation-typography-fontweight-medium);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+}
+
+.typography-list-label {
+  font-size: var(--foundation-typography-fontsize-body);
+  line-height: var(--foundation-typography-lineheight-lg);
+  font-weight: var(--foundation-typography-fontweight-regular);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+}
+
+.typography-home-emphasis {
+  font-size: var(--foundation-typography-fontsize-home-md);
+  line-height: var(--foundation-typography-lineheight-lg);
+  font-weight: var(--foundation-typography-fontweight-bold);
+  letter-spacing: var(--foundation-typography-letterspacing-tight-sm);
+}
+
+.typography-btn-small {
+  font-size: var(--foundation-typography-fontsize-sub-label);
+  line-height: var(--foundation-typography-lineheight-sm);
+  font-weight: var(--foundation-typography-fontweight-semibold);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+}
+
+.typography-home-button {
+  font-size: var(--foundation-typography-fontsize-home-md);
+  line-height: var(--foundation-typography-lineheight-lg);
+  font-weight: var(--foundation-typography-fontweight-semibold);
+  letter-spacing: var(--foundation-typography-letterspacing-default);
+}

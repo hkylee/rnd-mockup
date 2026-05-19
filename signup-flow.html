@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PXDS — 회원 가입 플로우 (signup-flow)</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────
+   PXDS DS Tokens (skt-design-system.json → CSS Variables)
+───────────────────────────────────────────────────────── */
+:root {
+  /* foundation.color */
+  --color-purple-500: #3617ce;
+  --color-purple-700: #2a10a8;
+  --color-purple-300: #ece8fb;
+  --color-purple-100: #f5f2ff;
+  --color-gray-900:   #08002c;
+  --color-gray-700:   #4a4a68;
+  --color-gray-600:   #8e8ea8;
+  --color-gray-500:   #b0b0c8;
+  --color-gray-200:   #e4e4ee;
+  --color-gray-100:   #f2f2f7;
+  --color-gray-050:   #f8f8fb;
+  --color-white:      #ffffff;
+  --color-black:      #060c1f;
+
+  /* semantic */
+  --bg-page-sub:   var(--color-gray-100);
+  --text-strong:   var(--color-gray-900);
+  --text-body:     var(--color-gray-700);
+  --text-muted:    var(--color-gray-600);
+  --text-disabled: var(--color-gray-500);
+  --border-subtle: var(--color-gray-200);
+
+  /* foundation.dimension.spacing */
+  --spacing-none: 0px;
+  --spacing-xs:   4px;
+  --spacing-sm:   8px;
+  --spacing-md:   12px;
+  --spacing-lg:   16px;
+  --spacing-xl:   20px;
+  --spacing-2xl:  24px;
+  --spacing-3xl:  32px;
+
+  /* foundation.dimension.size */
+  --size-screen-mobile:        375px;
+  --size-screen-mobile-height: 812px;
+  --size-header-compact:       48px;  /* Figma top-navigation: h=48 */
+  --size-input:                48px;  /* Figma text-field-default inner: h=48 */
+  --size-sticky-footer:        72px;
+
+  /* foundation.dimension.radius */
+  --radius-xs:      4px;
+  --radius-sm:      8px;
+  --radius-md:      16px;
+  --radius-input:   16px;  /* Figma text-field-default cr=16 */
+  --radius-btn-lg:  16px;  /* Figma btn Large cr=16 */
+  --radius-button:  12px;
+  --radius-pill:    999px;
+
+  /* semantic.layout */
+  --screen-padding: 24px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #cccce0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 64px;
+  gap: 24px;
+}
+
+/* ─── Demo chrome ─── */
+.demo-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #6b6b8a;
+}
+.demo-nav { display: flex; align-items: center; gap: 16px; }
+.demo-nav button {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: #fff; color: var(--color-gray-700); font-size: 20px; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.demo-nav button:hover { background: var(--color-purple-300); color: var(--color-purple-500); }
+.demo-nav button:disabled { opacity: 0.3; cursor: default; }
+.demo-step-label { font-size: 13px; color: var(--color-gray-700); font-weight: 500; min-width: 160px; text-align: center; }
+
+/* ─── Phone shell ─── */
+.phone {
+  width: var(--size-screen-mobile);
+  height: var(--size-screen-mobile-height);
+  border-radius: 44px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 0 2px #9090b0, 0 24px 64px rgba(0,0,0,0.28), inset 0 0 0 10px #1a1a2e;
+}
+.phone-inner {
+  width: 100%; height: 100%;
+  background: var(--bg-page-sub);
+  border-radius: 34px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* ─── Screen visibility ─── */
+.screen { display: none; flex-direction: column; height: 100%; }
+.screen.active { display: flex; }
+
+/* ════════════════════════════════
+   ogn/status-bar
+   padding: T20 R24 B18 L24 · SPACE_BETWEEN · CENTER
+   ════════════════════════════════ */
+.status-bar {
+  display: flex; flex-direction: row;
+  align-items: center; justify-content: space-between;
+  padding: 20px 24px 18px 24px;
+  flex-shrink: 0; background: inherit;
+}
+.sb-time { font-size: 15px; font-weight: 600; color: var(--text-strong); letter-spacing: -0.3px; }
+.sb-right { display: flex; align-items: center; gap: 6px; }
+
+/* ════════════════════════════════
+   ogn/app-bar  (used as ogn/header in page specs)
+   padding: T10 R20 B10 L20 · height=56px
+   ════════════════════════════════ */
+.app-bar {
+  display: flex; flex-direction: row; align-items: center;
+  padding: 10px 20px; height: var(--size-header-compact);
+  flex-shrink: 0; background: inherit; position: relative;
+}
+.ab-back-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; padding: 2px;
+  border: none; background: none; border-radius: 50%; cursor: pointer;
+}
+.ab-title {
+  font-size: 17px; font-weight: 600; color: var(--text-strong);
+  letter-spacing: -0.3px;
+  position: absolute; left: 50%; transform: translateX(-50%);
+}
+.ab-right { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+
+/* ════════════════════════════════
+   ogn/step-indicator
+   ════════════════════════════════ */
+.step-indicator {
+  flex-shrink: 0;
+  padding: 0 var(--screen-padding) 12px;
+}
+.step-track {
+  height: 3px; background: var(--border-subtle);
+  border-radius: var(--radius-pill); overflow: hidden;
+}
+.step-fill {
+  height: 100%; background: var(--color-purple-500);
+  border-radius: var(--radius-pill); transition: width 0.3s ease;
+}
+.step-label {
+  font-size: 11px; font-weight: 500; color: var(--text-muted);
+  margin-top: 6px; text-align: right; letter-spacing: 0.04em;
+}
+
+/* ════════════════════════════════
+   content group (layoutGrow=1, scrollable)
+   paddingTop = spacing.lg (16px)
+   ════════════════════════════════ */
+.content-scroll {
+  flex: 1; overflow-y: auto;
+  display: flex; flex-direction: column; gap: var(--spacing-lg);
+  padding-top: var(--spacing-lg); padding-bottom: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.content-scroll::-webkit-scrollbar { display: none; }
+
+/* ════════════════════════════════
+   mol/title-contents (node 10009:151423)
+   headline-wrap: paddingLR=24
+   ════════════════════════════════ */
+.headline-wrap { padding: 0 var(--screen-padding); }
+.section-header { display: flex; flex-direction: column; gap: 8px; }
+.sh-headline {
+  font-size: 20px; font-weight: 700; color: var(--text-strong);
+  line-height: 1.3; letter-spacing: -0.4px;
+}
+.sh-description {
+  font-size: 14px; font-weight: 400; color: var(--text-body);
+  line-height: 1.5; letter-spacing: -0.2px;
+}
+
+/* ════════════════════════════════
+   ogn/MBR/term-list
+   paddingLR = screen-padding (self-managed)
+   ════════════════════════════════ */
+.term-list {
+  display: flex; flex-direction: column;
+  padding: 0 var(--screen-padding);
+}
+.term-all-row {
+  display: flex; align-items: center; padding: 16px 0; gap: 12px;
+}
+.check-label {
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer; flex: 1;
+}
+.check-all-text { font-size: 15px; font-weight: 700; color: var(--text-strong); letter-spacing: -0.2px; }
+
+/* atom/checkbox — Figma: checked fill=#08002c (dark navy), NOT purple */
+.atom-checkbox {
+  width: 24px; height: 24px; border-radius: var(--radius-pill);
+  border: 1.5px solid #c8c8d8; flex-shrink: 0;
+  background: var(--color-white);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, border-color 0.15s; cursor: pointer;
+}
+.atom-checkbox.checked { background: #08002c; border-color: #08002c; }
+.atom-checkbox svg { display: none; }
+.atom-checkbox.checked svg { display: block; }
+
+.atom-checkbox-sm {
+  width: 20px; height: 20px; border-radius: var(--radius-pill);
+  border: 1.5px solid #c8c8d8; flex-shrink: 0;
+  background: var(--color-white);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, border-color 0.15s; cursor: pointer;
+}
+.atom-checkbox-sm.checked { background: #08002c; border-color: #08002c; }
+.atom-checkbox-sm svg { display: none; }
+.atom-checkbox-sm.checked svg { display: block; }
+
+.divider { height: 1px; background: var(--border-subtle); }
+
+.term-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; gap: 8px;
+}
+.term-check-group {
+  display: flex; align-items: center; gap: 10px; flex: 1; cursor: pointer;
+}
+.term-text { font-size: 14px; color: var(--text-body); line-height: 1.4; letter-spacing: -0.1px; }
+.term-badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  color: var(--color-purple-500); background: var(--color-purple-100);
+  padding: 2px 6px; border-radius: var(--radius-xs);
+  margin-right: 4px; letter-spacing: 0;
+}
+.term-badge-opt {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  color: var(--text-muted); background: var(--color-gray-100);
+  padding: 2px 6px; border-radius: var(--radius-xs);
+  margin-right: 4px; letter-spacing: 0;
+}
+.term-arrow { color: var(--text-muted); flex-shrink: 0; cursor: pointer; display: flex; align-items: center; }
+
+/* ════════════════════════════════
+   ogn/MBR/info-input  (ogn/text-field list)
+   ════════════════════════════════ */
+.info-input {
+  display: flex; flex-direction: column; gap: 20px;
+  padding: 0 var(--screen-padding);
+}
+/* ogn/text-field — Figma: inner h=48, cr=16, pad T14 R20 B14 L20 */
+.text-field { display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; }
+.tf-label { font-size: 13px; font-weight: 500; color: var(--text-body); letter-spacing: -0.1px; }
+.tf-input {
+  height: var(--size-input); border-radius: var(--radius-input);
+  border: 1px solid #e0e0ee; background: var(--color-white);
+  padding: 14px 20px; font-size: 15px; font-family: inherit; color: var(--text-strong);
+  outline: none; width: 100%; transition: border-color 0.15s, background 0.15s; letter-spacing: -0.2px;
+}
+.tf-input:focus { border-color: var(--color-purple-500); background: #f5f4ff; }
+.tf-input::placeholder { color: var(--text-muted); font-size: 14px; }
+.tf-help { font-size: 12px; color: var(--text-muted); padding: 0 2px; }
+
+.gender-row { display: flex; gap: 10px; }
+.gender-option {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 8px; height: var(--size-input);
+  border: 1px solid #e0e0ee; border-radius: var(--radius-input);
+  background: var(--color-white); cursor: pointer;
+  font-size: 14px; font-family: inherit; color: var(--text-body);
+  font-weight: 500; transition: border-color 0.15s, background 0.15s;
+}
+.gender-option.selected {
+  border-color: var(--color-purple-500); background: var(--color-purple-100);
+  color: var(--color-purple-500); font-weight: 600;
+}
+
+/* atom/radio — Figma: off=gray ring, on=dark navy ring+dot */
+.atom-radio {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid #c8c8d8; flex-shrink: 0;
+  background: var(--color-white);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.15s;
+}
+.atom-radio.selected { border-color: #08002c; border-width: 2px; }
+.atom-radio.selected::after {
+  content: ''; width: 9px; height: 9px;
+  border-radius: 50%; background: #08002c;
+}
+
+/* ════════════════════════════════
+   mol/notice-card (type=plain)
+   ════════════════════════════════ */
+.notice-wrap { padding: 0 var(--screen-padding); }
+.notice-card {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 14px 16px; background: var(--color-gray-050);
+  border-radius: var(--radius-md); border: 1px solid var(--border-subtle);
+}
+.nc-icon { color: var(--text-muted); flex-shrink: 0; margin-top: 1px; }
+.nc-message { font-size: 13px; color: var(--text-body); line-height: 1.5; letter-spacing: -0.1px; }
+
+/* ════════════════════════════════
+   ogn/MBR/auth-method-list
+   mol/radio-text rows
+   ════════════════════════════════ */
+.auth-method-list {
+  display: flex; flex-direction: column;
+  padding: 0 var(--screen-padding); gap: 0;
+}
+.auth-method-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px;
+  border: 1.5px solid var(--border-subtle); border-radius: var(--radius-md);
+  cursor: pointer; background: var(--color-white); margin-bottom: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.auth-method-row.selected {
+  border-color: var(--color-purple-500);
+  box-shadow: 0 0 0 1px var(--color-purple-500) inset;
+}
+.am-left { display: flex; align-items: center; gap: 14px; }
+.am-icon-wrap {
+  width: 44px; height: 44px; border-radius: var(--radius-sm);
+  background: var(--color-gray-100);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.am-texts { display: flex; flex-direction: column; gap: 2px; }
+.am-title { font-size: 15px; font-weight: 600; color: var(--text-strong); letter-spacing: -0.2px; }
+.am-desc { font-size: 12px; color: var(--text-muted); letter-spacing: -0.1px; }
+
+/* ════════════════════════════════
+   ogn/MBR/loading-screen (full screen, layoutGrow=1)
+   ════════════════════════════════ */
+.loading-screen {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 24px;
+  padding: 0 var(--screen-padding);
+}
+.loading-spinner {
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 4px solid var(--color-purple-300);
+  border-top-color: var(--color-purple-500);
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.ls-headline {
+  font-size: 18px; font-weight: 700; color: var(--text-strong);
+  text-align: center; letter-spacing: -0.3px;
+}
+.ls-description {
+  font-size: 14px; color: var(--text-muted);
+  text-align: center; margin-top: -16px; letter-spacing: -0.1px;
+}
+
+/* ════════════════════════════════
+   ogn/MBR/result-summary (tone=welcome)
+   ════════════════════════════════ */
+.result-summary {
+  padding: 40px var(--screen-padding) 32px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.rs-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--color-purple-300);
+  display: flex; align-items: center; justify-content: center;
+}
+.rs-texts { display: flex; flex-direction: column; gap: 8px; }
+.rs-headline {
+  font-size: 22px; font-weight: 700; color: var(--text-strong);
+  letter-spacing: -0.5px; line-height: 1.3;
+}
+.rs-description {
+  font-size: 14px; color: var(--text-body);
+  line-height: 1.5; letter-spacing: -0.1px;
+}
+
+/* ════════════════════════════════
+   ogn/MBR/post-actions (action cards × 3)
+   ════════════════════════════════ */
+.post-actions {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 0 var(--screen-padding);
+}
+.post-action-card {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 20px; background: var(--color-white);
+  border-radius: var(--radius-md); cursor: pointer;
+  border: 1px solid var(--border-subtle);
+}
+.pac-icon {
+  width: 44px; height: 44px; border-radius: var(--radius-sm);
+  background: var(--color-purple-100);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.pac-texts { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.pac-title { font-size: 15px; font-weight: 600; color: var(--text-strong); letter-spacing: -0.2px; }
+.pac-desc { font-size: 12px; color: var(--text-muted); letter-spacing: -0.1px; }
+.pac-arrow { color: var(--text-muted); }
+
+/* ════════════════════════════════
+   ogn/sticky-footer-cta
+   height=72px · paddingLR=24 · btn Large h=48 cr=16 (Figma)
+   ════════════════════════════════ */
+.sticky-footer {
+  flex-shrink: 0; background: var(--color-white);
+  border-top: 1px solid var(--border-subtle);
+  padding: 12px var(--screen-padding);
+  height: var(--size-sticky-footer);
+  display: flex; align-items: center;
+}
+.btn-primary {
+  width: 100%; height: var(--size-input); border-radius: var(--radius-btn-lg);
+  background: var(--color-purple-500); color: var(--color-white);
+  font-size: 16px; font-weight: 700; font-family: inherit; border: none; cursor: pointer;
+  letter-spacing: -0.2px; transition: background 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-primary:hover { background: var(--color-purple-700); }
+.btn-primary:active { transform: scale(0.99); }
+
+/* ════════════════════════════════
+   ogn/footer-cs
+   paddingT=16 paddingB=24 paddingLR=24 · bg=gray.100
+   ════════════════════════════════ */
+.footer-cs {
+  flex-shrink: 0; background: var(--color-gray-100);
+  padding: 16px var(--screen-padding) 24px;
+  display: flex; flex-direction: row; align-items: center;
+  justify-content: center; gap: 16px;
+}
+.fcs-link { font-size: 12px; color: var(--text-muted); cursor: pointer; text-decoration: underline; letter-spacing: -0.1px; }
+.fcs-divider { width: 1px; height: 12px; background: var(--border-subtle); }
+
+/* ─── Shared SVG icons ─── */
+svg { display: block; }
+</style>
+</head>
+<body>
+
+<div class="demo-label">PXDS · page/MBR/signup — Figma node spec 기반</div>
+
+<div class="demo-nav">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>‹</button>
+  <span class="demo-step-label" id="stepLabel">약관 동의 (1/5)</span>
+  <button id="nextBtn" onclick="navigate(1)">›</button>
+</div>
+
+<div class="phone">
+<div class="phone-inner">
+
+<!-- ══════════════════════════════════
+     SCREEN 1 · page/MBR/signup-terms
+     ══════════════════════════════════ -->
+<div class="screen active" id="screen-1">
+
+  <!-- ogn/status-bar: T20 R24 B18 L24, SPACE_BETWEEN, CENTER -->
+  <div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-right">
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="#08002c"/><rect x="4.5" y="5" width="3" height="7" rx="0.5" fill="#08002c"/><rect x="9" y="2" width="3" height="10" rx="0.5" fill="#08002c"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="#08002c"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 9.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#08002c"/><path d="M4.5 7.5C5.6 6.4 7.2 5.7 8 5.7s2.4.7 3.5 1.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M1.5 4.5C3.3 2.7 5.5 1.7 8 1.7s4.7 1 6.5 2.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#08002c" stroke-opacity="0.35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="#08002c"/><path d="M23 4v4a2 2 0 000-4z" fill="#08002c" fill-opacity="0.4"/></svg>
+    </div>
+  </div>
+
+  <!-- ogn/app-bar: back-btn + title "회원 가입" centered + empty rightitem -->
+  <div class="app-bar">
+    <button class="ab-back-btn">
+      <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#08002c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <span class="ab-title">회원 가입</span>
+    <div class="ab-right"></div>
+  </div>
+
+  <!-- ogn/step-indicator: label="1 / 5" → fill 20% -->
+  <div class="step-indicator">
+    <div class="step-track"><div class="step-fill" style="width:20%"></div></div>
+    <div class="step-label">1 / 5</div>
+  </div>
+
+  <!-- content group: paddingTop=spacing.lg(16), gap=spacing.lg(16) -->
+  <div class="content-scroll">
+
+    <!-- headline-wrap: paddingLR=screen-padding(24) -->
+    <div class="headline-wrap">
+      <!-- mol/title-contents (node 10009:151423): headline + description -->
+      <div class="section-header" data-component="mol/title-contents">
+        <div class="sh-headline">약관에 동의해 주세요</div>
+        <div class="sh-description">서비스 이용을 위해 필수 약관에 동의가 필요합니다.</div>
+      </div>
+    </div>
+
+    <!-- ogn/MBR/term-list: POL-MBR-TERM-001 -->
+    <div class="term-list">
+
+      <!-- 전체 동의: atom/checkbox(large) + bold label -->
+      <div class="term-all-row">
+        <label class="check-label" onclick="toggleAll()">
+          <div class="atom-checkbox" id="chk-all">
+            <svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1.5 5L4.5 8L10.5 1.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="check-all-text">전체 동의</span>
+        </label>
+      </div>
+
+      <!-- atom/divider (node 9510:26330) -->
+      <div class="divider" data-component="atom/divider"></div>
+
+      <!-- [필수] 이용약관 (POL-MBR-TERM-001-01) -->
+      <!-- mol/checkbox-text (node 10301:32509) -->
+      <div class="term-row" data-component="mol/checkbox-text">
+        <label class="term-check-group" onclick="toggleTerm('t1')">
+          <div class="atom-checkbox-sm" id="chk-t1">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="term-text"><span class="term-badge">필수</span>이용약관 동의</span>
+        </label>
+        <span class="term-arrow"><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1.5L5.5 6L1 10.5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+
+      <!-- [필수] 개인정보 처리방침 (POL-MBR-TERM-001-02) -->
+      <!-- mol/checkbox-text (node 10301:32509) -->
+      <div class="term-row" data-component="mol/checkbox-text">
+        <label class="term-check-group" onclick="toggleTerm('t2')">
+          <div class="atom-checkbox-sm" id="chk-t2">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="term-text"><span class="term-badge">필수</span>개인정보 처리방침 동의</span>
+        </label>
+        <span class="term-arrow"><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1.5L5.5 6L1 10.5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+
+      <!-- [필수] 위치정보 서비스 (POL-MBR-TERM-001-06) -->
+      <!-- mol/checkbox-text (node 10301:32509) -->
+      <div class="term-row" data-component="mol/checkbox-text">
+        <label class="term-check-group" onclick="toggleTerm('t3')">
+          <div class="atom-checkbox-sm" id="chk-t3">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="term-text"><span class="term-badge">필수</span>위치정보 서비스 이용 동의</span>
+        </label>
+        <span class="term-arrow"><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1.5L5.5 6L1 10.5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+
+      <!-- [선택] 마케팅 정보 수신 (POL-MBR-TERM-001-08) -->
+      <!-- mol/checkbox-text (node 10301:32509) -->
+      <div class="term-row" data-component="mol/checkbox-text">
+        <label class="term-check-group" onclick="toggleTerm('t4')">
+          <div class="atom-checkbox-sm" id="chk-t4">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="term-text"><span class="term-badge-opt">선택</span>마케팅 정보 수신 동의</span>
+        </label>
+        <span class="term-arrow"><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1.5L5.5 6L1 10.5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+
+      <!-- [선택] 제3자 정보 제공 (POL-MBR-TERM-001-11) -->
+      <!-- mol/checkbox-text (node 10301:32509) -->
+      <div class="term-row" data-component="mol/checkbox-text">
+        <label class="term-check-group" onclick="toggleTerm('t5')">
+          <div class="atom-checkbox-sm" id="chk-t5">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="term-text"><span class="term-badge-opt">선택</span>제3자 개인정보 제공 동의</span>
+        </label>
+        <span class="term-arrow"><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1.5L5.5 6L1 10.5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+
+    </div><!-- /term-list -->
+  </div><!-- /content-scroll -->
+
+  <!-- ogn/sticky-footer-cta: label="다음" · scrollBehavior=STICKY_SCROLLS -->
+  <div class="sticky-footer">
+    <!-- atom/btn Large (node 10095:100382): h=48, cr=16 -->
+    <button class="btn-primary" data-component="atom/btn" data-variant="Large" onclick="navigate(1)">다음</button>
+  </div>
+
+  <!-- ogn/footer-cs [고지·필수] 전기통신사업법 § 22-2 -->
+  <div class="footer-cs">
+    <span class="fcs-link">고객센터</span>
+    <div class="fcs-divider"></div>
+    <span class="fcs-link">이용약관</span>
+    <div class="fcs-divider"></div>
+    <span class="fcs-link">개인정보처리방침</span>
+  </div>
+
+</div><!-- /screen-1 -->
+
+
+<!-- ══════════════════════════════════
+     SCREEN 2 · page/MBR/signup-info
+     ══════════════════════════════════ -->
+<div class="screen" id="screen-2">
+
+  <div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-right">
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="#08002c"/><rect x="4.5" y="5" width="3" height="7" rx="0.5" fill="#08002c"/><rect x="9" y="2" width="3" height="10" rx="0.5" fill="#08002c"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="#08002c"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 9.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#08002c"/><path d="M4.5 7.5C5.6 6.4 7.2 5.7 8 5.7s2.4.7 3.5 1.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M1.5 4.5C3.3 2.7 5.5 1.7 8 1.7s4.7 1 6.5 2.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#08002c" stroke-opacity="0.35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="#08002c"/><path d="M23 4v4a2 2 0 000-4z" fill="#08002c" fill-opacity="0.4"/></svg>
+    </div>
+  </div>
+
+  <div class="app-bar">
+    <button class="ab-back-btn" onclick="navigate(-1)">
+      <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#08002c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <span class="ab-title">회원 가입</span>
+    <div class="ab-right"></div>
+  </div>
+
+  <!-- ogn/step-indicator: "2 / 5" → 40% -->
+  <div class="step-indicator">
+    <div class="step-track"><div class="step-fill" style="width:40%"></div></div>
+    <div class="step-label">2 / 5</div>
+  </div>
+
+  <div class="content-scroll">
+
+    <div class="headline-wrap">
+      <!-- mol/title-contents (node 10009:151423) -->
+      <div class="section-header" data-component="mol/title-contents">
+        <div class="sh-headline">기본 정보를<br>입력해 주세요</div>
+        <div class="sh-description">본인 확인을 위해 정확하게 입력해 주세요.</div>
+      </div>
+    </div>
+
+    <!-- ogn/MBR/info-input: ogn/text-field × 4 -->
+    <div class="info-input">
+      <div class="text-field">
+        <div class="tf-label">이름</div>
+        <input class="tf-input" type="text" placeholder="이름을 입력해 주세요">
+      </div>
+      <div class="text-field">
+        <div class="tf-label">생년월일</div>
+        <input class="tf-input" type="text" placeholder="YYYY.MM.DD">
+      </div>
+      <div class="text-field">
+        <div class="tf-label">성별</div>
+        <div class="gender-row">
+          <div class="gender-option selected" id="g-male" onclick="selectGender('male')">
+            <div class="atom-radio selected" id="r-male"></div>남성
+          </div>
+          <div class="gender-option" id="g-female" onclick="selectGender('female')">
+            <div class="atom-radio" id="r-female"></div>여성
+          </div>
+        </div>
+      </div>
+      <div class="text-field">
+        <div class="tf-label">휴대폰 번호</div>
+        <input class="tf-input" type="tel" placeholder="010-0000-0000">
+        <div class="tf-help">SKT 가입 번호만 등록 가능합니다</div>
+      </div>
+    </div>
+
+    <!-- purpose-wrap: mol/notice-card (type=plain) — POL-MBR-INFO-001 -->
+    <div class="notice-wrap">
+      <div class="notice-card">
+        <span class="nc-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" stroke="#8e8ea8"/><path d="M8 7v5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.75" fill="#8e8ea8"/></svg></span>
+        <span class="nc-message">입력하신 정보는 회원 식별과 서비스 제공 목적으로 사용됩니다.</span>
+      </div>
+    </div>
+    <div style="height:16px"></div>
+
+  </div><!-- /content-scroll -->
+
+  <div class="sticky-footer">
+    <!-- atom/btn Large (node 10095:100382): h=48, cr=16 -->
+    <button class="btn-primary" data-component="atom/btn" data-variant="Large" onclick="navigate(1)">다음</button>
+  </div>
+  <div class="footer-cs">
+    <span class="fcs-link">고객센터</span><div class="fcs-divider"></div>
+    <span class="fcs-link">이용약관</span><div class="fcs-divider"></div>
+    <span class="fcs-link">개인정보처리방침</span>
+  </div>
+
+</div><!-- /screen-2 -->
+
+
+<!-- ══════════════════════════════════
+     SCREEN 3 · page/MBR/signup-auth
+     ══════════════════════════════════ -->
+<div class="screen" id="screen-3">
+
+  <div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-right">
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="#08002c"/><rect x="4.5" y="5" width="3" height="7" rx="0.5" fill="#08002c"/><rect x="9" y="2" width="3" height="10" rx="0.5" fill="#08002c"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="#08002c"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 9.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#08002c"/><path d="M4.5 7.5C5.6 6.4 7.2 5.7 8 5.7s2.4.7 3.5 1.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M1.5 4.5C3.3 2.7 5.5 1.7 8 1.7s4.7 1 6.5 2.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#08002c" stroke-opacity="0.35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="#08002c"/><path d="M23 4v4a2 2 0 000-4z" fill="#08002c" fill-opacity="0.4"/></svg>
+    </div>
+  </div>
+
+  <div class="app-bar">
+    <button class="ab-back-btn" onclick="navigate(-1)">
+      <svg width="10" height="18" viewBox="0 0 10 18" fill="none"><path d="M9 1L1 9l8 8" stroke="#08002c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <span class="ab-title">회원 가입</span>
+    <div class="ab-right"></div>
+  </div>
+
+  <!-- ogn/step-indicator: "3 / 5" → 60% -->
+  <div class="step-indicator">
+    <div class="step-track"><div class="step-fill" style="width:60%"></div></div>
+    <div class="step-label">3 / 5</div>
+  </div>
+
+  <div class="content-scroll">
+
+    <!-- headline-wrap: paddingLR=24, itemSpacing=spacing.lg(16) — note auth has gap between header and notice -->
+    <div class="headline-wrap" style="display:flex;flex-direction:column;gap:16px">
+      <!-- mol/title-contents (node 10009:151423) -->
+      <div class="section-header" data-component="mol/title-contents">
+        <div class="sh-headline">본인인증을 진행해 주세요</div>
+        <div class="sh-description">안전한 가입을 위해 본인 확인이 필요합니다.</div>
+      </div>
+      <!-- mol/notice-card (type=plain) — POL-MBR-AUTH-001 (inside headline-wrap per spec) -->
+      <div class="notice-card">
+        <span class="nc-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" stroke="#8e8ea8"/><path d="M8 7v5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.75" fill="#8e8ea8"/></svg></span>
+        <span class="nc-message">선택한 수단으로 본인 확인을 진행합니다.</span>
+      </div>
+    </div>
+
+    <!-- ogn/MBR/auth-method-list: mol/radio-text rows — POL-MBR-AUTH-002 -->
+    <div class="auth-method-list">
+
+      <div class="auth-method-row selected" id="am-phone" onclick="selectAuth('phone')">
+        <div class="am-left">
+          <div class="am-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6.5 2h11A1.5 1.5 0 0119 3.5v17a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 015 20.5v-17A1.5 1.5 0 016.5 2z" stroke="#4a4a68" stroke-width="1.5"/><circle cx="12" cy="19" r="1" fill="#4a4a68"/></svg>
+          </div>
+          <div class="am-texts">
+            <div class="am-title">휴대폰 인증</div>
+            <div class="am-desc">문자로 인증번호를 받아요</div>
+          </div>
+        </div>
+        <div class="atom-radio selected" id="ar-phone"></div>
+      </div>
+
+      <div class="auth-method-row" id="am-pass" onclick="selectAuth('pass')">
+        <div class="am-left">
+          <div class="am-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="#4a4a68" stroke-width="1.5"/><path d="M8 11V7a4 4 0 018 0v4" stroke="#4a4a68" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="#4a4a68"/></svg>
+          </div>
+          <div class="am-texts">
+            <div class="am-title">PASS 앱 인증</div>
+            <div class="am-desc">PASS 앱으로 간편하게 인증해요</div>
+          </div>
+        </div>
+        <div class="atom-radio" id="ar-pass"></div>
+      </div>
+
+      <div class="auth-method-row" id="am-card" onclick="selectAuth('card')">
+        <div class="am-left">
+          <div class="am-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="13" rx="2" stroke="#4a4a68" stroke-width="1.5"/><path d="M2 10h20" stroke="#4a4a68" stroke-width="1.5"/></svg>
+          </div>
+          <div class="am-texts">
+            <div class="am-title">카드 인증</div>
+            <div class="am-desc">신용카드 정보로 인증해요</div>
+          </div>
+        </div>
+        <div class="atom-radio" id="ar-card"></div>
+      </div>
+
+    </div><!-- /auth-method-list -->
+    <div style="height:16px"></div>
+
+  </div><!-- /content-scroll -->
+
+  <!-- ogn/sticky-footer-cta: label="인증" -->
+  <div class="sticky-footer">
+    <!-- atom/btn Large (node 10095:100382): h=48, cr=16 -->
+    <button class="btn-primary" data-component="atom/btn" data-variant="Large" onclick="navigate(1)">인증</button>
+  </div>
+  <div class="footer-cs">
+    <span class="fcs-link">고객센터</span><div class="fcs-divider"></div>
+    <span class="fcs-link">이용약관</span><div class="fcs-divider"></div>
+    <span class="fcs-link">개인정보처리방침</span>
+  </div>
+
+</div><!-- /screen-3 -->
+
+
+<!-- ══════════════════════════════════
+     SCREEN 4 · page/MBR/signup-loading
+     ogn/status-bar + ogn/MBR/loading-screen (full, back BLOCKED)
+     ══════════════════════════════════ -->
+<div class="screen" id="screen-4">
+
+  <!-- ogn/status-bar -->
+  <div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-right">
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="#08002c"/><rect x="4.5" y="5" width="3" height="7" rx="0.5" fill="#08002c"/><rect x="9" y="2" width="3" height="10" rx="0.5" fill="#08002c"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="#08002c"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 9.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#08002c"/><path d="M4.5 7.5C5.6 6.4 7.2 5.7 8 5.7s2.4.7 3.5 1.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M1.5 4.5C3.3 2.7 5.5 1.7 8 1.7s4.7 1 6.5 2.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#08002c" stroke-opacity="0.35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="#08002c"/><path d="M23 4v4a2 2 0 000-4z" fill="#08002c" fill-opacity="0.4"/></svg>
+    </div>
+  </div>
+
+  <!-- ogn/MBR/loading-screen: layoutGrow=1, NO app-bar (back BLOCKED) -->
+  <div class="loading-screen">
+    <div class="loading-spinner"></div>
+    <div class="ls-headline">회원 가입을 처리하고 있어요</div>
+    <div class="ls-description">잠시만 기다려 주세요</div>
+  </div>
+
+</div><!-- /screen-4 -->
+
+
+<!-- ══════════════════════════════════
+     SCREEN 5 · page/MBR/signup-complete
+     ogn/status-bar + content(result-summary + post-actions)
+     NO ogn/header per spec (back 없음)
+     ══════════════════════════════════ -->
+<div class="screen" id="screen-5">
+
+  <div class="status-bar">
+    <span class="sb-time">9:41</span>
+    <div class="sb-right">
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="#08002c"/><rect x="4.5" y="5" width="3" height="7" rx="0.5" fill="#08002c"/><rect x="9" y="2" width="3" height="10" rx="0.5" fill="#08002c"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="#08002c"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 9.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#08002c"/><path d="M4.5 7.5C5.6 6.4 7.2 5.7 8 5.7s2.4.7 3.5 1.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M1.5 4.5C3.3 2.7 5.5 1.7 8 1.7s4.7 1 6.5 2.8" stroke="#08002c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="#08002c" stroke-opacity="0.35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="#08002c"/><path d="M23 4v4a2 2 0 000-4z" fill="#08002c" fill-opacity="0.4"/></svg>
+    </div>
+  </div>
+
+  <!-- content group: layoutGrow=1 -->
+  <div class="content-scroll">
+
+    <!-- ogn/MBR/result-summary: variant.tone=welcome -->
+    <div class="result-summary">
+      <div class="rs-icon">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M8 18l7 7L28 11" stroke="#3617ce" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="rs-texts">
+        <div class="rs-headline">환영합니다,<br>회원이 되셨습니다</div>
+        <div class="rs-description">이제 NC의 모든 서비스를 이용하실 수 있습니다.</div>
+      </div>
+    </div>
+
+    <!-- ogn/MBR/post-actions: 후속 액션 카드 3종 (내 정보 점검 / 마케팅 설정 / 첫 혜택) -->
+    <div class="post-actions">
+      <div class="post-action-card">
+        <div class="pac-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="#3617ce" stroke-width="1.5"/><path d="M3 19c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#3617ce" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="pac-texts">
+          <div class="pac-title">내 정보 점검</div>
+          <div class="pac-desc">등록 정보를 확인하고 수정해 보세요</div>
+        </div>
+        <span class="pac-arrow"><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1.5L5.5 6L1 10.5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+      <div class="post-action-card">
+        <div class="pac-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="13" rx="2" stroke="#3617ce" stroke-width="1.5"/><path d="M7 3v4M15 3v4M3 9h16" stroke="#3617ce" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="pac-texts">
+          <div class="pac-title">마케팅 설정</div>
+          <div class="pac-desc">혜택 알림 수신 방법을 설정해 보세요</div>
+        </div>
+        <span class="pac-arrow"><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1.5L5.5 6L1 10.5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+      <div class="post-action-card">
+        <div class="pac-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2l2.3 4.8 5.3.7-3.8 3.7 1 5.2L11 14l-4.8 2.4.9-5.2L3.4 7.5l5.3-.7L11 2z" stroke="#3617ce" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="pac-texts">
+          <div class="pac-title">첫 혜택 받기</div>
+          <div class="pac-desc">신규 가입 전용 혜택을 확인해 보세요</div>
+        </div>
+        <span class="pac-arrow"><svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1.5L5.5 6L1 10.5" stroke="#8e8ea8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </div><!-- /post-actions -->
+
+    <div style="height:16px"></div>
+  </div><!-- /content-scroll -->
+
+  <!-- ogn/sticky-footer-cta: label="홈으로" -->
+  <div class="sticky-footer">
+    <!-- atom/btn Large (node 10095:100382): h=48, cr=16 -->
+    <button class="btn-primary" data-component="atom/btn" data-variant="Large">홈으로</button>
+  </div>
+
+  <!-- ogn/footer-cs -->
+  <div class="footer-cs">
+    <span class="fcs-link">고객센터</span><div class="fcs-divider"></div>
+    <span class="fcs-link">이용약관</span><div class="fcs-divider"></div>
+    <span class="fcs-link">개인정보처리방침</span>
+  </div>
+
+</div><!-- /screen-5 -->
+
+</div><!-- /phone-inner -->
+</div><!-- /phone -->
+
+<div class="demo-label" style="font-size:10px;color:#8888aa;text-align:center;line-height:1.6">
+  docs/components → page/MBR/signup-{terms, info, auth, loading, complete}<br>
+  ogn/status-bar · ogn/app-bar · ogn/step-indicator · mol/section-header · ogn/MBR/* · ogn/sticky-footer-cta · ogn/footer-cs<br>
+  DS tokens: skt-design-system.json · brand #3617ce · 375 × 812
+</div>
+
+<script>
+let current = 1;
+const total = 5;
+const names = ['약관 동의','개인정보 입력','본인인증','처리 중','가입 완료'];
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next < 1 || next > total) return;
+  document.getElementById('screen-' + current).classList.remove('active');
+  current = next;
+  document.getElementById('screen-' + current).classList.add('active');
+  document.getElementById('stepLabel').textContent = names[current-1] + ' (' + current + '/' + total + ')';
+  document.getElementById('prevBtn').disabled = current === 1;
+  document.getElementById('nextBtn').disabled = current === total;
+  if (current === 4) setTimeout(() => navigate(1), 2400);
+}
+
+/* Screen 1 · term checkboxes */
+const termIds = ['t1','t2','t3','t4','t5'];
+const termState = {t1:false,t2:false,t3:false,t4:false,t5:false};
+function toggleTerm(id) {
+  termState[id] = !termState[id];
+  document.getElementById('chk-'+id).classList.toggle('checked', termState[id]);
+  const allOn = termIds.every(id => termState[id]);
+  document.getElementById('chk-all').classList.toggle('checked', allOn);
+}
+function toggleAll() {
+  const allOn = termIds.every(id => termState[id]);
+  termIds.forEach(id => {
+    termState[id] = !allOn;
+    document.getElementById('chk-'+id).classList.toggle('checked', !allOn);
+  });
+  document.getElementById('chk-all').classList.toggle('checked', !allOn);
+}
+
+/* Screen 2 · gender radio */
+function selectGender(g) {
+  ['male','female'].forEach(v => {
+    document.getElementById('g-'+v).classList.toggle('selected', v===g);
+    document.getElementById('r-'+v).classList.toggle('selected', v===g);
+  });
+}
+
+/* Screen 3 · auth method radio */
+function selectAuth(a) {
+  ['phone','pass','card'].forEach(v => {
+    document.getElementById('am-'+v).classList.toggle('selected', v===a);
+    document.getElementById('ar-'+v).classList.toggle('selected', v===a);
+  });
+}
+</script>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:0">
+  <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6b6b8a">
+    컴포넌트 감사 + Figma 비교
+  </div>
+
+<!-- ════════════════════════════════════════════════════
+     컴포넌트 상태 감사 패널 — signup-flow
+     ════════════════════════════════════════════════════ -->
+<style>
+.audit-section {
+  width: 375px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 20px;
+  font-family: 'Pretendard', -apple-system, sans-serif;
+}
+.audit-title {
+  font-size: 13px; font-weight: 700; color: #08002c;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
+}
+.audit-title::before {
+  content: ''; display: inline-block;
+  width: 4px; height: 16px; background: #08002c; border-radius: 2px;
+}
+.audit-subtitle {
+  font-size: 11px; color: #8e8ea8; margin-bottom: 16px;
+}
+.audit-group { margin-bottom: 16px; }
+.audit-group-label {
+  font-size: 11px; font-weight: 700; padding: 4px 8px;
+  border-radius: 6px; margin-bottom: 8px; display: inline-block;
+}
+.audit-group-label.ok { background: #e8faf0; color: #0a7a45; }
+.audit-group-label.warn { background: #fff7e0; color: #9a6500; }
+.audit-group-label.new { background: #ffeef0; color: #b0001a; }
+.audit-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 7px 0; border-bottom: 1px solid #f4f4f8;
+  font-size: 12px;
+}
+.audit-row:last-child { border-bottom: none; }
+.audit-name {
+  font-weight: 600; color: #08002c; min-width: 180px;
+  font-size: 11px; font-family: monospace; letter-spacing: -0.2px;
+}
+.audit-node {
+  font-size: 10px; color: #b0b0c8; min-width: 80px;
+}
+.audit-note { font-size: 11px; color: #4a4a68; flex: 1; line-height: 1.4; }
+.audit-badge {
+  font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 4px;
+  flex-shrink: 0; white-space: nowrap;
+}
+.audit-badge.ok { background: #e8faf0; color: #0a7a45; }
+.audit-badge.warn { background: #fff7e0; color: #9a6500; }
+.audit-badge.new { background: #ffeef0; color: #b0001a; }
+</style>
+
+<div class="audit-section">
+  <div class="audit-title">컴포넌트 상태 감사</div>
+  <div class="audit-subtitle">signup-flow.html · docs/components 기준 커버리지 분석</div>
+
+  <!-- ✅ 구현됨 -->
+  <div class="audit-group">
+    <span class="audit-group-label ok">✅ 스펙 있음 + 구현됨 (6)</span>
+    <div class="audit-row">
+      <span class="audit-name">ogn/status-bar</span>
+      <span class="audit-node">9343:20390</span>
+      <span class="audit-note">Figma 이미지 비교 가능. 패딩·높이 정확</span>
+      <span class="audit-badge ok">비교 가능</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/app-bar</span>
+      <span class="audit-node">9343:20263</span>
+      <span class="audit-note">title variant. h=48 수정됨</span>
+      <span class="audit-badge ok">수정됨</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">atom/checkbox</span>
+      <span class="audit-node">9510:24752</span>
+      <span class="audit-note">checked fill=#08002c (dark navy)로 수정됨. Figma와 일치</span>
+      <span class="audit-badge ok">수정됨</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">atom/radio</span>
+      <span class="audit-node">9510:24484</span>
+      <span class="audit-note">dark navy ring+dot으로 수정됨</span>
+      <span class="audit-badge ok">수정됨</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/text-field</span>
+      <span class="audit-node">9595:45900</span>
+      <span class="audit-note">h=48, cr=16, T14 R20 B14 L20 수정됨</span>
+      <span class="audit-badge ok">수정됨</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">mol/radio-text</span>
+      <span class="audit-node">10301:32531</span>
+      <span class="audit-note">auth-method-list 내 radio-item 행에 사용</span>
+      <span class="audit-badge ok">구현됨</span>
+    </div>
+  </div>
+
+  <!-- ✅ 레이블 수정 완료 (이전 ⚠️) -->
+  <div class="audit-group">
+    <span class="audit-group-label ok">✅ 레이블·이름 수정 완료 (4)</span>
+    <div class="audit-row">
+      <span class="audit-name">atom/btn</span>
+      <span class="audit-node">10095:100382</span>
+      <span class="audit-note">sticky footer CTA 버튼에 data-component="atom/btn" data-variant="Large" 추가 완료</span>
+      <span class="audit-badge ok">수정됨</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">atom/divider</span>
+      <span class="audit-node">9510:26330</span>
+      <span class="audit-note">term-list 구분선 .divider에 data-component="atom/divider" 추가 완료</span>
+      <span class="audit-badge ok">수정됨</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">mol/checkbox-text</span>
+      <span class="audit-node">10301:32509</span>
+      <span class="audit-note">term-row 5개에 data-component="mol/checkbox-text" 추가 완료</span>
+      <span class="audit-badge ok">수정됨</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">mol/title-contents</span>
+      <span class="audit-node">10009:151423</span>
+      <span class="audit-note">CSS 주석 mol/section-header → mol/title-contents 수정, data-component 추가 완료</span>
+      <span class="audit-badge ok">수정됨</span>
+    </div>
+  </div>
+
+  <!-- 🆕 스펙 없음, 새로 만들어야 함 -->
+  <div class="audit-group">
+    <span class="audit-group-label new">🆕 스펙 없음 — 신규 spec 작성 필요 (12)</span>
+    <div class="audit-row">
+      <span class="audit-name">ogn/header</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">ogn/app-bar로 대체 검토. 또는 alias spec 작성</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/step-indicator</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">signup 전용 단계 진행 표시 바. 범용 ogn으로 추출 가능</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/sticky-footer-cta</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">h=72 고정 하단 CTA 영역. 여러 flow에서 공통 사용</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/footer-cs</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">ogn/footer의 CS 링크 variant일 수 있음. 확인 후 spec 분리 or 병합</span>
+      <span class="audit-badge new">확인 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">mol/section-header</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">mol/title-contents와 동일 가능성. 병합 or 별도 spec 결정 필요</span>
+      <span class="audit-badge new">병합 검토</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">mol/notice-card</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">안내 정보 카드 (아이콘+텍스트). 신규 spec 필요</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/MBR/term-list</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">약관 동의 목록 (전체동의+개별항목). MBR 도메인 전용 ogn</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/MBR/info-input</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">개인정보 입력 폼 (text-field × 4). MBR 전용</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/MBR/auth-method-list</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">본인인증 수단 선택 (radio-text rows). MBR 전용</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/MBR/loading-screen</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">BSS 처리 중 full-screen. back 차단. MBR 전용</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/MBR/result-summary</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">가입 완료 환영 요약 카드. tone 변형 있음</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-name">ogn/MBR/post-actions</span>
+      <span class="audit-node">NONE</span>
+      <span class="audit-note">완료 후 후속 액션 카드 × 3. MBR 전용</span>
+      <span class="audit-badge new">신규 필요</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     Figma vs HTML 비교 패널 (Comparison Panel)
+     Figma API 실측 이미지 vs 현재 HTML 구현 나란히 비교
+     ════════════════════════════════════════════════════ -->
+<style>
+.cmp-section {
+  width: 375px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 20px;
+  margin-top: 0;
+}
+.cmp-title {
+  font-size: 13px; font-weight: 700; color: #3617ce;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.cmp-title::before {
+  content: ''; display: inline-block;
+  width: 4px; height: 16px; background: #3617ce; border-radius: 2px;
+}
+.cmp-row {
+  display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px;
+  padding-bottom: 20px; border-bottom: 1px solid #f0f0f8;
+}
+.cmp-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.cmp-label {
+  font-size: 11px; font-weight: 600; color: #8e8ea8;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.cmp-cols {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.cmp-col {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.cmp-col-label {
+  font-size: 10px; font-weight: 600; color: #b0b0c8;
+  letter-spacing: 0.04em;
+}
+.cmp-figma {
+  background: #fafafa; border: 1px solid #e8e8f0;
+  border-radius: 10px; padding: 12px;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 40px; overflow: hidden;
+}
+.cmp-impl {
+  background: #f5f2ff; border: 1px dashed #c8b8f8;
+  border-radius: 10px; padding: 12px;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 40px; gap: 8px; flex-wrap: wrap;
+}
+.cmp-impl-inner {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+/* mini-rendered components for comparison */
+.mini-statusbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 12px 7px; background: white; width: 100%;
+  font-family: Pretendard, sans-serif;
+}
+.mini-sb-time { font-size: 10px; font-weight: 600; color: #08002c; }
+.mini-sb-r { display: flex; gap: 4px; align-items: center; }
+.mini-appbar {
+  display: flex; align-items: center;
+  padding: 5px 10px; height: 24px; background: white; width: 100%;
+  font-family: Pretendard, sans-serif; position: relative;
+}
+.mini-back { font-size: 11px; color: #08002c; font-weight: 400; }
+.mini-title { font-size: 10px; font-weight: 600; color: #08002c; position: absolute; left: 50%; transform: translateX(-50%); }
+.mini-right { margin-left: auto; display: flex; gap: 6px; }
+.mini-checkbox {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid #c8c8d8; background: white;
+  display: flex; align-items: center; justify-content: center;
+}
+.mini-checkbox.on { background: #08002c; border-color: #08002c; }
+.mini-radio {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid #c8c8d8; background: white;
+  display: flex; align-items: center; justify-content: center;
+}
+.mini-radio.on { border-color: #08002c; border-width: 2px; }
+.mini-radio.on::after {
+  content:''; width:6px; height:6px; border-radius:50%; background:#08002c;
+}
+.mini-tf {
+  height: 24px; border-radius: 8px; border: 1px solid #e0e0ee;
+  background: white; padding: 0 8px;
+  font-size: 9px; color: #b0b0c8; font-family: Pretendard,sans-serif;
+  display: flex; align-items: center; width: 100%;
+}
+.mini-badge {
+  display: flex; align-items: center; gap: 4px;
+  background: white; border-radius: 6px;
+  padding: 3px 5px 3px 4px;
+}
+.mini-badge-icon {
+  width: 14px; height: 14px; border-radius: 3px;
+  background: #3617ce; display: flex; align-items: center; justify-content: center;
+}
+.mini-badge-text { font-size: 9px; color: #08002c; font-weight: 500; }
+</style>
+
+<div class="cmp-section">
+  <div class="cmp-title">Figma vs HTML 구현 비교</div>
+
+  <!-- ogn/status-bar -->
+  <div class="cmp-row">
+    <div class="cmp-label">ogn/status-bar · node 9343:20390</div>
+    <div class="cmp-cols">
+      <div class="cmp-col">
+        <span class="cmp-col-label">Figma 원본</span>
+        <div class="cmp-figma"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA2IAAADGCAYAAACwyjP3AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAEkVJREFUeAHt3V9vW+d9B/DfOaRkN+ladcAQxR4Q+hVYvdud5WJJit3UxV5AZKAXdZoiziuw9AriDE1cFAUsv4LIN0XjdguDXe6iyu6GAbOKNU7aYau6Na0tiTx7HlKyqT+2aIs8Mu3Px6BIHh3ySDT18Hyfv0Uc4N35amb6RLzRiJivIubSplYMaaoRre/9rPj1Yftde726/TjPe5itIs7/8OdF+7D90nGvp6uFGJUqFi/dKpYO2+39V6uFsozrMTrtSx8V5w/b6SevVuc6ZbRjdNbScc8Ms2N6rasYocd4b32cruZjRNJvsfDmreLGYfuN/L0VsZxe64uH7XRc761r365a6f1/O0YoHbcYZr9jLD+O5731WnUliliM0RnqvXVc5cc43ls+mw7ms+nofDYdzGfT0flsOtikfDal13G1LGJtq4qVtx7yepZ7N/zob6vvnDgRt9M3rqaS6kKM8A0FAADwrEvxfS5nqUYRyx+kkP6j16o39u0zeOeD16p304Mub99tdyNWUpK7eennxVoAAABwqNQqPJdy1dmUtpZS4Holb+tWsfSDW8Xizj73g9j7qXkxha7FlNzWq24s/uAXxXsBAADAE0uh7O1G2ctZM0UVV79/q3gnb+8FsdQS9kZKbMs5hJUR89//qPg0AAAAOLIfn6/OxnS0cxjrdOLCW78sbvaD2OvVWm4y63bjspYwAACA0cotY2UZV6sq1u9txJlioDVs7c0hZxwCAADg8ezMcpkbwMqy6M2MmAePLQYAAABjkSdDzNeNMubz9PWtfKdZxGoAAAAwFnlG+nyd12outxdsDhN0AAAAjM/AsmCtMgAAAKiVIAYAAFAzQQwAAKBmghgAAEDNBDEAAICaCWIAAAA1E8QAAABqJogBAADUTBADAACoWTNd1gIAAIA6rAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDzoPjg1epcvvHmL4pPAgAAgLHZyV/Nooz29rYiAAAAGJud/FUGAAAAtRLEAAAAaiaIAQAA1EwQAwAAqJkgBgAAUDNBDAAAoGaCGAAAQM0EMQAAgJoJYgAAADUTxAAAAGomiAEAANRMEAMAAKiZIAYAAFAzQQwAAKBmghgAAEDNBDEAAICaCWIAAAA1E8QAAABq1owqFgMAAIDxk78AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIDnRXHttepKvnHpVrEUAAAAjM1O/mpGEYvb2wQxAACAcdrOX2UAAABQK0EMAACgZoIYAABAzQQxAACAmgliAAAANRPEAAAAaiaIAQAA1EwQAwAAqJkgBgAAUDNBDAAAoGaCGAAAQM0EMQAAgJoJYgAAADUTxAAAAGomiAEAANRMEAMAAKiZIAYAAFAzQQwAAKBmzSjifAAAADB+8hcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABybIgAAgCdyMl76VjcaL8WEm47//cc/xh9/F9Smee316na+cemj4kwAAAAwNjv5q5kurQAAgKfazEwjXjhXRDWf7rSKKOYiipmIamZgp7V0f62KWK2iWi2ju7oZv/s0atCIu//8tZj6fUyY9YhvVdH4alCnVv7SDJ4RO4VTzO1sKaKT/raqdl0FEADAaM3MTMeJc90oL6fgNd/fNjiyptr7gFb6fgppMV/09itjOk6tdaNa2Yq4GvH5r2NMGrGx8dv4ny9jwpyIie9VObEEsYk322pEeaWM4sKeGqHIRUKWC6BOdBc78cWNqMlUOma6emXv9lRcLm7FnaUYymyrGcX1BwVvXyOq1t0xFqQAwHGbmWnGybeLaFxOLVszR5nUoOq3nl2eirjcjVPLnagWY+znEfnn/8qVIsqF/ednx6lqd6O42ok7N4NjVwYTqxGzb0xF41fpP3HhUX/kuQAqo1wuY3YxatCM2StxQAh7HI049Z38u+0NYQDAs61/DvDCagoxi6MOMfmcaSqKtXSM6xEvH+lc5eFmW/2fv7j8dIWwrJhPr8FKfo2DYyeITaj8B5TD1cF/4MX6wY/JLWen342xmm31C84nlWuQXn43FxJPX+EFAIxPHmZx6sP+OUCMKST15UA2HUU7VR6fixFLQS+HnLH+/EeVfv/l4NgJYhNpNrVwxXt7t+Zufy/Gn76xGZ+ly50iBa/zafOupvdGVJcfVQuSC6QUhD6cipc/zi1u8Zimomzv/pmq9rCPzcd+UIMEADw/+q1I6fzmwuH75nOL6mqqeL7YP9eZ/ma+5NtFxHfT9y4XvTB3cMX0/WfpdVks26PuMVRFOcTvcOxmTo6tRZBhGSM2gaYicu3Nrj+ebhQLnfjsxmCJczd+005XrWaqXSoGCrZGxNVOxM39z3v6bAwEpzI1Xxcxu7YVX3wSQ9jbJTEdYyk9Rx5FOz/EY88Ve0Jc+pnXqiiW0s90PQCAZ9Tps+ncpv3onjC985OVF+PP6Vxn/f7pzubAHpu7H9CrsD4Zfz3fiW6uWF6Ih8g9hlIQTOdSXyzGc2QrGnnpKmPuj5EWsYlU7m0xWs4h7GF7b8X0xao3O2lf1Qtn+5viqwMKqf4g02HkLomNyw8eF2vduLMYQyr6hcHgT9N+If6Uarc67QAAnlmN3uQZB4ewfqVseX4zPs+X9wZD2DBypfRm3EktZ918nrEcD/0ZyitaiKibIDZxWrmgmtu9bevqox+ztp5allYGtxwcsKp9hVsV1R9iCP3apAeFaDfKi/FEivVOCpq5wH3cwhYAmDxT0X0nDmiZyUMuNuLOma1+D58BMzNTMftGHlPeH05x6lfpcjsPq8j3m3Hqyt4K57vxxVoOZNOx+c2DjpV78ZiRuS+9dvMRf2VdsRoIYhPmZNzdV2M0zDphRVRrezbt67/cjG5uVRsohIr1ZsShk3vkwrDc3Zq2vL/QHMqnqcZqrhu/eS8AgOdCDknp838+ts9BdlrB9i53sz2O/eOpeOH36RR2OY8pL3rL9/QqqFvRG1JRXEiPX8zDHaZTONs7O+KX8V+r+VhVf0KQnhzCHqcXz7MuVa7/RSMafy+MjZ8g9gx4wqb0mVyjNLjhQUFYLOSBri/Gl2cOrx3Kz1HeLyhz4dnvYvB4chfEVFM1pzYKAJ4/O+cgeZKNMqr53RW6p8/mAJbD1eMsa9Nfvqc/Xf3ghBz5WCnkfbfqradVXhbC9iujOLE96RtjZLKOCZMLj9T8vmvbZhS5JuiQAJMLrt2rz0/F9CubA2PHdp4/XeVLDNMvMC+2GLsm6ChyN4LHDlPbxwUAnlPb5wLfHdw2FS/l84zFdB5zpCVt8hCKZpx6YyOFvJ3FnLfis3eCRyj+MhgrLWITKNXgtAfvl70C6uFy18GiV/DsfZ7pb8SR7F4zLB1j5VGThgAADKs/G3Pj6qjWFc0tZNO9cyiTcgwjt4oFY6VFbAIV/Vl/5gc2zeXBqVsRl2NP177+YNVeIbbveaqojlQQNaP8cPB+2Ts+AMAoNGYOOn/py2uEdVdz5XQRxfa5T/fr0R8rllvVDjzHSfvPnExf7waH6Ubnv4OxEsQm0GZqdWrG6YXBVq48OHU6BbJuvLya7q1u1x7NFdtdEvsDX3u9DecGHvPE47Gm+os933+uPNB10/guAGBEctfBRpya2T0hWLGeKpKvfjW+fNRU9u8cvH5Yb4HneePRh9OMr/5rJ34XjI8gNqGa0bnY6S+AfL/Gp79CfNGK3oyIxcDexXoZ3fmt3gxDVRzd/gk6vhZ/umqueQBglDpx52LEqeiHsardiGohB6nDzjnu9if7aE/F6XYObulcZaYb5UIn/vPQmabJin+5F//x78FYCWITKg9oPRmzqbYnr9/18NXit1vCLuRCaypOtXZ/b+P38QQOmqDDml8AwDh0egsyn7q5EZ+vbO76Tl5P7ERq9Wr0euikwJVby1Y78cX98eq5F1E6X/pkK5qtFMLawX0POw+8F3/Rjvi3/wvGThCbYNuzC11MBcxSCkMpHJUD3Q6rtVTzc2Pz/vSveSHojdbg4w9efywXaie/041ewGrHvub7vRN0xOrjTdBRzexMt383/vyHEOAAgENsxJ2VB/dmZprxlSt5HbHBfYrtfym0LXaiu7gTyAZnhK5H1Y7dY/mfOrmifuOh69AKYXXJQWwtmGjbBcwjp2A9GXfPdgYmycwBav9es62p7e6Oec9G74/05fnBMDYVjfnBgbPp1lxqaRu6v2MuNDvbk3qciK+078W6NSoAgKE148UPD5oNekd//bByOZ3XxGDrWF22Yvq9qdi4GA+ZMORp0ImGCdaO11r+0rz0UXEmeOZtRrkwuFZBN6pP9u7TjDIPat015iwl9Xe2zIYIADwliugsR5Tzj94n1qaiaHfiOKytN+4PHykujGr6/dGo2lU0lnTTPF47+UvXxAmUmtyvlwNN3p2ornbj8/ce/ojZVrlvHFljZf9+xb5pYlML1tcDAOApsZlauaZSa1f0Wr32yyGsTC1mxzk74s7wke0LHEgQm0CpcMlT1C/s3G9EsdiNl1fiwAInj/kqd4Wu3C3xwdixB5rRWUm1N7tav7p7Fo9uRCfVLjWGLlRSrNu1mHS6v5LC3c18eysaxocBAI/tYWHsOEPYVrz4YvQuMBxBbAJtxokbzdhYzFOxbm+ame41v88uduLuzZ0JMPJizkWUuaXs7ODjqygODFKp9uaTqTi9kG7mNcrWO1Gs7J2IY7uGZzmG1IjT54rdm1II/Gw5AACOIIexZpxqpfOMxXz/uFvCutH4m+mYPKNY2IgnI4hNpLX1Ml5aqAa6F+4MTC3jhXTvxfWH9UfOCy9347PVhz3zZj941T6wFQDgcW3FnaUUxnqTgeU1Uy3WzCQRxCbURvz2ZmqSXzi4f/SjQtidxQAAeEbkMJauljbjeNyN3/5TPAM2grqVwcTKTfKN6OZZV5YfvWeeIac8L4QBAMDToQieCSdjttWNcq4bcTal61ZeXT5tXqui8enWARNzAAAAAAAAPDeKD16tzuUbb/6i+CQAAAAYm5381SzKaG9v000RAABgjHbyl8k6AAAAaiaIAQAA1EwQAwAAqJkgBgAAUDNBDAAAoGaCGAAAQM0EMQAAgJoJYgAAADUTxAAAAGomiAEAANRMEAMAAKiZIAYAAFAzQQwAAKBmghgAAEDNBDEAAICaCWIAAAA1E8QAAABqJogBAADUrBlVLAYAAADjJ38BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADPi+Laa9WVfOPSrWIpAAAAGJud/NWMIha3twliAAAA47Sdv8oAAACgVoIYAABAzQQxAACAmgliAAAANRPEAAAAaiaIAQAA1EwQAwAAqJkgBgAAUDNBDAAAoGaCGAAAQM0EMQAAgJoJYgAAADUTxAAAAGomiAEAANRMEAMAAKiZIAYAAFAzQQwAAKBmghgAAEDNmlHE+QAAAGD85C8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOB5UVx7vbqdb1z6qDgTAAAAjM1O/mqmSysAAACoQyt/KQMAAIBaCWIAAAA1E8QAAABqJogBAADUTBADAAComSAGAABQM0EMAACgZoIYAABAzQQxAACAmuUgtpZv/PTvqlcCAACAsXj/1WouX1cRq2WRvuQ79zbjQgAAADAWRRFn83VqDVsrOxHt3p1SEAMAABibIpby1VYVK+XGvbiRWsXW0/351FT2dgAAADBS779evZ1y1ytVag1761Zxo3ynXeQQtpC/mZrKFn/8enU2AAAAGIl/OF+dTSFsMd/uVv3r3qyJ3/+ouFlVcTUFsZn0jbaWMQAAgKPLLWHN6WinIJaz1lJuDcvbi107vVZdKYt+QstNZjmtNYtYTUHt0wAAAOBQP/1W9cq9qbiQWr3yPBzz25vfu/RRcXlnn2Lvgz54rXojDyLL/RfjCUw1ovW9nxW/Pmy/a69Xt9NVK0Zkq4jzP/x50T5sv3Tc67HdFXMkUli9dKtYOmy31Mq4UJZxPUannf4jzx+2009erc51yv6ELCOylo57Zpgd02tdxQg9xnvr43jwhj+y9FssvLldc3HIcUf73opYTq/1xcN2Oq731rVvV630/r8dI5SOWwyz3zGWH8fz3kqVZLFdSTYiQ723jqv8GMd7y2fTwXw2HZ3PpoP5bDo6n00Hm8TPplTorHc7sfDWL4ubg9ube3fcfuFv9AJZSnCphayVHjwXAAAADGMthdrVqoj2C/fixsX+vBy7/D8SNXsTmPm5LwAAAABJRU5ErkJggg==" style="max-width:100%;display:block;width:100%"></div>
+      </div>
+      <div class="cmp-col">
+        <span class="cmp-col-label">HTML 구현</span>
+        <div class="cmp-impl">
+          <div class="mini-statusbar">
+            <span class="mini-sb-time">9:41</span>
+            <div class="mini-sb-r">
+              <svg width="9" height="6" viewBox="0 0 9 6"><rect x="0" y="4" width="1.5" height="2" fill="#08002c"/><rect x="2.5" y="2.5" width="1.5" height="3.5" fill="#08002c"/><rect x="5" y="1" width="1.5" height="5" fill="#08002c"/><rect x="7.5" y="0" width="1.5" height="6" fill="#08002c"/></svg>
+              <svg width="10" height="7" viewBox="0 0 10 7"><path d="M5 5.5a1 1 0 110 2 1 1 0 010-2z" fill="#08002c"/><path d="M2.5 3.8C3.2 3.1 4.1 2.7 5 2.7s1.8.4 2.5 1.1" stroke="#08002c" stroke-width="1" fill="none"/></svg>
+              <svg width="13" height="6" viewBox="0 0 13 6"><rect x="0" y="0" width="10" height="6" rx="1.5" stroke="#08002c" stroke-opacity="0.35"/><rect x="1" y="1" width="8" height="4" rx="1" fill="#08002c"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ogn/app-bar -->
+  <div class="cmp-row">
+    <div class="cmp-label">ogn/app-bar (title) · node 9343:20105</div>
+    <div class="cmp-cols">
+      <div class="cmp-col">
+        <span class="cmp-col-label">Figma 원본</span>
+        <div class="cmp-figma"><img src="data:image/png;base64,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" style="max-width:100%;display:block;width:100%"></div>
+      </div>
+      <div class="cmp-col">
+        <span class="cmp-col-label">HTML 구현</span>
+        <div class="cmp-impl">
+          <div class="mini-appbar" style="height:28px">
+            <span class="mini-back">‹</span>
+            <span class="mini-title" style="font-size:9px">회원 가입</span>
+            <div class="mini-right">
+              <svg width="12" height="12" viewBox="0 0 12 12"><path d="M5 9H3a1 1 0 01-1-1V4h8v4a1 1 0 01-1 1H7" stroke="#08002c" stroke-width="1"/><path d="M4 3V2a1 1 0 012 0v1" stroke="#08002c" stroke-width="1"/></svg>
+              <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 3h8M2 6h8M2 9h8" stroke="#08002c" stroke-width="1" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- atom/checkbox -->
+  <div class="cmp-row">
+    <div class="cmp-label">atom/checkbox · node 9510:24752</div>
+    <div class="cmp-cols">
+      <div class="cmp-col">
+        <span class="cmp-col-label">Figma 원본</span>
+        <div class="cmp-figma" style="gap:8px;flex-direction:column">
+          <img src="data:image/png;base64,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" style="max-width:100%;display:block;">
+          <img src="data:image/png;base64,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" style="max-width:100%;display:block;">
+        </div>
+      </div>
+      <div class="cmp-col">
+        <span class="cmp-col-label">HTML 구현</span>
+        <div class="cmp-impl" style="flex-direction:column;gap:8px;align-items:flex-start">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="mini-checkbox on">
+              <svg width="8" height="6" viewBox="0 0 8 6"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span style="font-size:10px;color:#08002c">텍스트 (checked)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="mini-checkbox"></div>
+            <span style="font-size:10px;color:#8e8ea8">텍스트 (unchecked)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- atom/radio -->
+  <div class="cmp-row">
+    <div class="cmp-label">atom/radio · node 9510:24484</div>
+    <div class="cmp-cols">
+      <div class="cmp-col">
+        <span class="cmp-col-label">Figma 원본</span>
+        <div class="cmp-figma" style="gap:8px">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAA19JREFUeAHNWM9rE0EU/ma3iUGlXUEkbamJR1FMetOLTaGiJ9NC9dr+C3oTCg2CFEHsj1PRgulZwUQPNiok7UXFgwnYk4duiq09blXKUpMd3+wmpS2Jmd3YtB8s7Mx+7H773pt58x6DSwTQGSrDGgTUKA1jANMArjlPmUH3OneuVBksB/wowgWYLNGH4AgHG2VgMbgCz1ngyTI25mXYDQW1IdjHoIiXhdAE6EM6WTbRSJha/5GmteHUBImZFQM0D42sS65u1zjUT4Bp1iLVsVAw7IOSopsIDgDCWtvgsVrxxeqIyaFJF3kVpeylaVorxAhwgH6cpcQ3d8/viSEnZtgNtA5BwB/g+JWpTuy4TCxrMlgShwAOK1bCxuI+QV06WuCqWnDiaf2cuFccMcI67sRc7buCR5MJfFv5iG2+Zl+fv2Qw9+wxzoZ63LzKjifV0eCgDd1ZshCXuU5r5/n05BPeCIIjuLLv9aEzW7GWvcxXZP6kQ+vA+9xzRCIXZOgo5L9ioP82No1NKb4KHlZ9OBmHvYM2xoOJe4gPyi/CYPAMAgE/3mZyUvwSVJ2p6HpJgdRQUCjcY8eLFwzEhrG0+EGGmlRITFiGOTZ+B14RH7ouxWO0cytcUlA0ehFecTMu52Y63mhMRLgMWSzrZuBn3VI8BUcMwmWGDLGof4dXFPLLslRDYZKC0qk38ApZQSKFKJZ9EG+M16kMvOJ+YlKWqtOyt/IyzEXaR2am5uAWM9NPsVpcleJSlZJiAUodZcnUoWnteJd9gUhUMnUUlmlTvOUqdSgmNqiGknObYfzEtf5hKUsJy7gRo1C5ZNJx1j4P+dBNqZ8n4QIilYyN30UvWetSxWJiJaZTC3iVXsBSTipV7IBiebSMtfmjeUATUGGN4JBAwZzAjo4KSvhdVKiII7WX0UJQD2C6jPWH1fG+uixM1ep2liajaAGEq45jq9eg5VKd25fLdKMN1hDduOpYeBVDKyu2W0wNQVRx0zZA8RQ7YFEFIcasUUrXzPZC1B/4o7Q/TeE/Q8TMCWzVFCPwj+6HYVpUUapo12nQiyY7IMJFHMpQCeuzZp3OR4UnB2fzxCjsBoEbiIaVkhSbngxbWlAVTu5TqYnFB53jLwvvbunRvAjSHLkmr+JY2oSuwwX+AihoZYqsKjQnAAAAAElFTkSuQmCC" style="max-width:100%;display:block;">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAA4xJREFUeAHFWA1S2kAU3s0fRUAz0zpT/BnhBPUELT2B3kDtCXqD6g3aC7R4g9oDdLAnsCcgHR2ZqZ2CIFBYku37NiYERoWggW9mYbMJ7Jf33r793nIWE5eX9S3GxK6UcptaiYZszpmNe1KyBmPc4Vw6/b78lkrJ72tra7/i/D+f9sFa7fee63r7NHmJxQD95oemWZ83Nl4cT/P8REK12tWbwWBwrGl8KzpuGAazLIPpuq6aP7lLVpKs3xeqjcGR0jicROxeQtVq1TbNzAfOvffBmGWZLJ1+ppqmaewh0EsoUq3WDawUjkupfRSifVQsFhtTE6pWawXD4F9pzle41nWN2fYKS6UsNgs6ne44MYozr3RXfPG7ybBK4KJMZonlcpmJFpkEz/MUqXa7+yApPkqmahvGs7OATDabYcvLWfaUAKlWq636UvIzITpvo+4beW3ETJJkgFwuqywOUHrYxpzR+6GFsKzJrGX04aaVlRxLEtfXzdB9mqaX8vnVU9UPHhgM3CN8I4CDN0gSsBTmAjzPLQfjagTWCVyFBx8bwNMAc2Dl3qJwcfFnLyRE1jnANxgvLaXZvIA0gtzmY7CPT45lblm8igvbXp4rIaDd7lA8tVSf81RBM83h3mRZsyW+xwBZP4Dril2Nc20HF6mUSfuTzuYNxJJpGrd9d1ujzbCAC8Mw2aKAjRrgnJcoqHkBF7TK2KIQeIYyt00uk0pcBRJiERjOLe3kE05MUAxxtbFBXC0Kw7l5Ay5bOCFIEx/SgYUq6AoxYIuCEKExHEoD8ozdEhoynR98qdtXfVQqcNlJcBNSc96IFgMom7R8Pk/VAKtgoNfrsXljqB7lKeSsWva0y5d9QoJan80L8MhwMZlf8Bmm5/PzmgNNBAmyuvo8cU2EeL26+hsQctbXXxbRCWel/UQJJJQqEOJJwy+LfOuggAzGQ0LQtCji0IfWbTaTIxUth6T0PkWr2RG/CGEeUYCrNHBz006EVLQMIjhC9A6j96coFNNPorNnKhTvI+VXItmZ5S0SX73eDGOGuP3UdW9nqlJ6SKpOhw1i5LAhIAZxPkmuwCLd7j/VoskPMQM3xTpsiAIlEmq28eMYkIL0JJUXCix6Tq1SIcRde6PjefJgczNfeWi+WAdWtO+8o1h6zWKA+FY8zyg/2YHVOBBfqFSI2A70OK3KQvRIj/oNsmYFBwm9nntSLOadOP//H1o+yyJgdaOdAAAAAElFTkSuQmCC" style="max-width:100%;display:block;">
+        </div>
+      </div>
+      <div class="cmp-col">
+        <span class="cmp-col-label">HTML 구현</span>
+        <div class="cmp-impl" style="gap:10px">
+          <div class="mini-radio on"></div>
+          <div class="mini-radio"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ogn/text-field -->
+  <div class="cmp-row">
+    <div class="cmp-label">ogn/text-field (default) · node 9595:45899</div>
+    <div class="cmp-cols">
+      <div class="cmp-col">
+        <span class="cmp-col-label">Figma 원본</span>
+        <div class="cmp-figma"><img src="data:image/png;base64,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" style="max-width:100%;display:block;width:100%"></div>
+      </div>
+      <div class="cmp-col">
+        <span class="cmp-col-label">HTML 구현</span>
+        <div class="cmp-impl">
+          <div style="width:100%">
+            <div style="font-size:9px;color:#4a4a68;margin-bottom:4px;font-weight:500">레이블</div>
+            <div class="mini-tf">텍스트를 입력하세요</div>
+            <div style="font-size:9px;color:#b0b0c8;margin-top:4px">Help Text</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

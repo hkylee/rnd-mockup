@@ -1,0 +1,128 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/BIL/payment-resolved",
+  "category": "page",
+  "description": "미납 해소 / 정지 해제 후속. US-BIL-CHK-008. ogn/BIL/payment-result-card (variant=success) + (조건부) 후속 액션. 톤: 차분 (정상) / 경고·강 (지연/실패).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "primaryAxisSizingMode": "FIXED",
+      "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}",
+      "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}",
+      "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": {
+      "cornerRadius": 0,
+      "fill": "{semantic.color.background.page-sub}",
+      "stroke": null,
+      "shadow": null
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "status-bar",
+        "component": "ogn/status-bar"
+      },
+      {
+        "kind": "ref",
+        "id": "header",
+        "component": "ogn/header",
+        "props": {
+          "title": "미납 해소 확인"
+        }
+      },
+      {
+        "kind": "group",
+        "id": "content",
+        "layoutAlign": "STRETCH",
+        "layoutGrow": 1,
+        "layout": {
+          "mode": "VERTICAL",
+          "primaryAxisSizingMode": "AUTO",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "paddingTop": "{foundation.dimension.spacing.lg}",
+          "paddingBottom": "{foundation.dimension.spacing.lg}",
+          "paddingLeft": "{foundation.dimension.spacing.none}",
+          "paddingRight": "{foundation.dimension.spacing.none}",
+          "itemSpacing": "{foundation.dimension.spacing.lg}",
+          "width": "FILL",
+          "height": "HUG"
+        },
+        "visual": {
+          "cornerRadius": 0,
+          "fill": null,
+          "stroke": null,
+          "shadow": null
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "result-card-wrap",
+            "layoutAlign": "STRETCH",
+            "layout": {
+              "mode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "paddingTop": "{foundation.dimension.spacing.none}",
+              "paddingBottom": "{foundation.dimension.spacing.none}",
+              "paddingLeft": "{foundation.dimension.spacing.2xl}",
+              "paddingRight": "{foundation.dimension.spacing.2xl}",
+              "itemSpacing": "{foundation.dimension.spacing.none}",
+              "width": "FILL",
+              "height": "HUG"
+            },
+            "visual": {
+              "cornerRadius": 0,
+              "fill": null,
+              "stroke": null,
+              "shadow": null
+            },
+            "children": [
+              {
+                "kind": "ref",
+                "id": "result-card",
+                "component": "ogn/BIL/payment-result-card",
+                "variant": {
+                  "state": "success"
+                },
+                "layoutAlign": "STRETCH",
+                "props": {
+                  "headline": "납부가 정상 반영되었습니다"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "sticky-cta",
+        "component": "ogn/sticky-footer-cta",
+        "props": {
+          "label": "확인"
+        },
+        "scrollBehavior": "STICKY_SCROLLS",
+        "layoutAlign": "STRETCH"
+      },
+      {
+        "kind": "ref",
+        "id": "footer-cs",
+        "component": "ogn/footer-cs",
+        "layoutAlign": "STRETCH",
+        "scrollBehavior": "STICKY_SCROLLS"
+      }
+    ]
+  }
+}

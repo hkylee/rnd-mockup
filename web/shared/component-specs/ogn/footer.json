@@ -1,0 +1,226 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "ogn/footer",
+  "category": "ogn",
+  "description": "서비스 푸터. Type(01/02).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 30.0,
+      "paddingTop": 32.0,
+      "paddingRight": 32.0,
+      "paddingBottom": 120.0,
+      "paddingLeft": 32.0,
+      "counterAxisSizingMode": "FIXED",
+      "width": "FILL"
+    },
+    "visual": {
+      "fill": "#f4f5fa"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "buttontextgroup",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 8.0,
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisAlignItems": "CENTER",
+          "width": "HUG"
+        },
+        "visual": {},
+        "children": [
+          {
+            "kind": "text",
+            "id": "----",
+            "content": "이용약관",
+            "exposeAs": "----"
+          },
+          {
+            "kind": "group",
+            "id": "rectangle-1954131102",
+            "layout": {
+              "mode": "NONE"
+            },
+            "visual": {
+              "fill": "#060c1f"
+            }
+          },
+          {
+            "kind": "text",
+            "id": "------------",
+            "content": "전자금융거래래 이용약관",
+            "exposeAs": "------------"
+          },
+          {
+            "kind": "group",
+            "id": "rectangle-1954131103",
+            "layout": {
+              "mode": "NONE"
+            },
+            "visual": {
+              "fill": "#060c1f"
+            }
+          },
+          {
+            "kind": "text",
+            "id": "--------",
+            "content": "개인정보처리방침",
+            "exposeAs": "--------"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "infogroup",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 4.0,
+          "width": "HUG"
+        },
+        "visual": {},
+        "children": [
+          {
+            "kind": "group",
+            "id": "frame-2147247976",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisAlignItems": "CENTER",
+              "width": "HUG"
+            },
+            "visual": {},
+            "children": [
+              {
+                "kind": "text",
+                "id": "-----sk------",
+                "content": "사업자: SK플래닛(주)",
+                "exposeAs": "-----sk------"
+              },
+              {
+                "kind": "text",
+                "id": "--------",
+                "content": "대표 : 유재욱",
+                "exposeAs": "--------"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247977",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER",
+              "width": "HUG"
+            },
+            "visual": {},
+            "children": [
+              {
+                "kind": "text",
+                "id": "----------815-81-01244",
+                "content": "사업자등록번호 : 815-81-01244",
+                "exposeAs": "----------815-81-01244"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247978",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER",
+              "width": "HUG"
+            },
+            "visual": {},
+            "children": [
+              {
+                "kind": "text",
+                "id": "----------------264-----",
+                "content": "경기도 성남시 분당구 판교로 264(삼평동)",
+                "exposeAs": "----------------264-----"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247979",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER",
+              "width": "HUG"
+            },
+            "visual": {},
+            "children": [
+              {
+                "kind": "text",
+                "id": "-----------2014------0036",
+                "content": "통신판매매업신고 : 2014-경기성남-0036",
+                "exposeAs": "-----------2014------0036"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247980",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER",
+              "width": "HUG"
+            },
+            "visual": {},
+            "children": [
+              {
+                "kind": "text",
+                "id": "-----1800-0133",
+                "content": "전화 : 1800-0133",
+                "exposeAs": "-----1800-0133"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247981",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER",
+              "width": "HUG"
+            },
+            "visual": {},
+            "children": [
+              {
+                "kind": "text",
+                "id": "gifticon-skplanet-com",
+                "content": "gifticon@skplanet.com",
+                "exposeAs": "gifticon-skplanet-com"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "text",
+        "id": "copyright----sk-planet-all-rig",
+        "content": "Copyright ©️ SK Planet All Rig",
+        "exposeAs": "copyright----sk-planet-all-rig"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "type",
+        "values": [
+          "01",
+          "02"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

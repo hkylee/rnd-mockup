@@ -1,0 +1,52 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "atom/divider",
+  "category": "atom",
+  "description": "구분선. Contents(얇음) / Section(두꺼움) 타입.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "counterAxisSizingMode": "FIXED",
+      "width": "FILL"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "group",
+        "id": "divider",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 10.0,
+          "counterAxisSizingMode": "FIXED",
+          "width": "FILL"
+        },
+        "visual": {},
+        "children": [
+          {
+            "kind": "group",
+            "id": "divider",
+            "layout": {
+              "mode": "NONE"
+            },
+            "visual": {
+              "fill": "{component.progress.small.track}"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "type",
+        "values": [
+          "contents",
+          "section"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

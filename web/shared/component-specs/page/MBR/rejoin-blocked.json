@@ -1,0 +1,77 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/MBR/rejoin-blocked",
+  "category": "page",
+  "description": "재가입 분기 — 제한 안내. POL-REJOIN-002/003. warning 톤 result-summary + 사유 카드 + 예외 안내 + 2 CTA ([고객센터] / [홈으로]).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL", "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}", "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}", "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": { "cornerRadius": 0, "fill": "{semantic.color.background.page-sub}", "stroke": null, "shadow": null },
+    "children": [
+      { "kind": "ref", "id": "status-bar", "component": "ogn/status-bar" },
+      { "kind": "ref", "id": "header", "component": "ogn/header", "props": { "title": "재가입" } },
+      {
+        "kind": "group", "id": "content", "layoutAlign": "STRETCH",
+        "layout": {
+          "mode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+          "paddingTop": "{foundation.dimension.spacing.none}", "paddingBottom": "{foundation.dimension.spacing.none}",
+          "paddingLeft": "{foundation.dimension.spacing.none}", "paddingRight": "{foundation.dimension.spacing.none}",
+          "itemSpacing": "{foundation.dimension.spacing.none}",
+          "width": "FILL", "height": "HUG"
+        },
+        "visual": { "cornerRadius": 0, "fill": null, "stroke": null, "shadow": null },
+        "children": [
+          {
+            "kind": "ref", "id": "result", "component": "ogn/MBR/result-summary",
+            "variant": { "tone": "warning" },
+            "props": { "headline": "재가입이 어려워요", "description": "아래 사유로 인해 재가입이 제한되었습니다." },
+            "layoutAlign": "STRETCH",
+            "_comment": "[고지·필수] POL-MBR-REJOIN-002 — 재가입 가능 / 불가 안내"
+          },
+          {
+            "kind": "group", "id": "reason-wrap", "layoutAlign": "STRETCH",
+            "layout": {
+              "mode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+              "paddingTop": "{foundation.dimension.spacing.none}",
+              "paddingBottom": "{foundation.dimension.spacing.lg}",
+              "paddingLeft": "{semantic.layout.screen-padding-default}",
+              "paddingRight": "{semantic.layout.screen-padding-default}",
+              "itemSpacing": "{foundation.dimension.spacing.md}",
+              "width": "FILL", "height": "HUG"
+            },
+            "visual": { "cornerRadius": 0, "fill": null, "stroke": null, "shadow": null },
+            "children": [
+              {
+                "kind": "ref", "id": "reason-card", "component": "mol/notice-card",
+                "variant": { "type": "emphasis" },
+                "props": { "message": "탈퇴 후 30일 미경과로 재가입이 제한됩니다. 종료일: 2026-06-01" },
+                "layoutAlign": "STRETCH",
+                "_comment": "[고지·필수] POL-MBR-REJOIN-003 — 제한 대상·기준·기간"
+              },
+              {
+                "kind": "ref", "id": "exception-card", "component": "mol/notice-card",
+                "variant": { "type": "message" },
+                "props": { "message": "특별한 사유가 있다면 고객센터에 문의해 주세요." },
+                "layoutAlign": "STRETCH",
+                "_comment": "[고지·사용성] POL-MBR-REJOIN-003 — 예외 승인 안내"
+              }
+            ]
+          }
+        ],
+        "layoutGrow": 1
+      },
+      { "kind": "ref", "id": "sticky-footer", "component": "ogn/sticky-footer-cta", "props": { "label": "홈으로" }, "layoutAlign": "STRETCH", "scrollBehavior": "STICKY_SCROLLS" },
+      { "kind": "ref", "id": "footer-cs", "component": "ogn/footer-cs", "layoutAlign": "STRETCH", "scrollBehavior": "STICKY_SCROLLS" }
+    ]
+  }
+}

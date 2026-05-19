@@ -1,0 +1,197 @@
+/* Markdown rendered HTML styling — used in /docs/templates */
+
+.markdown-body {
+  color: rgb(51 65 85);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* Headings */
+.markdown-body h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: rgb(15 23 42);
+  margin-top: 40px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgb(226 232 240);
+}
+.markdown-body h1:first-child { margin-top: 0; }
+
+.markdown-body h2 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: rgb(15 23 42);
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgb(30 41 59);
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(30 41 59);
+  margin-top: 20px;
+  margin-bottom: 6px;
+}
+
+/* Paragraph */
+.markdown-body p {
+  margin: 12px 0;
+}
+
+/* Inline */
+.markdown-body strong {
+  font-weight: 700;
+  color: rgb(15 23 42);
+}
+.markdown-body em {
+  font-style: italic;
+}
+.markdown-body a {
+  color: rgb(79 70 229);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.markdown-body a:hover {
+  color: rgb(67 56 202);
+}
+
+/* Lists */
+.markdown-body ul,
+.markdown-body ol {
+  margin: 12px 0;
+  padding-left: 22px;
+}
+.markdown-body ul { list-style-type: disc; }
+.markdown-body ol { list-style-type: decimal; }
+.markdown-body li {
+  margin: 4px 0;
+}
+.markdown-body li::marker {
+  color: rgb(148 163 184);
+}
+
+/* Nested list spacing */
+.markdown-body li > ul,
+.markdown-body li > ol {
+  margin: 4px 0 4px 0;
+}
+
+/* Blockquote */
+.markdown-body blockquote {
+  margin: 16px 0;
+  padding: 10px 14px;
+  border-left: 4px solid rgb(199 210 254);
+  background: rgb(238 242 255 / 0.5);
+  border-radius: 0 6px 6px 0;
+  color: rgb(51 65 85);
+}
+.markdown-body blockquote p {
+  margin: 4px 0;
+}
+
+/* Horizontal rule */
+.markdown-body hr {
+  margin: 32px 0;
+  border: 0;
+  border-top: 1px solid rgb(226 232 240);
+}
+
+/* Inline code */
+.markdown-body code {
+  font-family: var(--font-mono, ui-monospace, Menlo, monospace);
+  font-size: 0.85em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgb(241 245 249);
+  color: rgb(67 56 202);
+  border: 1px solid rgb(226 232 240);
+}
+
+/* Code block */
+.markdown-body pre {
+  margin: 16px 0;
+  padding: 16px 18px;
+  border-radius: 8px;
+  background: rgb(15 23 42);
+  color: rgb(226 232 240);
+  font-size: 12.5px;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+.markdown-body pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Table */
+.markdown-body table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.markdown-body thead {
+  background: rgb(248 250 252);
+}
+
+.markdown-body th {
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgb(30 41 59);
+  border-bottom: 1px solid rgb(226 232 240);
+}
+
+.markdown-body th + th,
+.markdown-body td + td {
+  border-left: 1px solid rgb(226 232 240);
+}
+
+.markdown-body td {
+  padding: 10px 14px;
+  vertical-align: top;
+  color: rgb(51 65 85);
+  border-bottom: 1px solid rgb(226 232 240);
+}
+
+.markdown-body tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.markdown-body tbody tr:hover {
+  background: rgb(248 250 252 / 0.6);
+}
+
+.markdown-body td code,
+.markdown-body th code {
+  font-size: 12px;
+}
+
+/* Image */
+.markdown-body img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 16px 0;
+}

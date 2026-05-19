@@ -1,0 +1,42 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "atom/thumb-item",
+  "category": "atom",
+  "description": "썸네일 아이템. Size(40/64/160/182/Movie).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "counterAxisAlignItems": "CENTER",
+      "width": "HUG"
+    },
+    "visual": {
+      "cornerRadius": 8.0
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "logo_--",
+        "layout": {
+          "mode": "NONE"
+        },
+        "visual": {}
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "size",
+        "values": [
+          "64",
+          "160",
+          "182",
+          "40",
+          "movie"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

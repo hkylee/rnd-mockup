@@ -1,0 +1,83 @@
+{
+  "screenId": "BIL-RECEIPT-ISSUE",
+  "screenName": "증빙 발급",
+  "screenPath": "page/BIL/receipt-issue",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/receipt-issue",
+    "spec_input": "specs-input/BIL-history.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-receipt-select",
+      "sectionName": "증빙 종류 선택 및 발급",
+      "sectionDescription": "발급할 증빙 종류를 선택하고 발급 버튼을 통해 요청한다. 1일 5회 한도 정책 적용",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "오류 메시지 inline 표시",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-bill-item",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/button",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 증빙 종류 선택 및 발급\n[규칙:FN-CHK-007] 영수증·납부확인서 중 하나를 선택 후 발급 버튼을 탭하면 발급을 요청한다\n[고지:필수|POL-BIL-DOC-001-08] 1일 5회 발급 한도 초과 시 버튼 비활성화 + \"오늘 발급 한도를 초과했습니다\" 안내\n[고지:필수|POL-BIL-SEC-001-07] 화면 캡처 방지 정책 적용 — 캡처 시 검은 화면 표시\n[상태:loading] 발급 요청 중 버튼 로딩 스피너 표시\n[상태:error] inline 오류 메시지 표시 + 재시도 버튼\n[액션:tap 발급] 발급 요청 API 호출 → 성공 시 문서 뷰어 노출",
+      "label": "기능 1: 증빙 종류 선택 및 발급"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-receipt-notice",
+      "sectionName": "발급 정책 안내",
+      "sectionDescription": "1일 발급 한도, 캡처 방지, 재발행 유의 사항을 안내 카드로 표시",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 2,
+      "errorHandling": "영역 숨김",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 발급 정책 안내\n[고지:필수|POL-BIL-DOC-001-08] \"증빙 서류는 1일 최대 5회까지 발급할 수 있습니다\" 문구 필수 표시\n[고지:필수|POL-BIL-SEC-001-07] \"화면 캡처 및 녹화는 보안 정책에 따라 제한됩니다\" 문구 필수 표시",
+      "label": "기능 2: 발급 정책 안내"
+    }
+  ]
+}

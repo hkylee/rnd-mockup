@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --font-pretendard: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+
+  /* Elevation tokens — 톤 통일용 */
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.04);
+  --shadow-card-md: 0 2px 4px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.06);
+  --shadow-pill: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-pretendard);
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html,
+body {
+  font-family: var(--font-pretendard);
+  font-feature-settings: "ss01", "ss02", "ss03";
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* ---------- 공용 카드/버튼 헬퍼 ---------- */
+@layer utilities {
+  .surface-card {
+    background: #ffffff;
+    border: 1px solid rgb(226 232 240);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-card);
+  }
+  .surface-card-md {
+    background: #ffffff;
+    border: 1px solid rgb(226 232 240);
+    border-radius: 1.25rem;
+    box-shadow: var(--shadow-card-md);
+  }
+  .pill-shadow {
+    box-shadow: var(--shadow-pill);
+  }
+
+  /* floating toast — 등장 후 자동 사라짐 (3.5s 안에 in→hold→out) */
+  .animate-toast-in {
+    animation: toast-in-out 3.5s ease forwards;
+  }
+}
+
+@keyframes toast-in-out {
+  0%   { opacity: 0; transform: translateY(12px); }
+  8%   { opacity: 1; transform: translateY(0); }
+  85%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}

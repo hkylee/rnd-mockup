@@ -1,0 +1,85 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/BIL/payment-history",
+  "category": "page",
+  "description": "납부 이력. US-BIL-CHK-007. 필터 (기간/상태) + payment-history-item × N. 행 tap → 증빙 발급 BS 진입.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "primaryAxisSizingMode": "FIXED",
+      "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}",
+      "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}",
+      "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": {
+      "cornerRadius": 0,
+      "fill": "{semantic.color.background.page-sub}",
+      "stroke": null,
+      "shadow": null
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "status-bar",
+        "component": "ogn/status-bar"
+      },
+      {
+        "kind": "ref",
+        "id": "header",
+        "component": "ogn/header",
+        "props": {
+          "title": "납부 이력"
+        }
+      },
+      {
+        "kind": "group",
+        "id": "content",
+        "layoutAlign": "STRETCH",
+        "layoutGrow": 1,
+        "layout": {
+          "mode": "VERTICAL",
+          "primaryAxisSizingMode": "AUTO",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "paddingTop": "{foundation.dimension.spacing.lg}",
+          "paddingBottom": "{foundation.dimension.spacing.lg}",
+          "paddingLeft": "{foundation.dimension.spacing.none}",
+          "paddingRight": "{foundation.dimension.spacing.none}",
+          "itemSpacing": "{foundation.dimension.spacing.lg}",
+          "width": "FILL",
+          "height": "HUG"
+        },
+        "visual": {
+          "cornerRadius": 0,
+          "fill": null,
+          "stroke": null,
+          "shadow": null
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "history-list",
+            "component": "ogn/BIL/payment-history-list",
+            "layoutAlign": "STRETCH"
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "footer-cs",
+        "component": "ogn/footer-cs",
+        "layoutAlign": "STRETCH",
+        "scrollBehavior": "STICKY_SCROLLS"
+      }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "ogn/bottomsheet",
+  "category": "ogn",
+  "description": "바텀시트 컨테이너. 타이틀·콘텐츠·액션버튼 슬롯.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "counterAxisSizingMode": "FIXED",
+      "counterAxisAlignItems": "CENTER",
+      "width": "FILL"
+    },
+    "visual": {
+      "cornerRadius": 28.0,
+      "fill": "{component.radio.default.dotColor}"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-handle",
+        "component": ".Handle"
+      },
+      {
+        "kind": "group",
+        "id": "title",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 10.0,
+          "paddingRight": 32.0,
+          "paddingLeft": 32.0,
+          "counterAxisSizingMode": "FIXED",
+          "width": "FILL"
+        },
+        "visual": {},
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-titlebottomsheet",
+            "component": ".TitleBottomSheet"
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "actionbutton",
+        "component": "ActionButton"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "actionbutton",
+        "values": [
+          "on",
+          "off"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "9717:37390",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "mol/radio-text",
+  "category": "mol",
+  "description": "라디오+텍스트 행. Checked × Disabled.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 8.0,
+      "width": "HUG"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-radioitem",
+        "component": ".RadioItem"
+      },
+      {
+        "kind": "text",
+        "id": "text",
+        "content": "텍스트",
+        "exposeAs": "text"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "checked",
+        "values": [
+          "on",
+          "off"
+        ]
+      },
+      {
+        "name": "disabled",
+        "values": [
+          "off",
+          "on"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

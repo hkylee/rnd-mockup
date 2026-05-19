@@ -1,0 +1,34 @@
+{
+  "$comment": "page slug 별 인터랙션 메타. 정형화 후 generate-sb.js 가 자동 생성할 예정 (현재는 수동). states (default 값) + actions (navigate/back) + sync (all-toggle).",
+  "MBR/leave-impact": {
+    "states": {
+      "confirm-check": false
+    },
+    "actions": {
+      "next": {
+        "selector": "sticky-cta",
+        "target": "MBR/leave-confirm",
+        "condition": "confirm-check"
+      }
+    }
+  },
+  "MBR/dormant-terms": {
+    "states": {
+      "all-agree": false,
+      "term-required-1": false,
+      "term-required-2": false,
+      "term-optional-1": false,
+      "term-optional-2": false
+    },
+    "sync": {
+      "all-agree": ["term-required-1", "term-required-2", "term-optional-1", "term-optional-2"]
+    },
+    "actions": {
+      "next": {
+        "selector": "sticky-cta",
+        "target": "MBR/dormant-loading",
+        "condition": "term-required-1 && term-required-2"
+      }
+    }
+  }
+}

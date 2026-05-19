@@ -1,0 +1,83 @@
+{
+  "screenId": "BIL-PAY-HISTORY",
+  "screenName": "납부 이력",
+  "screenPath": "page/BIL/pay-history",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/pay-history",
+    "spec_input": "specs-input/BIL-history.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-history-list",
+      "sectionName": "납부 이력 리스트",
+      "sectionDescription": "선택 월의 납부 이력을 날짜 역순으로 표시. 납부일·금액·납부 수단·상태 태그 포함",
+      "container": "vertical",
+      "displayCount": {
+        "min": "N",
+        "max": "N"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김 + snack-bar",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-bill-item",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/month-picker",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 납부 이력 리스트\n[규칙:FN-CHK-007] 선택 월의 납부 이력을 날짜 역순으로 나열한다\n[조건:수납완료] atom/tag(tone=positive) 표시\n[조건:수납대기] atom/tag(tone=warning) 표시\n[조건:이력없음] \"납부 이력이 없습니다\" empty 안내 노출\n[상태:loading] skeleton 표시\n[상태:empty] 안내 문구 표시\n[상태:error] snack-bar 재시도 안내\n[액션:tap 이력행] 납부 상세 bottom-sheet 노출 (영수증 발급 링크 포함)",
+      "label": "기능 1: 납부 이력 리스트"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-receipt-link",
+      "sectionName": "증빙 발급 링크",
+      "sectionDescription": "납부 이력에서 증빙 서류(영수증·납부확인서) 발급 화면으로 이동하는 링크 제공",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 2,
+      "errorHandling": "영역 숨김",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 증빙 발급 링크\n[규칙:FN-CHK-007] 납부 이력 화면 하단에 증빙 발급 화면으로 이동하는 링크를 제공한다\n[액션:tap 증빙발급] receipt-issue 화면으로 이동",
+      "label": "기능 2: 증빙 발급 링크"
+    }
+  ]
+}

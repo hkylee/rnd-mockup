@@ -1,0 +1,88 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/BIL/payment-target",
+  "category": "page",
+  "description": "납부 대상 선택. US-BIL-CHK-006. ogn/BIL/prepay-target-list 패턴 재활용 — payment-target-item × N + 합계 + sticky CTA. (실제로는 자체 ogn payment-target-list 가 더 적절하지만 prepay-target-list 와 구조 동일하므로 재사용).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "primaryAxisSizingMode": "FIXED",
+      "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}",
+      "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}",
+      "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": {
+      "cornerRadius": 0,
+      "fill": "{semantic.color.background.page-sub}",
+      "stroke": null,
+      "shadow": null
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "status-bar",
+        "component": "ogn/status-bar"
+      },
+      {
+        "kind": "ref",
+        "id": "header",
+        "component": "ogn/header",
+        "props": {
+          "title": "납부 대상 선택"
+        }
+      },
+      {
+        "kind": "group",
+        "id": "content",
+        "layoutAlign": "STRETCH",
+        "layoutGrow": 1,
+        "layout": {
+          "mode": "VERTICAL",
+          "primaryAxisSizingMode": "AUTO",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "paddingTop": "{foundation.dimension.spacing.lg}",
+          "paddingBottom": "{foundation.dimension.spacing.lg}",
+          "paddingLeft": "{foundation.dimension.spacing.none}",
+          "paddingRight": "{foundation.dimension.spacing.none}",
+          "itemSpacing": "{foundation.dimension.spacing.lg}",
+          "width": "FILL",
+          "height": "HUG"
+        },
+        "visual": {
+          "cornerRadius": 0,
+          "fill": null,
+          "stroke": null,
+          "shadow": null
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "target-list",
+            "component": "ogn/BIL/prepay-target-list",
+            "layoutAlign": "STRETCH"
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "sticky-cta",
+        "component": "ogn/sticky-footer-cta",
+        "props": {
+          "label": "다음"
+        },
+        "scrollBehavior": "STICKY_SCROLLS",
+        "layoutAlign": "STRETCH"
+      }
+    ]
+  }
+}

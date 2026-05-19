@@ -1,0 +1,95 @@
+{
+  "screenId": "BIL-PAY-COMPLETE",
+  "screenName": "납부 완료",
+  "screenPath": "page/BIL/pay-complete",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/pay-complete",
+    "spec_input": "specs-input/BIL-pay-flow.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-complete-result",
+      "sectionName": "납부 결과 표시",
+      "sectionDescription": "수납완료 또는 수납대기 상태를 명확히 표시. 납부 금액·일시·수단을 요약 표시",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 납부 결과 표시\n[규칙:FN-PAY-011] 납부 처리 결과를 수납완료/수납대기로 구분하여 표시한다\n[고지:필수|POL-BIL-STAT-001-01] 수납완료 시 즉시 처리 완료 메시지 표시\n[고지:필수|POL-BIL-STAT-001-02] 수납대기 시 처리 지연 사유와 예상 완료 시점 안내\n[고지:필수|POL-BIL-SUSP-001] 서비스 정지 해제 진행 중인 경우 해제 진행 안내 표시\n[고지:필수|POL-BIL-CUS-001-05] 중복납부 주의 안내 문구 항상 표시\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내",
+      "label": "기능 1: 납부 결과 표시"
+    },
+    {
+      "no": 2,
+      "kind": "footer",
+      "sectionId": "section-BIL-pay-complete-actions",
+      "sectionName": "완료 후 액션",
+      "sectionDescription": "납부 내역 확인, 청구 메인으로 이동 등 완료 후 다음 행동 버튼 제공",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "항상 노출",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 완료 후 액션\n[규칙:FN-CHK-007] 납부 완료 후 납부 이력 확인 진입점을 제공한다\n[액션:tap 납부내역 확인] pay-history 화면으로 이동\n[액션:tap 청구메인으로] bill-main 화면으로 이동",
+      "label": "기능 2: 완료 후 액션"
+    }
+  ]
+}

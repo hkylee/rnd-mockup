@@ -1,0 +1,126 @@
+{
+  "screenId": "BIL-PAY-TARGET",
+  "screenName": "납부 대상 선택",
+  "screenPath": "page/BIL/pay-target",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/pay-target",
+    "spec_input": "specs-input/BIL-pay-flow.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-target-list",
+      "sectionName": "납부 대상 목록",
+      "sectionDescription": "납부 가능한 청구 대상 회선과 금액을 목록으로 표시. 수납완료 항목은 제외하고 제한 항목은 비활성 표시",
+      "container": "vertical",
+      "displayCount": {
+        "min": "N/N (납부 대상 수)",
+        "max": ""
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-bill-item",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 납부 대상 목록\n[규칙:FN-PAY-001] 납부 가능한 청구 대상 회선과 금액을 목록으로 표시한다\n[규칙:FN-COM-003] 회선 식별자(회선번호·명칭)를 함께 표시한다\n[고지:필수|POL-BIL-PAY-001-02] 수납완료 항목은 목록에서 제외하고 제외 사유를 표시한다\n[고지:필수|POL-BIL-PAY-002-05] 수납대기 상태인 항목은 선택 비활성 처리하고 사유를 표시한다\n[고지:필수|POL-BIL-CUS-001-03] 납부 제한 사유 6종 해당 시 해당 항목 비활성 + 사유 고지\n[상태:loading] skeleton 표시\n[상태:empty] \"납부 대상이 없습니다\" 안내 텍스트 표시\n[상태:error] snack-bar 재시도 안내\n[액션:tap 항목 선택] 해당 항목 선택/해제 토글",
+      "label": "기능 1: 납부 대상 목록"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-warning",
+      "sectionName": "납부 제한·경고 배너",
+      "sectionDescription": "24시간 내 납부 이력, 수납대기 상태 등 납부 진행 시 주의가 필요한 경우 경고 배너 표시",
+      "container": "vertical",
+      "displayCount": {
+        "min": "0-1/1",
+        "max": ""
+      },
+      "displayPriority": 2,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 납부 제한·경고 배너\n[고지:필수|POL-BIL-PAY-002-03] 최근 24시간 내 납부 이력 있을 시 중복 주의 경고 배너 노출\n[조건:24시간_내_납부] atom/banner(tone=warning) 노출 — \"최근 납부 이력이 있습니다\" 문구\n[상태:loading] 숨김\n[상태:error] 숨김",
+      "label": "기능 2: 납부 제한·경고 배너"
+    },
+    {
+      "no": 3,
+      "kind": "footer",
+      "sectionId": "section-BIL-pay-target-cta",
+      "sectionName": "납부하기 CTA",
+      "sectionDescription": "선택된 납부 대상에 대한 납부 진행 버튼. 선택 항목 없거나 전체 비활성 시 버튼 비활성",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "버튼 비활성 유지",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/txt",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 납부하기 CTA\n[규칙:FN-PAY-001] 선택된 납부 대상이 있을 때만 버튼 활성화\n[조건:선택없음] 버튼 비활성(disabled) 처리\n[조건:전체제한] 버튼 비활성(disabled) 처리\n[액션:tap 납부하기] pay-method-select 화면으로 이동",
+      "label": "기능 3: 납부하기 CTA"
+    }
+  ]
+}

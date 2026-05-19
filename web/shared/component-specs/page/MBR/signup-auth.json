@@ -1,0 +1,71 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/MBR/signup-auth",
+  "category": "page",
+  "description": "회원 가입 3/5 — 본인인증. POL-MBR-AUTH-001~007. Pattern B.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL", "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}", "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}", "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": { "cornerRadius": 0, "fill": "{semantic.color.background.page-sub}", "stroke": null, "shadow": null },
+    "children": [
+      { "kind": "ref", "id": "status-bar", "component": "ogn/status-bar" },
+      { "kind": "ref", "id": "header", "component": "ogn/header", "props": { "title": "회원 가입" } },
+      { "kind": "ref", "id": "step", "component": "ogn/step-indicator", "props": { "label": "3 / 5" } },
+      {
+        "kind": "group", "id": "content", "layoutAlign": "STRETCH",
+        "layout": {
+          "mode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+          "paddingTop": "{foundation.dimension.spacing.lg}",
+          "paddingBottom": "{foundation.dimension.spacing.none}",
+          "paddingLeft": "{foundation.dimension.spacing.none}",
+          "paddingRight": "{foundation.dimension.spacing.none}",
+          "itemSpacing": "{foundation.dimension.spacing.lg}",
+          "width": "FILL", "height": "HUG"
+        },
+        "visual": { "cornerRadius": 0, "fill": null, "stroke": null, "shadow": null },
+        "children": [
+          {
+            "kind": "group", "id": "headline-wrap", "layoutAlign": "STRETCH",
+            "layout": {
+              "mode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+              "paddingTop": "{foundation.dimension.spacing.none}", "paddingBottom": "{foundation.dimension.spacing.none}",
+              "paddingLeft": "{semantic.layout.screen-padding-default}",
+              "paddingRight": "{semantic.layout.screen-padding-default}",
+              "itemSpacing": "{foundation.dimension.spacing.lg}",
+              "width": "FILL", "height": "HUG"
+            },
+            "visual": { "cornerRadius": 0, "fill": null, "stroke": null, "shadow": null },
+            "children": [
+              { "kind": "ref", "id": "section-headline", "component": "mol/section-header",
+                "props": { "headline": "본인인증을 진행해 주세요", "description": "안전한 가입을 위해 본인 확인이 필요합니다." },
+                "layoutAlign": "STRETCH" },
+              { "kind": "ref", "id": "auth-notice", "component": "mol/notice-card",
+                "variant": { "type": "plain" },
+                "props": { "message": "선택한 수단으로 본인 확인을 진행합니다." },
+                "layoutAlign": "STRETCH",
+                "_comment": "[고지·필수] POL-MBR-AUTH-001" }
+            ]
+          },
+          {
+            "kind": "ref", "id": "auth-method-list", "component": "ogn/MBR/auth-method-list",
+            "layoutAlign": "STRETCH",
+            "_comment": "[고지·필수] POL-MBR-AUTH-002 — 인증수단 노출 순서"
+          }
+        ],
+        "layoutGrow": 1
+      },
+      { "kind": "ref", "id": "sticky-footer", "component": "ogn/sticky-footer-cta", "props": { "label": "인증" }, "layoutAlign": "STRETCH", "scrollBehavior": "STICKY_SCROLLS" },
+      { "kind": "ref", "id": "footer-cs", "component": "ogn/footer-cs", "layoutAlign": "STRETCH", "scrollBehavior": "STICKY_SCROLLS" }
+    ]
+  }
+}

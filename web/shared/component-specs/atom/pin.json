@@ -1,0 +1,49 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "atom/pin",
+  "category": "atom",
+  "description": "지도 핀 마커.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "paddingTop": 2.0,
+      "paddingRight": 6.0,
+      "paddingBottom": 2.0,
+      "paddingLeft": 6.0,
+      "primaryAxisSizingMode": "FIXED",
+      "counterAxisSizingMode": "FIXED",
+      "counterAxisAlignItems": "CENTER",
+      "width": "HUG"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "group",
+        "id": "shape",
+        "layout": {
+          "mode": "NONE"
+        },
+        "visual": {}
+      },
+      {
+        "kind": "group",
+        "id": "number",
+        "layout": {
+          "mode": "NONE"
+        },
+        "visual": {
+          "cornerRadius": 0.0
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "1",
+            "content": "1",
+            "exposeAs": "1"
+          }
+        ]
+      }
+    ]
+  }
+}

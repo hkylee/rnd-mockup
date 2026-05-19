@@ -1,0 +1,74 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "mol/card-item",
+  "category": "mol",
+  "description": "카드 콘텐츠 아이템. Type(List/Barcode/ai).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 14.0,
+      "primaryAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER",
+      "width": "HUG"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "group",
+        "id": "info",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 14.0,
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisAlignItems": "CENTER",
+          "width": "HUG"
+        },
+        "visual": {},
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-thumbnailitem",
+            "component": ".ThumbnailItem"
+          },
+          {
+            "kind": "group",
+            "id": "text",
+            "layout": {
+              "mode": "VERTICAL",
+              "counterAxisSizingMode": "FIXED",
+              "width": "HUG"
+            },
+            "visual": {},
+            "children": [
+              {
+                "kind": "text",
+                "id": "--------",
+                "content": "왕과 사는 남자",
+                "exposeAs": "--------"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "-button",
+        "component": ".Button"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "type",
+        "values": [
+          "list",
+          "barcode",
+          "ai"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

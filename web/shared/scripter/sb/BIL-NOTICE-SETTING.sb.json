@@ -1,0 +1,120 @@
+{
+  "screenId": "BIL-NOTICE-SETTING",
+  "screenName": "요금안내서 수신 설정",
+  "screenPath": "page/BIL/notice-setting",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/notice-setting",
+    "spec_input": "specs-input/BIL-settings.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-notice-method-select",
+      "sectionName": "수신 방식 선택",
+      "sectionDescription": "요금안내서를 받을 수신 방식(이메일·문자·앱 알림)을 선택한다. 복수 선택 가능",
+      "container": "vertical",
+      "displayCount": {
+        "min": "N/N (수신 방식 수)",
+        "max": ""
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 수신 방식 선택\n[규칙:FN-SET-001] 요금안내서 수신 방식을 선택하는 UI를 제공한다\n[고지:필수|POL-BIL-SET-001-01] 수신 방식별 안내 (이메일·문자·앱 알림) 선택 UI 제공\n[고지:필수|POL-BIL-SET-001-02] 수신처 변경 시 본인 인증 절차 필요함을 안내한다\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내\n[액션:tap 수신방식] 해당 방식 활성/비활성 토글\n[액션:tap 수신처변경] 수신처 인증 플로우 진입",
+      "label": "기능 1: 수신 방식 선택"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-notice-apply-date",
+      "sectionName": "적용 예정일 안내",
+      "sectionDescription": "수신 설정 변경사항이 적용될 예정일을 안내한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "0-1/1",
+        "max": ""
+      },
+      "displayPriority": 2,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 적용 예정일 안내\n[고지:필수|POL-BIL-SET-001-08] 변경사항은 다음 청구서 발행 주기부터 적용됨을 안내한다\n[조건:변경없음] 영역 미노출\n[상태:loading] 숨김",
+      "label": "기능 2: 적용 예정일 안내"
+    },
+    {
+      "no": 3,
+      "kind": "footer",
+      "sectionId": "section-BIL-notice-setting-cta",
+      "sectionName": "설정 저장 CTA",
+      "sectionDescription": "변경된 수신 설정을 저장하는 버튼",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "버튼 비활성 유지",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 설정 저장 CTA\n[조건:변경없음] 버튼 비활성(disabled) 처리\n[조건:처리중] 버튼 비활성(loading) 처리\n[액션:tap 저장] 수신 설정 저장 API 호출 → 성공 시 snack-bar 완료 안내",
+      "label": "기능 3: 설정 저장 CTA"
+    }
+  ]
+}

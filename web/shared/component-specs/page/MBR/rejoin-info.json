@@ -1,0 +1,75 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/MBR/rejoin-info",
+  "category": "page",
+  "description": "재가입 2/5 — 정보 입력 (약관 분리됨). POL-INFO-004. Pattern B. 이력 복원 안내 + 기존 정보 표시 (mol/info-row × 3).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL", "primaryAxisSizingMode": "FIXED", "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}", "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}", "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": { "cornerRadius": 0, "fill": "{semantic.color.background.page-sub}", "stroke": null, "shadow": null },
+    "children": [
+      { "kind": "ref", "id": "status-bar", "component": "ogn/status-bar" },
+      { "kind": "ref", "id": "header", "component": "ogn/header", "props": { "title": "재가입" } },
+      { "kind": "ref", "id": "step", "component": "ogn/step-indicator", "props": { "label": "2 / 5" } },
+      {
+        "kind": "group", "id": "content", "layoutAlign": "STRETCH",
+        "layout": {
+          "mode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+          "paddingTop": "{foundation.dimension.spacing.lg}",
+          "paddingBottom": "{foundation.dimension.spacing.none}",
+          "paddingLeft": "{foundation.dimension.spacing.none}",
+          "paddingRight": "{foundation.dimension.spacing.none}",
+          "itemSpacing": "{foundation.dimension.spacing.lg}",
+          "width": "FILL", "height": "HUG"
+        },
+        "visual": { "cornerRadius": 0, "fill": null, "stroke": null, "shadow": null },
+        "children": [
+          {
+            "kind": "group", "id": "main-wrap", "layoutAlign": "STRETCH",
+            "layout": {
+              "mode": "VERTICAL", "primaryAxisSizingMode": "AUTO", "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN", "counterAxisAlignItems": "MIN",
+              "paddingTop": "{foundation.dimension.spacing.none}", "paddingBottom": "{foundation.dimension.spacing.none}",
+              "paddingLeft": "{semantic.layout.screen-padding-default}",
+              "paddingRight": "{semantic.layout.screen-padding-default}",
+              "itemSpacing": "{foundation.dimension.spacing.lg}",
+              "width": "FILL", "height": "HUG"
+            },
+            "visual": { "cornerRadius": 0, "fill": null, "stroke": null, "shadow": null },
+            "children": [
+              { "kind": "ref", "id": "section-headline", "component": "mol/section-header",
+                "props": { "headline": "정보를 확인해 주세요", "description": "이전 사용 정보 일부를 그대로 사용하실 수 있어요." },
+                "layoutAlign": "STRETCH" },
+              { "kind": "ref", "id": "restore-notice", "component": "mol/notice-card",
+                "variant": { "type": "message" },
+                "props": { "message": "다음 정보는 이전 가입 정보에서 자동 복원됩니다. 변경하려면 [수정] 을 눌러주세요." },
+                "layoutAlign": "STRETCH",
+                "_comment": "[고지·필수] POL-MBR-INFO-004" },
+              { "kind": "ref", "id": "row-name", "component": "mol/info-row",
+                "props": { "label": "이름", "value": "홍길동" },
+                "layoutAlign": "STRETCH" },
+              { "kind": "ref", "id": "row-email", "component": "mol/info-row",
+                "props": { "label": "이메일", "value": "user@example.com" },
+                "layoutAlign": "STRETCH" },
+              { "kind": "ref", "id": "row-phone", "component": "mol/info-row",
+                "props": { "label": "휴대폰 번호", "value": "010-XXXX-XXXX" },
+                "layoutAlign": "STRETCH" }
+            ]
+          }
+        ],
+        "layoutGrow": 1
+      },
+      { "kind": "ref", "id": "sticky-footer", "component": "ogn/sticky-footer-cta", "props": { "label": "다음" }, "layoutAlign": "STRETCH", "scrollBehavior": "STICKY_SCROLLS" },
+      { "kind": "ref", "id": "footer-cs", "component": "ogn/footer-cs", "layoutAlign": "STRETCH", "scrollBehavior": "STICKY_SCROLLS" }
+    ]
+  }
+}

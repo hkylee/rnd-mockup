@@ -1,0 +1,228 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "page/BIL/usage-realtime",
+  "category": "page",
+  "description": "실시간·예상 이용요금 — 탭 2 (실시간/예상). US-BIL-CHK-003. ogn/tab + usage-realtime-card + usage-forecast-card + 후속 액션 카드 (선결제/한도/상담).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "primaryAxisSizingMode": "FIXED",
+      "counterAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "MIN",
+      "paddingTop": "{foundation.dimension.spacing.none}",
+      "paddingBottom": "{foundation.dimension.spacing.none}",
+      "paddingLeft": "{foundation.dimension.spacing.none}",
+      "paddingRight": "{foundation.dimension.spacing.none}",
+      "itemSpacing": "{foundation.dimension.spacing.none}",
+      "width": "{foundation.dimension.size.screen-mobile}",
+      "minHeight": "{foundation.dimension.size.screen-mobile-height}",
+      "height": "{foundation.dimension.size.screen-mobile-height}"
+    },
+    "visual": {
+      "cornerRadius": 0,
+      "fill": "{semantic.color.background.page-sub}",
+      "stroke": null,
+      "shadow": null
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "status-bar",
+        "component": "ogn/status-bar"
+      },
+      {
+        "kind": "ref",
+        "id": "header",
+        "component": "ogn/header",
+        "props": {
+          "title": "실시간·예상 요금"
+        }
+      },
+      {
+        "kind": "ref",
+        "id": "tabs",
+        "component": "ogn/tab",
+        "variant": {
+          "active": "0"
+        },
+        "layoutAlign": "STRETCH"
+      },
+      {
+        "kind": "group",
+        "id": "content",
+        "layoutAlign": "STRETCH",
+        "layoutGrow": 1,
+        "layout": {
+          "mode": "VERTICAL",
+          "primaryAxisSizingMode": "AUTO",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "paddingTop": "{foundation.dimension.spacing.lg}",
+          "paddingBottom": "{foundation.dimension.spacing.lg}",
+          "paddingLeft": "{foundation.dimension.spacing.none}",
+          "paddingRight": "{foundation.dimension.spacing.none}",
+          "itemSpacing": "{foundation.dimension.spacing.lg}",
+          "width": "FILL",
+          "height": "HUG"
+        },
+        "visual": {
+          "cornerRadius": 0,
+          "fill": null,
+          "stroke": null,
+          "shadow": null
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "realtime-card-wrap",
+            "layoutAlign": "STRETCH",
+            "layout": {
+              "mode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "paddingTop": "{foundation.dimension.spacing.none}",
+              "paddingBottom": "{foundation.dimension.spacing.none}",
+              "paddingLeft": "{foundation.dimension.spacing.2xl}",
+              "paddingRight": "{foundation.dimension.spacing.2xl}",
+              "itemSpacing": "{foundation.dimension.spacing.none}",
+              "width": "FILL",
+              "height": "HUG"
+            },
+            "visual": {
+              "cornerRadius": 0,
+              "fill": null,
+              "stroke": null,
+              "shadow": null
+            },
+            "children": [
+              {
+                "kind": "ref",
+                "id": "realtime-card",
+                "component": "ogn/BIL/usage-realtime-card",
+                "layoutAlign": "STRETCH"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "forecast-card-wrap",
+            "layoutAlign": "STRETCH",
+            "layout": {
+              "mode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "paddingTop": "{foundation.dimension.spacing.none}",
+              "paddingBottom": "{foundation.dimension.spacing.none}",
+              "paddingLeft": "{foundation.dimension.spacing.2xl}",
+              "paddingRight": "{foundation.dimension.spacing.2xl}",
+              "itemSpacing": "{foundation.dimension.spacing.none}",
+              "width": "FILL",
+              "height": "HUG"
+            },
+            "visual": {
+              "cornerRadius": 0,
+              "fill": null,
+              "stroke": null,
+              "shadow": null
+            },
+            "children": [
+              {
+                "kind": "ref",
+                "id": "forecast-card",
+                "component": "ogn/BIL/usage-forecast-card",
+                "layoutAlign": "STRETCH"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "action-prepay-wrap",
+            "layoutAlign": "STRETCH",
+            "layout": {
+              "mode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "paddingTop": "{foundation.dimension.spacing.none}",
+              "paddingBottom": "{foundation.dimension.spacing.none}",
+              "paddingLeft": "{foundation.dimension.spacing.2xl}",
+              "paddingRight": "{foundation.dimension.spacing.2xl}",
+              "itemSpacing": "{foundation.dimension.spacing.none}",
+              "width": "FILL",
+              "height": "HUG"
+            },
+            "visual": {
+              "cornerRadius": 0,
+              "fill": null,
+              "stroke": null,
+              "shadow": null
+            },
+            "children": [
+              {
+                "kind": "ref",
+                "id": "action-prepay",
+                "component": "mol/post-action-card",
+                "layoutAlign": "STRETCH",
+                "props": {
+                  "headline": "선결제하기",
+                  "description": "휴대폰결제·콘텐츠 이용료 미리 결제"
+                }
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "action-limit-wrap",
+            "layoutAlign": "STRETCH",
+            "layout": {
+              "mode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "paddingTop": "{foundation.dimension.spacing.none}",
+              "paddingBottom": "{foundation.dimension.spacing.none}",
+              "paddingLeft": "{foundation.dimension.spacing.2xl}",
+              "paddingRight": "{foundation.dimension.spacing.2xl}",
+              "itemSpacing": "{foundation.dimension.spacing.none}",
+              "width": "FILL",
+              "height": "HUG"
+            },
+            "visual": {
+              "cornerRadius": 0,
+              "fill": null,
+              "stroke": null,
+              "shadow": null
+            },
+            "children": [
+              {
+                "kind": "ref",
+                "id": "action-limit",
+                "component": "mol/post-action-card",
+                "layoutAlign": "STRETCH",
+                "props": {
+                  "headline": "한도 변경",
+                  "description": "휴대폰결제·콘텐츠 한도 관리"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "footer-cs",
+        "component": "ogn/footer-cs",
+        "layoutAlign": "STRETCH",
+        "scrollBehavior": "STICKY_SCROLLS"
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "mol/checkbox-text",
+  "category": "mol",
+  "description": "체크박스+텍스트 행. Checked × Disabled.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 8.0,
+      "width": "HUG"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-checkboxitem",
+        "component": ".CheckboxItem"
+      },
+      {
+        "kind": "text",
+        "id": "text",
+        "content": "텍스트",
+        "exposeAs": "text"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "checked",
+        "values": [
+          "off",
+          "on"
+        ]
+      },
+      {
+        "name": "disabled",
+        "values": [
+          "off",
+          "on"
+        ]
+      }
+    ],
+    "overrides": {}
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "atom/action-button",
+  "category": "atom",
+  "description": "CTA 버튼 영역. Type(Default/Ai/Gift) × 버튼 수(1/2).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "paddingTop": 10.0,
+      "paddingRight": 12.0,
+      "paddingBottom": 36.0,
+      "paddingLeft": 12.0,
+      "counterAxisSizingMode": "FIXED",
+      "counterAxisAlignItems": "CENTER",
+      "width": "FILL"
+    },
+    "visual": {
+      "fill": "{component.radio.default.dotColor}",
+      "stroke": "#f4f5fa"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "txt",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 10.0,
+          "paddingTop": 8.0,
+          "paddingBottom": 8.0,
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "width": "HUG"
+        },
+        "visual": {},
+        "children": [
+          {
+            "kind": "text",
+            "id": "---",
+            "content": "텍스트",
+            "exposeAs": "---"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "button",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 10.0,
+          "paddingRight": 32.0,
+          "paddingLeft": 32.0,
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "SPACE_BETWEEN",
+          "counterAxisAlignItems": "CENTER",
+          "width": "HUG"
+        },
+        "visual": {
+          "cornerRadius": 20.0,
+          "fill": "{component.radio.default.fillSelected}"
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "ai",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 20.0,
+              "counterAxisAlignItems": "CENTER",
+              "width": "HUG"
+            },
+            "visual": {}
+          },
+          {
+            "kind": "group",
+            "id": "buttontext",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 20.0,
+              "counterAxisAlignItems": "CENTER",
+              "width": "HUG"
+            },
+            "visual": {},
+            "children": [
+              {
+                "kind": "text",
+                "id": "---",
+                "content": "텍스트",
+                "exposeAs": "---"
+              },
+              {
+                "kind": "text",
+                "id": "---",
+                "content": "텍스트",
+                "exposeAs": "---"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "type",
+        "values": [
+          "default",
+          "ai",
+          "gift"
+        ]
+      },
+      {
+        "name": "button",
+        "values": [
+          "1",
+          "2"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "9598:34265",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

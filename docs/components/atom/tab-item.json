@@ -1,0 +1,46 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "atom/tab-item",
+  "category": "atom",
+  "description": "탭 아이템 단위. Default/Selected.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 12.0,
+      "width": "HUG"
+    },
+    "visual": {},
+    "children": [
+      {
+        "kind": "text",
+        "id": "-txt-",
+        "content": "{txt}",
+        "exposeAs": "-txt-"
+      },
+      {
+        "kind": "group",
+        "id": "rectangle-1954131130",
+        "layout": {
+          "mode": "NONE"
+        },
+        "visual": {
+          "fill": "{component.radio.default.fillSelected}"
+        }
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "state",
+        "values": [
+          "default",
+          "selected"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "9508:56762",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}
