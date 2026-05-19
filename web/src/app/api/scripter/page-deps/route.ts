@@ -1,5 +1,5 @@
 // page 1개의 의존성 컴포넌트 이름 목록 반환.
-// /sources?page=page/X/y 필터 적용 시 호출.
+// /sources?page=page/X/y 필터 적용 시 호출. (components 배열로 반환)
 
 import { collectAllSpecs } from "@/lib/collect-specs";
 import { getPageDeps } from "@/lib/page-deps";
@@ -20,9 +20,7 @@ export async function GET(request: Request) {
     }
     return Response.json({
       page: deps.page.name,
-      atom: deps.atom.map((s) => s.name),
-      mol: deps.mol.map((s) => s.name),
-      ogn: deps.ogn.map((s) => s.name),
+      components: deps.components.map((s) => s.name),
       missing: deps.missing,
     });
   } catch (err) {

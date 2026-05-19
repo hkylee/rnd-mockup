@@ -1,0 +1,39 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "payment-logo-item",
+  "category": "atom",
+  "description": "결제 로고 아이템. Type(11페이/카카오페이/네이버페이).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "paddingTop": 2.0,
+      "paddingRight": 2.0,
+      "paddingBottom": 2.0,
+      "paddingLeft": 2.0
+    },
+    "visual": {
+      "cornerRadius": 9999.0
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "logo"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "11페이",
+          "카카오페이",
+          "네이버페이"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23735",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

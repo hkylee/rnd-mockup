@@ -2,7 +2,7 @@
 
 import type { BBox } from "./detection-types";
 
-export type CandidateCategory = "atom" | "mol" | "ogn" | "page";
+export type CandidateCategory = "component" | "page";
 
 export type CandidateStatus = "pending" | "promoted" | "merged" | "skipped";
 

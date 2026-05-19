@@ -16,9 +16,11 @@ type AnalyzeResponse = {
 
 function inferCategory(name: string, fallback?: string): CandidateCategory {
   const first = name.split("/")[0];
-  if (first === "atom" || first === "mol" || first === "ogn" || first === "page") return first;
-  if (fallback === "atom" || fallback === "mol" || fallback === "ogn" || fallback === "page") return fallback;
-  return "mol";
+  if (first === "page") return "page";
+  if (first === "atom" || first === "mol" || first === "ogn" || first === "component") return "component";
+  if (fallback === "page") return "page";
+  if (fallback === "atom" || fallback === "mol" || fallback === "ogn" || fallback === "component") return "component";
+  return "component";
 }
 
 export default function GeneratePage() {
@@ -163,7 +165,7 @@ export default function GeneratePage() {
           <header className="mb-8">
             <h1 className="text-2xl font-semibold tracking-tight">UI 생성</h1>
             <p className="text-sm text-slate-600 mt-1">
-              페이지 캡처를 업로드하면 AI 가 atom · mol · ogn 으로 분류해서 편집 가능한 트리로 보여드립니다.
+              페이지 캡처를 업로드하면 AI 가 컴포넌트로 분류해서 편집 가능한 트리로 보여드립니다.
             </p>
           </header>
 
@@ -297,7 +299,7 @@ export default function GeneratePage() {
             <div>
               <h2 className="text-sm font-semibold">Detection Tree</h2>
               <p className="text-[11px] text-slate-500 mt-0.5">
-                atom/mol/ogn 분류 결과
+                컴포넌트 분류 결과
               </p>
             </div>
             <button

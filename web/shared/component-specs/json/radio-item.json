@@ -1,0 +1,57 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "radio-item",
+  "category": "atom",
+  "description": "라디오 버튼 단독 아이템. On/Off/Disabled.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "radio",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER"
+        },
+        "visual": {
+          "cornerRadius": 9.0,
+          "fill": "#ffffff",
+          "stroke": "#05001a",
+          "strokeWidth": 1.2000000476837158
+        }
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "속성 1",
+        "values": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "name": "속성 2",
+        "values": [
+          "Off"
+        ]
+      },
+      {
+        "name": "속성 3",
+        "values": [
+          "Off",
+          "On"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23984",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

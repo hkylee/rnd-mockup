@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PR-MBR-CS-001-04 회원 검증</title>
+  <style>
+    :root {
+      --color-fill-brand:        #3617CE;
+      --color-fill-brand-dim:    #EAE6FB;
+      --color-text-primary:      #05001A;
+      --color-text-secondary:    #5E6085;
+      --color-text-subtle:       #B4C0DE;
+      --color-text-white:        #FFFFFF;
+      --color-bg-page:           #F4F5FA;
+      --color-bg-elevated:       #FFFFFF;
+      --color-border:            #E2E6F1;
+      --color-border-strong:     #D2D9EB;
+      --color-danger:            #E42939;
+      --color-warning:           #F59E0B;
+      --color-success:           #00B14F;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, 'Pretendard', sans-serif;
+      background: #e8eaf0;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px 0 48px; gap: 16px;
+    }
+    .case-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .case-tabs button {
+      padding: 6px 14px; border-radius: 20px;
+      border: 1.5px solid var(--color-border-strong);
+      background: #fff; color: var(--color-text-secondary);
+      font-size: 13px; font-weight: 500; cursor: pointer;
+    }
+    .case-tabs button.active { background: var(--color-fill-brand); border-color: var(--color-fill-brand); color: #fff; }
+    .phone-frame {
+      width: 375px; min-height: 812px; background: var(--color-bg-page);
+      border-radius: 40px; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      display: none; flex-direction: column;
+    }
+    .phone-frame.active { display: flex; }
+    .status-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 24px 18px; background: var(--color-bg-elevated);
+      font-size: 12px; font-weight: 600; color: var(--color-text-primary); flex-shrink: 0;
+    }
+    .status-bar .time { font-size: 15px; font-weight: 700; }
+    .status-bar .icons { display: flex; gap: 6px; }
+    .app-bar {
+      display: flex; align-items: center; padding: 10px 20px;
+      background: var(--color-bg-elevated); gap: 8px; flex-shrink: 0;
+    }
+    .app-bar .back-btn { width: 24px; height: 24px; display: flex; align-items: center; }
+    .app-bar .title {
+      flex: 1; font-size: 17px; font-weight: 700;
+      color: var(--color-text-primary); text-align: center; margin-right: 32px;
+    }
+
+    /* Loading Area */
+    .loading-area {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 24px; padding: 40px 32px;
+    }
+    /* Spinner */
+    .spinner {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 4px solid var(--color-fill-brand-dim);
+      border-top-color: var(--color-fill-brand);
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: 18px; font-weight: 700; color: var(--color-text-primary); text-align: center; }
+    .loading-sub { font-size: 14px; color: var(--color-text-secondary); text-align: center; line-height: 1.5; }
+
+    /* Result Card */
+    .result-area {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px; padding: 32px 24px;
+    }
+    .result-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 32px;
+    }
+    .result-title { font-size: 22px; font-weight: 700; color: var(--color-text-primary); text-align: center; }
+    .result-desc { font-size: 14px; color: var(--color-text-secondary); text-align: center; line-height: 1.6; }
+    .result-card {
+      width: 100%; background: var(--color-bg-elevated);
+      border-radius: 12px; padding: 16px; margin-top: 8px;
+      border: 1px solid var(--color-border);
+    }
+    .result-card .card-label { font-size: 12px; color: var(--color-text-subtle); margin-bottom: 6px; }
+    .result-card .card-value { font-size: 15px; font-weight: 600; color: var(--color-text-primary); }
+
+    .cta-wrap { padding: 12px 20px 28px; background: var(--color-bg-elevated); flex-shrink: 0; }
+    .cta-btn {
+      display: flex; justify-content: center; align-items: center;
+      width: 100%; padding: 16px; background: var(--color-fill-brand); border-radius: 9999px;
+      color: var(--color-text-white); font-size: 16px; font-weight: 700; cursor: pointer; border: none;
+    }
+    .cta-btn.secondary {
+      background: transparent; border: 1.5px solid var(--color-border-strong);
+      color: var(--color-text-primary); margin-bottom: 8px;
+    }
+    .cta-btn.danger { background: var(--color-danger); }
+  </style>
+</head>
+<body>
+
+  <div class="case-tabs">
+    <button class="active" onclick="showCase('0')">Case 0 · 검증 중</button>
+    <button onclick="showCase('1')">Case 1 · 미가입 (정상)</button>
+    <button onclick="showCase('E1')">Case E1 · 이미 가입</button>
+    <button onclick="showCase('E2')">Case E2 · 휴면/탈퇴</button>
+  </div>
+
+  <!-- ═══════════════ Case 0 — 검증 중 (로딩) ═══════════════ -->
+  <div class="phone-frame active" id="case-0">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">회원 가입</div>
+    </div>
+
+    <div class="loading-area">
+      <div class="spinner"></div>
+      <div class="loading-text">잠시만 기다려 주세요</div>
+      <div class="loading-sub">회원 정보를 확인하고 있습니다.<br>잠시 후 자동으로 이동됩니다.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ Case 1 — 미가입 확인 ═══════════════ -->
+  <div class="phone-frame" id="case-1">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">회원 가입</div>
+    </div>
+
+    <div class="result-area">
+      <div class="result-icon" style="background:#E6F9EE">✅</div>
+      <div class="result-title">본인 확인 완료</div>
+      <div class="result-desc">입력하신 정보로 가입 이력이 없습니다.<br>가입을 계속 진행합니다.</div>
+      <div class="result-card">
+        <div class="card-label">확인된 회원 상태</div>
+        <div class="card-value" style="color:var(--color-success)">● 미가입 — 신규 가입 가능</div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="cta-btn">가입 계속하기</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ Case E1 — 이미 가입된 회원 ═══════════════ -->
+  <div class="phone-frame" id="case-E1">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">회원 가입</div>
+    </div>
+
+    <div class="result-area">
+      <div class="result-icon" style="background:#FEE8EA">⚠️</div>
+      <div class="result-title">이미 가입된 회원입니다</div>
+      <div class="result-desc">동일한 정보로 이미 가입된 계정이 있습니다.<br>로그인 하시거나 아이디를 찾아보세요.</div>
+      <div class="result-card">
+        <div class="card-label">확인된 회원 상태</div>
+        <div class="card-value" style="color:var(--color-danger)">● 정상 가입 이력 있음</div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="cta-btn secondary">아이디 찾기</button>
+      <button class="cta-btn">로그인</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ Case E2 — 휴면/탈퇴 ═══════════════ -->
+  <div class="phone-frame" id="case-E2">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">회원 가입</div>
+    </div>
+
+    <div class="result-area">
+      <div class="result-icon" style="background:#FFF8E1">🔒</div>
+      <div class="result-title">가입 제한 계정입니다</div>
+      <div class="result-desc">탈퇴 후 30일 이내이거나 이용 제한된 계정입니다.<br>고객센터를 통해 문의해 주세요.</div>
+      <div class="result-card">
+        <div class="card-label">확인된 회원 상태</div>
+        <div class="card-value" style="color:var(--color-warning)">● 탈퇴 처리 중 (재가입 제한)</div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="cta-btn secondary">고객센터 문의</button>
+      <button class="cta-btn">처음으로</button>
+    </div>
+  </div>
+
+  <script>
+    function showCase(id) {
+      document.querySelectorAll('.phone-frame').forEach(f => f.classList.remove('active'));
+      document.querySelectorAll('.case-tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById('case-' + id).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

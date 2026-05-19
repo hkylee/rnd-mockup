@@ -1,0 +1,31 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "handle",
+  "category": "atom",
+  "description": "바텀시트 핸들. Default/off 상태.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "width": "FILL",
+      "paddingTop": 12.0,
+      "paddingRight": 32.0,
+      "paddingLeft": 32.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": []
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "state",
+        "values": [
+          "Default",
+          "off"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23790",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

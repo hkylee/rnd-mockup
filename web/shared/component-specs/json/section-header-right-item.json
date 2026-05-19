@@ -1,0 +1,38 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "section-header-right-item",
+  "category": "atom",
+  "description": "섹션 헤더 우측 아이템. Type(Icon/TextButton/…).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL"
+    },
+    "visual": {
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-icon-set",
+        "component": ".IconSet"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Icon",
+          "TextButton",
+          "TextItemButton",
+          "ButtonListOrder",
+          "Text"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23834",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

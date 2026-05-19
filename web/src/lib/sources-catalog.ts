@@ -6,9 +6,9 @@ import { resolve, join } from "node:path";
 import { sharedRoot } from "./paths";
 
 export type SourceItem = {
-  id: string;           // 고유 ID (ex: "spec:atom/btn", "icon:menu", "ds:main")
+  id: string;           // 고유 ID (ex: "spec:action-button", "icon:menu", "ds:main")
   name: string;         // 표시 이름
-  category: "ds" | "atom" | "mol" | "ogn" | "page" | "icon";
+  category: "ds" | "component" | "foundation" | "page" | "icon";
   path?: string;        // 파일 상대 경로 (업로드 시 원본)
   size?: number;        // bytes
 };
@@ -43,18 +43,30 @@ export function listSources(): SourceItem[] {
     });
   }
 
-  // Spec files (atom/mol/ogn/page)
+  // Component spec files (flat in component-specs/)
   const specsDir = resolve(root, "component-specs");
   const specFiles: string[] = [];
   walk(specsDir, specFiles);
+  // Module code prefixes used for page specs (e.g. BIL, MBR)
+  const MODULE_CODES = new Set(["BIL", "MBR", "MYBEN", "PRDD", "SCH", "MYCPN", "TPNT", "PRDL"]);
   for (const fp of specFiles) {
     if (!fp.endsWith(".json")) continue;
     try {
       const raw = readFileSync(fp, "utf8");
       const json = JSON.parse(raw);
       const name = typeof json.name === "string" ? json.name : "";
-      const category = name.split("/")[0] as SourceItem["category"];
-      if (!["atom", "mol", "ogn", "page"].includes(category)) continue;
+      if (!name) continue;
+      // Determine category: page if first segment is a module code, else component
+      const firstSeg = name.split("/")[0];
+      const jsonCat = typeof json.category === "string" ? json.category : "";
+      let category: SourceItem["category"];
+      if (jsonCat === "foundation") {
+        category = "foundation";
+      } else if (jsonCat === "page" || MODULE_CODES.has(firstSeg)) {
+        category = "page";
+      } else {
+        category = "component";
+      }
       items.push({
         id: "spec:" + name,
         name,

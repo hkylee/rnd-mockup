@@ -3,11 +3,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SpecPreview } from "@/components/SpecPreview";
+import {
+  TokenDetailPanel,
+  buildTokenChain,
+  getTokenType,
+  resolveFoundationCategory,
+  type TokenPanelData,
+} from "@/components/TokenDetailPanel";
 
 type SourceItem = {
   id: string;
   name: string;
-  category: "ds" | "atom" | "mol" | "ogn" | "page" | "icon";
+  category: "ds" | "component" | "foundation" | "page" | "icon";
   path?: string;
   size?: number;
 };
@@ -16,7 +23,7 @@ type SourceItem = {
 type ResolvedRef = {
   raw: string;
   specName: string | null;
-  category: "atom" | "mol" | "ogn" | null;
+  category: "component" | null;
 };
 
 type SpecDeps = {
@@ -27,32 +34,20 @@ type SpecDeps = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type PreviewData =
-  | { kind: "spec"; name: string; spec: any; ds: any; icons: Record<string, string>; deps?: SpecDeps }
+  | { kind: "spec"; name: string; spec: any; ds: any; icons: Record<string, string>; deps?: SpecDeps; tsx?: string | null }
   | { kind: "icon"; name: string; svg: string }
   | { kind: "ds"; ds: any }
   | null;
 
-const CATEGORY_ORDER = ["atom", "mol", "ogn"] as const;
+const CATEGORY_ORDER = ["component"] as const;
 type Category = (typeof CATEGORY_ORDER)[number];
 
 const CATEGORY_META: Record<Category, { label: string; desc: string; color: string; dot: string }> = {
-  atom: {
-    label: "Atom",
-    desc: "더 이상 쪼갤 수 없는 기본 UI 단위",
+  component: {
+    label: "Component",
+    desc: "디자인 시스템 구성 컴포넌트",
     color: "text-violet-600 bg-violet-50 border-violet-200",
     dot: "bg-violet-500",
-  },
-  mol: {
-    label: "Molecule",
-    desc: "Atom을 조합한 의미 있는 최소 블록",
-    color: "text-sky-600 bg-sky-50 border-sky-200",
-    dot: "bg-sky-500",
-  },
-  ogn: {
-    label: "Organism",
-    desc: "화면을 구성하는 독립적인 섹션 단위",
-    color: "text-emerald-600 bg-emerald-50 border-emerald-200",
-    dot: "bg-emerald-500",
   },
 };
 
@@ -79,26 +74,30 @@ export default function SourcesPage() {
   const pageFilter = searchParams?.get("page") || "";
   const sectionParam = searchParams?.get("s") || "";
 
-  const [topSection, setTopSection] = useState<"foundation" | "components">(
-    sectionParam === "foundation" ? "foundation" : "components"
+  const [topSection, setTopSection] = useState<"foundation" | "components" | "mockup">(
+    sectionParam === "foundation" ? "foundation" : sectionParam === "mockup" ? "mockup" : "components"
   );
+  const [mockupScreens, setMockupScreens] = useState<string[]>([]);
+  const [selectedMockup, setSelectedMockup] = useState<string | null>(null);
   const [items, setItems] = useState<SourceItem[]>([]);
   const [selected, setSelected] = useState<SourceItem | null>(null);
   const [preview, setPreview] = useState<PreviewData>(null);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [search, setSearch] = useState("");
-  const [activeTab, setActiveTab] = useState<Category | "all">("all");
   const [bgId, setBgId] = useState("white");
   const [pageDepsSet, setPageDepsSet] = useState<Set<string> | null>(null);
   const [pageOptions, setPageOptions] = useState<string[]>([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
   const [thumbnailUrls, setThumbnailUrls] = useState<Record<string, string>>({});
+  const [tokenPanel, setTokenPanel] = useState<TokenPanelData | null>(null);
+  const [foundationFocus, setFoundationFocus] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/sources").then(r => r.json()).then(d => setItems(d.items || [])).catch(() => {});
     fetch("/api/scripter/pages-list").then(r => r.json()).then(d => setPageOptions((d.pages || []).map((p: { name: string }) => p.name))).catch(() => {});
     fetch("/api/figma-thumbnails").then(r => r.json()).then(d => setThumbnailUrls(d.urls || {})).catch(() => {});
+    fetch("/api/mockup-list").then(r => r.json()).then(d => setMockupScreens(d.screens || [])).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -116,24 +115,22 @@ export default function SourcesPage() {
       .then(r => r.json())
       .then(d => {
         if (d.error) { setPageDepsSet(null); return; }
-        setPageDepsSet(new Set([d.page, ...d.atom, ...d.mol, ...d.ogn]));
+        setPageDepsSet(new Set([d.page, ...(d.components || [])]));
       }).catch(() => setPageDepsSet(null));
   }, [pageFilter]);
 
   const grouped = useMemo(() => {
-    const base = items.filter(i => ["atom", "mol", "ogn"].includes(i.category));
+    const base = items.filter(i => i.category === "component");
     const q = search.trim().toLowerCase();
     let filtered = q ? base.filter(i => i.name.toLowerCase().includes(q)) : base;
     if (pageDepsSet) filtered = filtered.filter(i => pageDepsSet.has(i.name));
-    const g: Record<string, SourceItem[]> = {};
-    for (const i of filtered) { g[i.category] = g[i.category] || []; g[i.category].push(i); }
+    const g: Record<string, SourceItem[]> = { component: filtered };
     return g;
   }, [items, search, pageDepsSet]);
 
   const listItems = useMemo(() => {
-    if (activeTab === "all") return CATEGORY_ORDER.flatMap(c => grouped[c] || []);
-    return grouped[activeTab] || [];
-  }, [grouped, activeTab]);
+    return grouped["component"] || [];
+  }, [grouped]);
 
   useEffect(() => {
     if (!selected) { setPreview(null); return; }
@@ -148,12 +145,29 @@ export default function SourcesPage() {
   const spec = preview?.kind === "spec" ? preview.spec : null;
   const axes = spec?.variants?.axes ?? [];
 
-  function switchSection(s: "foundation" | "components") {
+  function switchSection(s: "foundation" | "components" | "mockup", focus?: string) {
     setTopSection(s);
+    if (focus) setFoundationFocus(focus);
     const params = new URLSearchParams();
     if (s === "foundation") params.set("s", "foundation");
-    if (pageFilter) params.set("page", pageFilter);
+    if (s === "mockup") params.set("s", "mockup");
+    if (pageFilter && s === "components") params.set("page", pageFilter);
     router.push("/sources" + (params.toString() ? "?" + params.toString() : ""));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function handleTokenClick(tokenPath: string, ds: any) {
+    const chain = buildTokenChain(ds, tokenPath);
+    const type = getTokenType(tokenPath);
+    const foundationCategory = resolveFoundationCategory(chain);
+    const lastStep = chain[chain.length - 1];
+    const resolvedValue = lastStep?.value ?? null;
+    setTokenPanel({ tokenPath, type, foundationCategory, chain, resolvedValue });
+  }
+
+  function handleNavigateFoundation(category: string) {
+    setTokenPanel(null);
+    switchSection("foundation", category);
   }
 
   return (
@@ -161,28 +175,108 @@ export default function SourcesPage() {
 
       {/* ── 상단 섹션 탭 ─────────────────────────────────── */}
       <div className="shrink-0 flex items-center gap-0.5 px-4 pt-3 pb-0 bg-white border-b border-slate-100">
-        {(["foundation", "components"] as const).map(s => {
-          const active = topSection === s;
-          const label = s === "foundation" ? "Foundation" : "Components";
+        {([
+          { id: "foundation", label: "Foundation" },
+          { id: "components", label: "Components" },
+          { id: "mockup",     label: "Mockup", badge: mockupScreens.length || null },
+        ] as const).map(({ id, label, badge }) => {
+          const active = topSection === id;
           return (
             <button
-              key={s}
-              onClick={() => switchSection(s)}
-              className={`px-4 py-2 text-[12px] font-semibold rounded-t-lg transition relative ${
+              key={id}
+              onClick={() => switchSection(id)}
+              className={`px-4 py-2 text-[12px] font-semibold rounded-t-lg transition relative flex items-center gap-1.5 ${
                 active
                   ? "text-slate-900 bg-[#f9fafb] border border-b-0 border-slate-200"
                   : "text-slate-400 hover:text-slate-600"
               }`}
             >
               {label}
+              {badge ? (
+                <span className="px-1.5 py-0.5 rounded-full bg-violet-100 text-violet-600 text-[10px] font-bold leading-none">{badge}</span>
+              ) : null}
             </button>
           );
         })}
       </div>
 
+      {/* ── Mockup 뷰 ────────────────────────────────────── */}
+      {topSection === "mockup" && (
+        <div className="flex-1 flex overflow-hidden">
+          {/* 좌측: 스크린 목록 */}
+          <aside className="w-[240px] shrink-0 bg-white border-r border-slate-100 flex flex-col">
+            <div className="px-4 pt-5 pb-3">
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">make-mockup 출력</p>
+              <p className="text-[11px] text-slate-400">{mockupScreens.length}개 화면</p>
+            </div>
+            <nav className="flex-1 overflow-y-auto px-2 pb-4">
+              {mockupScreens.length === 0 && (
+                <div className="px-3 py-6 text-center text-[11px] text-slate-400">
+                  <p className="font-medium mb-1">HTML 없음</p>
+                  <p className="text-slate-300">/make-mockup 실행 후<br />docs/output/mockup/ 확인</p>
+                </div>
+              )}
+              {mockupScreens.map(name => (
+                <button
+                  key={name}
+                  onClick={() => setSelectedMockup(name)}
+                  className={`w-full text-left flex items-center px-3 py-2 rounded-lg text-[12px] transition ${
+                    selectedMockup === name
+                      ? "bg-slate-900 text-white"
+                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  }`}
+                >
+                  <span className="truncate font-medium font-mono">{name}</span>
+                </button>
+              ))}
+            </nav>
+          </aside>
+
+          {/* 우측: iframe 미리보기 */}
+          <main className="flex-1 flex flex-col overflow-hidden bg-slate-50">
+            {!selectedMockup ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-3 text-slate-400">
+                <svg className="w-10 h-10 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25A2.25 2.25 0 0 1 5.25 3h13.5A2.25 2.25 0 0 1 21 5.25Z" />
+                </svg>
+                <p className="text-[13px]">좌측에서 화면을 선택하세요</p>
+              </div>
+            ) : (
+              <div className="flex-1 flex flex-col">
+                <div className="shrink-0 flex items-center justify-between px-5 py-3 bg-white border-b border-slate-100">
+                  <span className="text-[12px] font-mono font-semibold text-slate-700">{selectedMockup}</span>
+                  <a
+                    href={`/api/mockup-html?name=${encodeURIComponent(selectedMockup)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[11px] text-slate-400 hover:text-violet-600 transition flex items-center gap-1"
+                  >
+                    새 탭으로 열기
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                  </a>
+                </div>
+                <iframe
+                  key={selectedMockup}
+                  src={`/api/mockup-html?name=${encodeURIComponent(selectedMockup)}`}
+                  className="flex-1 border-0 w-full"
+                  title={selectedMockup}
+                />
+              </div>
+            )}
+          </main>
+        </div>
+      )}
+
       {/* ── Foundation 뷰 ────────────────────────────────── */}
       {topSection === "foundation" && (
-        <iframe src="/foundation" className="flex-1 border-0 w-full" />
+        <iframe
+          key={foundationFocus ?? "default"}
+          src={foundationFocus ? `/foundation?focus=${foundationFocus}` : "/foundation"}
+          className="flex-1 border-0 w-full"
+          onLoad={() => setFoundationFocus(null)}
+        />
       )}
 
       {/* ── Components 뷰 ────────────────────────────────── */}
@@ -233,24 +327,9 @@ export default function SourcesPage() {
           )}
         </div>
 
-        {/* 카테고리 탭 */}
-        <div className="px-4 pb-2 flex gap-1">
-          {([["all", "전체"], ...CATEGORY_ORDER.map(c => [c, CATEGORY_META[c].label])] as [string, string][]).map(([id, label]) => {
-            const count = id === "all"
-              ? CATEGORY_ORDER.reduce((n, c) => n + (grouped[c]?.length ?? 0), 0)
-              : grouped[id]?.length ?? 0;
-            const active = activeTab === id;
-            return (
-              <button
-                key={id}
-                onClick={() => setActiveTab(id as Category | "all")}
-                className={`flex-1 py-1.5 rounded-lg text-[11px] font-medium transition ${active ? "bg-slate-900 text-white" : "text-slate-500 hover:bg-slate-100"}`}
-              >
-                {label}
-                <span className={`ml-1 text-[10px] ${active ? "text-slate-300" : "text-slate-400"}`}>{count}</span>
-              </button>
-            );
-          })}
+        {/* 컴포넌트 수 */}
+        <div className="px-4 pb-2">
+          <span className="text-[11px] text-slate-400">{grouped["component"]?.length ?? 0}개 컴포넌트</span>
         </div>
 
         {/* 컴포넌트 목록 */}
@@ -258,23 +337,7 @@ export default function SourcesPage() {
           {listItems.length === 0 && (
             <div className="px-3 py-6 text-center text-[11px] text-slate-400">컴포넌트 없음</div>
           )}
-          {activeTab === "all"
-            ? CATEGORY_ORDER.map(cat => {
-                const list = grouped[cat];
-                if (!list?.length) return null;
-                const meta = CATEGORY_META[cat];
-                return (
-                  <div key={cat} className="mb-3">
-                    <div className="flex items-center gap-1.5 px-2 py-1.5">
-                      <span className={`w-1.5 h-1.5 rounded-full ${meta.dot}`} />
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">{meta.label}</span>
-                    </div>
-                    {list.map(it => <NavItem key={it.id} item={it} active={selected?.id === it.id} onClick={() => setSelected(it)} />)}
-                  </div>
-                );
-              })
-            : listItems.map(it => <NavItem key={it.id} item={it} active={selected?.id === it.id} onClick={() => setSelected(it)} />)
-          }
+          {listItems.map(it => <NavItem key={it.id} item={it} active={selected?.id === it.id} onClick={() => setSelected(it)} />)}
         </nav>
       </aside>
 
@@ -291,7 +354,7 @@ export default function SourcesPage() {
 
             {CATEGORY_ORDER.filter(c => (grouped[c]?.length ?? 0) > 0).map(cat => {
               const list = grouped[cat];
-              const meta = CATEGORY_META[cat];
+              const meta = CATEGORY_META[cat as Category];
               return (
                 <section key={cat} className="mb-12">
                   <div className="flex items-baseline gap-3 mb-4">
@@ -427,18 +490,17 @@ export default function SourcesPage() {
                   </Section>
                 )}
 
-                {/* 구성 요소 관계 */}
-                {preview.kind === "spec" && preview.deps && (["mol", "ogn"].includes(selected.category) || preview.deps.usedBy.length > 0) && (
-                  <DepsSection deps={preview.deps} onSelect={(name) => {
-                    const found = items.find(i => i.name === name);
-                    if (found) setSelected(found);
-                  }} />
-                )}
-
                 {/* Spec JSON */}
                 {preview.kind === "spec" && (
                   <Section title="Spec JSON">
                     <SpecCodeBlock spec={preview.spec} specName={selected.id.replace(/^spec:/, "")} />
+                  </Section>
+                )}
+
+                {/* TSX */}
+                {preview.kind === "spec" && (
+                  <Section title="TSX">
+                    <TsxCodeBlock tsx={preview.tsx ?? null} specName={selected.id.replace(/^spec:/, "")} />
                   </Section>
                 )}
               </>
@@ -451,6 +513,12 @@ export default function SourcesPage() {
       </main>
     </div>
     )}
+      {/* ── Token Detail Panel (fixed, 전체 페이지 기준) ── */}
+      <TokenDetailPanel
+        data={tokenPanel}
+        onClose={() => setTokenPanel(null)}
+        onNavigateFoundation={handleNavigateFoundation}
+      />
     </div>
   );
 }
@@ -470,7 +538,7 @@ function NavItem({ item, active, onClick }: { item: SourceItem; active: boolean;
 }
 
 function ComponentCard({ item, cat, thumbUrl, onClick }: { item: SourceItem; cat: string; thumbUrl?: string; onClick: () => void }) {
-  const meta = CATEGORY_META[cat as Category];
+  const meta = CATEGORY_META[cat as Category] ?? CATEGORY_META.component;
   return (
     <button
       onClick={onClick}
@@ -492,105 +560,6 @@ function ComponentCard({ item, cat, thumbUrl, onClick }: { item: SourceItem; cat
       <div className="font-semibold text-[13px] text-slate-800 truncate">{shortName(item.name)}</div>
       <div className="mt-0.5 text-[11px] font-mono text-slate-400 truncate">{item.name}</div>
     </button>
-  );
-}
-
-const REF_CAT_STYLE: Record<string, string> = {
-  atom: "bg-violet-50 text-violet-700 border-violet-200",
-  mol: "bg-sky-50 text-sky-700 border-sky-200",
-  ogn: "bg-emerald-50 text-emerald-700 border-emerald-200",
-};
-
-const TOKEN_PREFIX_STYLE: Record<string, string> = {
-  foundation: "bg-amber-50 text-amber-700 border-amber-200",
-  component: "bg-rose-50 text-rose-700 border-rose-200",
-  semantic: "bg-teal-50 text-teal-700 border-teal-200",
-};
-
-function DepsSection({ deps, onSelect }: { deps: SpecDeps; onSelect: (name: string) => void }) {
-  const tokensByPrefix: Record<string, string[]> = {};
-  for (const t of deps.tokens) {
-    const prefix = t.split(".")[0];
-    tokensByPrefix[prefix] = tokensByPrefix[prefix] || [];
-    if (!tokensByPrefix[prefix].includes(t)) tokensByPrefix[prefix].push(t);
-  }
-
-  const hasRefs = deps.refs.length > 0;
-  const hasTokens = deps.tokens.length > 0;
-  const hasUsedBy = deps.usedBy.length > 0;
-  if (!hasRefs && !hasTokens && !hasUsedBy) return null;
-
-  return (
-    <Section title="구성 요소">
-      <div className="space-y-4">
-        {hasRefs && (
-          <div>
-            <p className="text-[11px] font-semibold text-slate-500 mb-2 uppercase tracking-wide">사용하는 컴포넌트</p>
-            <div className="flex flex-wrap gap-2">
-              {deps.refs.map((ref) => {
-                const catStyle = ref.category ? REF_CAT_STYLE[ref.category] : "bg-slate-100 text-slate-500 border-slate-200";
-                const label = ref.specName ? ref.specName.split("/")[1] : ref.raw.replace(/^\./, "");
-                const tier = ref.specName ? ref.specName.split("/")[0] : null;
-                return (
-                  <button
-                    key={ref.raw}
-                    onClick={() => ref.specName && onSelect(ref.specName)}
-                    disabled={!ref.specName}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-medium transition ${catStyle} ${ref.specName ? "hover:opacity-80 cursor-pointer" : "opacity-50 cursor-default"}`}
-                  >
-                    {tier && <span className="text-[9px] font-bold uppercase opacity-60">{tier}</span>}
-                    <span className="font-mono">{label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {hasTokens && (
-          <div>
-            <p className="text-[11px] font-semibold text-slate-500 mb-2 uppercase tracking-wide">사용하는 디자인 토큰</p>
-            <div className="space-y-2">
-              {Object.entries(tokensByPrefix).map(([prefix, toks]) => (
-                <div key={prefix}>
-                  <span className={`inline-block mb-1.5 px-2 py-0.5 rounded-md border text-[10px] font-bold uppercase tracking-wide ${TOKEN_PREFIX_STYLE[prefix] ?? "bg-slate-100 text-slate-500 border-slate-200"}`}>{prefix}</span>
-                  <div className="flex flex-wrap gap-1">
-                    {toks.map(t => (
-                      <span key={t} className={`px-2 py-0.5 rounded-md border text-[10px] font-mono ${TOKEN_PREFIX_STYLE[prefix] ?? "bg-slate-100 text-slate-500 border-slate-200"}`}>
-                        {t.split(".").slice(1).join(".")}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {hasUsedBy && (
-          <div>
-            <p className="text-[11px] font-semibold text-slate-500 mb-2 uppercase tracking-wide">이 컴포넌트를 사용하는</p>
-            <div className="flex flex-wrap gap-2">
-              {deps.usedBy.map((name) => {
-                const tier = name.split("/")[0];
-                const label = name.split("/")[1];
-                const catStyle = REF_CAT_STYLE[tier] ?? "bg-slate-100 text-slate-500 border-slate-200";
-                return (
-                  <button
-                    key={name}
-                    onClick={() => onSelect(name)}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-medium transition hover:opacity-80 ${catStyle}`}
-                  >
-                    <span className="text-[9px] font-bold uppercase opacity-60">{tier}</span>
-                    <span className="font-mono">{label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
-    </Section>
   );
 }
 
@@ -686,6 +655,47 @@ function SpecCodeBlock({ spec, specName }: { spec: any; specName: string }) {
       )}
       <pre className="p-4 text-[11px] font-mono text-slate-300 overflow-x-auto leading-relaxed">
         {collapsed ? preview + (lines.length > 12 ? "\n  …" : "") : json}
+      </pre>
+    </div>
+  );
+}
+
+function TsxCodeBlock({ tsx, specName }: { tsx: string | null; specName: string }) {
+  const [collapsed, setCollapsed] = useState(true);
+
+  if (!tsx) {
+    return (
+      <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 flex items-center gap-3">
+        <span className="text-slate-400 text-[20px]">·</span>
+        <div>
+          <p className="text-[12px] text-slate-500 font-medium">TSX 미생성</p>
+          <p className="text-[11px] text-slate-400 font-mono mt-0.5">/make-cmp {specName.split("/").pop()} 실행 후 나타납니다</p>
+        </div>
+      </div>
+    );
+  }
+
+  const lines = tsx.split("\n");
+  const preview = lines.slice(0, 14).join("\n");
+
+  return (
+    <div className="rounded-xl border border-slate-200 overflow-hidden bg-slate-950">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-slate-800">
+        <span className="text-[11px] text-slate-400 font-mono">{specName.split("/").pop()}.tsx</span>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] px-2 py-0.5 rounded-md bg-sky-900 text-sky-400 border border-sky-700 font-semibold">TSX</span>
+          <button
+            onClick={() => navigator.clipboard?.writeText(tsx)}
+            className="text-[11px] text-slate-400 hover:text-slate-200 transition px-2 py-0.5 rounded hover:bg-slate-800"
+          >복사</button>
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="text-[11px] text-slate-400 hover:text-slate-200 transition px-2 py-0.5 rounded hover:bg-slate-800"
+          >{collapsed ? "전체 보기" : "접기"}</button>
+        </div>
+      </div>
+      <pre className="p-4 text-[11px] font-mono text-slate-300 overflow-x-auto leading-relaxed">
+        {collapsed ? preview + (lines.length > 14 ? "\n  …" : "") : tsx}
       </pre>
     </div>
   );

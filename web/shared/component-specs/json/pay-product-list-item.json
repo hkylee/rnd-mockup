@@ -1,0 +1,59 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "pay-product-list-item",
+  "category": "ogn",
+  "description": "결제 상품 리스트 아이템.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 12.0,
+      "paddingBottom": 8.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "local-listitem",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 12.0,
+          "width": 329
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-thumbnailitem",
+            "component": ".Thumbnailitem"
+          },
+          {
+            "kind": "group",
+            "id": "text",
+            "layout": {
+              "mode": "VERTICAL",
+              "itemSpacing": 8.0
+            }
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "-buttontextunderline",
+        "component": ".Buttontextunderline"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Pay",
+          "Cart"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:120622",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

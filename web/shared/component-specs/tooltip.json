@@ -1,0 +1,64 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "tooltip",
+  "category": "mol",
+  "description": "툴팁. Direction(Left/Center/Right).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "bubble",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 10.0,
+          "paddingTop": 6.0,
+          "paddingRight": 12.0,
+          "paddingBottom": 6.0,
+          "paddingLeft": 12.0,
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER"
+        },
+        "visual": {
+          "cornerRadius": 9999.0,
+          "fill": "#ffffff"
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "선물가-14900원",
+            "content": "선물가 14,900원",
+            "exposeAs": "선물가-14900원"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "tail",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 10.0,
+          "paddingRight": 20.0,
+          "paddingLeft": 20.0
+        }
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Direction",
+        "values": [
+          "Left",
+          "Center",
+          "Right"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22237",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

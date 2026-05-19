@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PR-MBR-CS-001-03 본인인증</title>
+  <style>
+    :root {
+      --color-fill-brand:        #3617CE;
+      --color-fill-brand-hover:  #4D2EE0;
+      --color-fill-brand-dim:    #EAE6FB;
+      --color-text-primary:      #05001A;
+      --color-text-secondary:    #5E6085;
+      --color-text-subtle:       #B4C0DE;
+      --color-text-white:        #FFFFFF;
+      --color-bg-page:           #F4F5FA;
+      --color-bg-elevated:       #FFFFFF;
+      --color-border:            #E2E6F1;
+      --color-border-strong:     #D2D9EB;
+      --color-danger:            #E42939;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, 'Pretendard', sans-serif;
+      background: #e8eaf0;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px 0 48px; gap: 16px;
+    }
+    .case-tabs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .case-tabs button {
+      padding: 6px 14px; border-radius: 20px;
+      border: 1.5px solid var(--color-border-strong);
+      background: #fff; color: var(--color-text-secondary);
+      font-size: 13px; font-weight: 500; cursor: pointer;
+    }
+    .case-tabs button.active { background: var(--color-fill-brand); border-color: var(--color-fill-brand); color: #fff; }
+    .phone-frame {
+      width: 375px; min-height: 812px; background: var(--color-bg-page);
+      border-radius: 40px; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      display: none; flex-direction: column;
+    }
+    .phone-frame.active { display: flex; }
+    .status-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 24px 18px; background: var(--color-bg-elevated);
+      font-size: 12px; font-weight: 600; color: var(--color-text-primary); flex-shrink: 0;
+    }
+    .status-bar .time { font-size: 15px; font-weight: 700; }
+    .status-bar .icons { display: flex; gap: 6px; }
+    .app-bar {
+      display: flex; align-items: center; padding: 10px 20px;
+      background: var(--color-bg-elevated); gap: 8px; flex-shrink: 0;
+    }
+    .app-bar .back-btn { width: 24px; height: 24px; display: flex; align-items: center; }
+    .app-bar .title {
+      flex: 1; font-size: 17px; font-weight: 700;
+      color: var(--color-text-primary); text-align: center; margin-right: 32px;
+    }
+    .progress-wrap { background: var(--color-bg-elevated); padding: 0 20px 16px; }
+    .progress-track { height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 2px; background: var(--color-fill-brand); }
+    .progress-label { font-size: 12px; color: var(--color-text-subtle); margin-top: 6px; text-align: right; }
+
+    /* Tab Underline */
+    /* tab-underline.tsx: display flex, flex-direction row, width 100%, background #ffffff */
+    .tab-underline {
+      display: flex; flex-direction: row; width: 100%;
+      background: var(--color-bg-elevated);
+      border-bottom: 1px solid var(--color-border);
+      flex-shrink: 0;
+    }
+    .tab-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      padding: 12px 8px; cursor: pointer; position: relative;
+    }
+    .tab-item .tab-label {
+      font-size: 14px; font-weight: 500; color: var(--color-text-subtle);
+    }
+    .tab-item.active .tab-label { color: var(--color-fill-brand); font-weight: 700; }
+    .tab-item::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+      height: 2px; background: transparent; border-radius: 2px;
+    }
+    .tab-item.active::after { background: var(--color-fill-brand); }
+
+    /* Content */
+    .content { flex: 1; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+    .section-title { font-size: 20px; font-weight: 700; color: var(--color-text-primary); line-height: 1.4; }
+    .section-sub { font-size: 14px; color: var(--color-text-secondary); margin-top: 6px; }
+
+    /* Field */
+    .field-group { display: flex; flex-direction: column; gap: 8px; }
+    .field-label { font-size: 13px; font-weight: 600; color: var(--color-text-primary); }
+    .field-row { display: flex; gap: 8px; align-items: flex-start; }
+    .field-input {
+      flex: 1; padding: 14px 16px;
+      border: 1.5px solid var(--color-border);
+      border-radius: 10px; background: var(--color-bg-elevated);
+      font-size: 15px; color: var(--color-text-primary); outline: none; font-family: inherit;
+    }
+    .field-input.focused { border-color: var(--color-fill-brand); }
+    .field-input.typed { border-color: var(--color-border-strong); }
+    .field-input.error { border-color: var(--color-danger); }
+    .field-input::placeholder { color: var(--color-text-subtle); }
+    .field-help { font-size: 12px; color: var(--color-text-secondary); }
+    .field-help.error { color: var(--color-danger); }
+    .field-help.success { color: #00B14F; }
+
+    /* Request Button (secondary style) */
+    .req-btn {
+      padding: 14px 16px; white-space: nowrap; flex-shrink: 0;
+      background: var(--color-fill-brand-dim);
+      color: var(--color-fill-brand);
+      border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    .req-btn.disabled { background: var(--color-border); color: var(--color-text-subtle); cursor: not-allowed; }
+
+    /* Timer */
+    .timer-badge {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; font-weight: 600; color: var(--color-danger);
+    }
+    .field-input-wrap { position: relative; }
+
+    /* Carrier Select */
+    .carrier-wrap { display: flex; flex-direction: column; gap: 8px; }
+    .carrier-label { font-size: 13px; font-weight: 600; color: var(--color-text-primary); }
+    .carrier-select {
+      width: 100%; padding: 14px 16px;
+      border: 1.5px solid var(--color-border); border-radius: 10px;
+      background: var(--color-bg-elevated); font-size: 15px; color: var(--color-text-secondary);
+      appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235E6085' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; font-family: inherit;
+    }
+
+    /* PASS / 공동인증서 placeholder */
+    .pass-box {
+      background: var(--color-bg-elevated); border-radius: 12px; padding: 40px 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      text-align: center;
+    }
+    .pass-icon { width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+    .pass-name { font-size: 16px; font-weight: 700; color: var(--color-text-primary); }
+    .pass-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+    .pass-launch-btn {
+      margin-top: 8px; padding: 14px 32px;
+      background: var(--color-fill-brand); border-radius: 9999px;
+      color: #fff; font-size: 15px; font-weight: 700; border: none; cursor: pointer;
+    }
+
+    /* CTA */
+    .cta-wrap { padding: 12px 20px 28px; background: var(--color-bg-elevated); flex-shrink: 0; }
+    .cta-btn {
+      display: flex; justify-content: center; align-items: center;
+      width: 100%; padding: 16px; background: var(--color-fill-brand); border-radius: 9999px;
+      color: var(--color-text-white); font-size: 16px; font-weight: 700; cursor: pointer; border: none;
+    }
+    .cta-btn.disabled { background: var(--color-border); color: var(--color-text-subtle); cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <div class="case-tabs">
+    <button class="active" onclick="showCase('0')">Case 0 · 휴대폰 인증</button>
+    <button onclick="showCase('1')">Case 1 · 인증번호 입력</button>
+    <button onclick="showCase('2')">Case 2 · PASS</button>
+    <button onclick="showCase('3')">Case 3 · 공동인증서</button>
+  </div>
+
+  <!-- ═══════════════ Case 0 — 휴대폰 인증 ═══════════════ -->
+  <div class="phone-frame active" id="case-0">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">본인인증</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+      <div class="progress-label">3 / 3</div>
+    </div>
+
+    <!-- Tab Underline -->
+    <div class="tab-underline">
+      <div class="tab-item active"><div class="tab-label">휴대폰</div></div>
+      <div class="tab-item"><div class="tab-label">PASS</div></div>
+      <div class="tab-item"><div class="tab-label">공동인증서</div></div>
+    </div>
+
+    <div class="content">
+      <div>
+        <div class="section-title">휴대폰으로<br>본인인증을 해주세요</div>
+        <div class="section-sub">등록된 휴대폰 번호로 인증번호가 전송됩니다</div>
+      </div>
+
+      <div class="carrier-wrap">
+        <div class="carrier-label">통신사</div>
+        <select class="carrier-select">
+          <option value="" disabled selected>통신사 선택</option>
+          <option>SKT</option><option>KT</option><option>LG U+</option>
+          <option>SKT 알뜰폰</option><option>KT 알뜰폰</option><option>LG U+ 알뜰폰</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">연락처</div>
+        <div class="field-row">
+          <input class="field-input" placeholder="010-0000-0000" type="tel">
+          <button class="req-btn disabled">인증요청</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="cta-btn disabled">인증 완료</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ Case 1 — 인증번호 입력 ═══════════════ -->
+  <div class="phone-frame" id="case-1">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">본인인증</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+      <div class="progress-label">3 / 3</div>
+    </div>
+    <div class="tab-underline">
+      <div class="tab-item active"><div class="tab-label">휴대폰</div></div>
+      <div class="tab-item"><div class="tab-label">PASS</div></div>
+      <div class="tab-item"><div class="tab-label">공동인증서</div></div>
+    </div>
+
+    <div class="content">
+      <div>
+        <div class="section-title">인증번호를<br>입력해 주세요</div>
+        <div class="section-sub">010-1234-5678 로 인증번호를 보냈습니다</div>
+      </div>
+
+      <div class="carrier-wrap">
+        <div class="carrier-label">통신사</div>
+        <select class="carrier-select" disabled>
+          <option selected>SKT</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">연락처</div>
+        <div class="field-row">
+          <input class="field-input typed" value="010-1234-5678" type="tel" readonly>
+          <button class="req-btn">재전송</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">인증번호</div>
+        <div class="field-input-wrap">
+          <input class="field-input focused" placeholder="인증번호 6자리" type="tel" style="padding-right:56px">
+          <div class="timer-badge">02:47</div>
+        </div>
+        <div class="field-help">인증번호 유효시간 3분</div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="cta-btn disabled">인증 완료</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ Case 2 — PASS ═══════════════ -->
+  <div class="phone-frame" id="case-2">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">본인인증</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+      <div class="progress-label">3 / 3</div>
+    </div>
+    <div class="tab-underline">
+      <div class="tab-item"><div class="tab-label">휴대폰</div></div>
+      <div class="tab-item active"><div class="tab-label">PASS</div></div>
+      <div class="tab-item"><div class="tab-label">공동인증서</div></div>
+    </div>
+
+    <div class="content">
+      <div class="pass-box" style="margin-top:20px">
+        <div class="pass-icon" style="background:#EAE6FB">🔐</div>
+        <div class="pass-name">PASS 앱 인증</div>
+        <div class="pass-desc">PASS 앱이 설치된 경우 앱이 실행됩니다.<br>생체인증(지문/얼굴)으로 간편하게 본인인증을 완료하세요.</div>
+        <button class="pass-launch-btn">PASS 앱으로 인증</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ Case 3 — 공동인증서 ═══════════════ -->
+  <div class="phone-frame" id="case-3">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">본인인증</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+      <div class="progress-label">3 / 3</div>
+    </div>
+    <div class="tab-underline">
+      <div class="tab-item"><div class="tab-label">휴대폰</div></div>
+      <div class="tab-item"><div class="tab-label">PASS</div></div>
+      <div class="tab-item active"><div class="tab-label">공동인증서</div></div>
+    </div>
+
+    <div class="content">
+      <div class="pass-box" style="margin-top:20px">
+        <div class="pass-icon" style="background:#F4F5FA">📜</div>
+        <div class="pass-name">공동인증서 인증</div>
+        <div class="pass-desc">공동인증서(구 공인인증서)를 사용하여<br>본인인증을 진행합니다.<br>인증서가 저장된 위치를 선택해 주세요.</div>
+        <button class="pass-launch-btn">인증서 선택</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showCase(id) {
+      document.querySelectorAll('.phone-frame').forEach(f => f.classList.remove('active'));
+      document.querySelectorAll('.case-tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById('case-' + id).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

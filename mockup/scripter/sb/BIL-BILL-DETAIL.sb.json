@@ -1,0 +1,108 @@
+{
+  "screenId": "BIL-BILL-DETAIL",
+  "screenName": "청구 상세",
+  "screenPath": "page/BIL/bill-detail",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/bill-detail",
+    "spec_input": "specs-input/BIL-bill-check.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-month-picker",
+      "sectionName": "월 선택기",
+      "sectionDescription": "사용자가 조회할 기준 월을 선택한다. 과거 최대 12개월까지 선택 가능",
+      "container": "horizontal",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "당월로 fallback",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "mol/month-picker",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 월 선택기\n[규칙:FN-CHK-002] 최근 12개월 범위 내에서 월 선택이 가능하다\n[조건:최대범위초과] 이전 버튼 비활성화, \"조회 가능 범위를 초과했습니다\" 안내\n[조건:당월] 다음 버튼 비활성화\n[액션:tap 이전월] 이전 월 데이터 로드\n[액션:tap 다음월] 다음 월 데이터 로드\n[액션:tap 월선택드롭다운] 월 선택 모달 노출",
+      "label": "기능 1: 월 선택기"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-bill-detail-items",
+      "sectionName": "청구 상세 내역",
+      "sectionDescription": "선택한 월의 항목별 상세 청구 내역을 분류 순으로 표시",
+      "container": "vertical",
+      "displayCount": {
+        "min": "N",
+        "max": "N"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김 + snack-bar",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-bill-item",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 청구 상세 내역\n[규칙:FN-CHK-002] 요금제·부가서비스·기기할부·콘텐츠이용료를 분류별로 노출한다\n[규칙:FN-CHK-003] 할인 항목은 별도 행으로 표시하며 금액 앞에 '-' 부호를 붙인다\n[규칙:FN-COM-007] 항목 합계와 청구 총액이 일치하는지 클라이언트에서 검증한다\n[조건:항목없음] \"상세 내역이 없습니다\" empty 안내\n[상태:loading] skeleton 표시\n[상태:empty] 안내 문구 표시\n[상태:error] snack-bar 재시도 안내\n[액션:tap 항목행] 항목 상세 설명 bottom-sheet 노출\n[액션:tap 요금안내서] bill-guide 화면으로 이동",
+      "label": "기능 2: 청구 상세 내역"
+    },
+    {
+      "no": 3,
+      "kind": "body",
+      "sectionId": "section-BIL-bill-notice",
+      "sectionName": "고지 공지",
+      "sectionDescription": "청구 관련 공지사항(부가세 포함 안내, 조정 금액 등)을 info 카드로 표시",
+      "container": "vertical",
+      "displayCount": {
+        "min": "0",
+        "max": "N"
+      },
+      "displayPriority": 3,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 고지 공지\n[규칙:FN-CHK-002] 서버가 전달하는 공지 항목만 조건부 노출한다\n[조건:공지없음] 영역 숨김\n[상태:error] 영역 숨김 (공지 오류는 UX에 영향 없음)\n[액션:tap 자세히보기] 공지 링크 페이지로 이동",
+      "label": "기능 3: 고지 공지"
+    }
+  ]
+}

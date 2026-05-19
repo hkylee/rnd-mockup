@@ -1,0 +1,47 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "image",
+  "category": "atom",
+  "description": "이미지 컴포넌트. Type(Card/Banner/circle), 다양한 크기.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 10.0
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "img"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Card",
+          "Banner",
+          "circle"
+        ]
+      },
+      {
+        "name": "Size",
+        "values": [
+          "40*58",
+          "82*62",
+          "393*310",
+          "16*16"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23708",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

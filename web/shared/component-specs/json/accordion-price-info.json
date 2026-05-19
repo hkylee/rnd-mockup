@@ -1,0 +1,76 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "accordion-price-info",
+  "category": "ogn",
+  "description": "가격 정보 아코디언.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 16.0,
+      "paddingTop": 24.0,
+      "paddingRight": 24.0,
+      "paddingBottom": 24.0,
+      "paddingLeft": 24.0
+    },
+    "visual": {
+      "cornerRadius": 20.0,
+      "fill": "#ffffff",
+      "stroke": "#ebeef6",
+      "strokeWidth": 1.5
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "titleaccordion",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 126.0,
+          "primaryAxisAlignItems": "SPACE_BETWEEN",
+          "counterAxisAlignItems": "CENTER",
+          "width": 321
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "txt-price",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "counterAxisAlignItems": "CENTER",
+              "width": 193
+            }
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247824",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 4.0,
+              "counterAxisAlignItems": "CENTER"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "States",
+        "values": [
+          "Default",
+          "Open"
+        ]
+      },
+      {
+        "name": "Type",
+        "values": [
+          "SelectedList",
+          "TextList"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:120468",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

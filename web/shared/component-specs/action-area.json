@@ -1,0 +1,117 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "action-area",
+  "category": "mol",
+  "description": "액션 영역. Type(Default/Ai/Gift), Button 수 조합.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "width": "FILL",
+      "itemSpacing": 10.0,
+      "paddingTop": 10.0,
+      "paddingRight": 12.0,
+      "paddingBottom": 36.0,
+      "paddingLeft": 12.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "fill": "#ffffff",
+      "stroke": "#f4f5fa",
+      "strokeWidth": 1.0
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "txt",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 10.0,
+          "paddingTop": 8.0,
+          "paddingBottom": 8.0,
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "텍스트",
+            "content": "텍스트",
+            "exposeAs": "텍스트"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "button",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 10.0,
+          "paddingRight": 32.0,
+          "paddingLeft": 32.0,
+          "primaryAxisAlignItems": "SPACE_BETWEEN",
+          "counterAxisAlignItems": "CENTER"
+        },
+        "visual": {
+          "cornerRadius": 20.0,
+          "fill": "#3617ce"
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "ai",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 20.0,
+              "counterAxisAlignItems": "CENTER"
+            }
+          },
+          {
+            "kind": "group",
+            "id": "button-text",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 20.0,
+              "counterAxisAlignItems": "CENTER"
+            },
+            "children": [
+              {
+                "kind": "text",
+                "id": "텍스트",
+                "content": "텍스트",
+                "exposeAs": "텍스트"
+              },
+              {
+                "kind": "text",
+                "id": "텍스트",
+                "content": "텍스트",
+                "exposeAs": "텍스트"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Default",
+          "Ai",
+          "Gift"
+        ]
+      },
+      {
+        "name": "Button",
+        "values": [
+          "1",
+          "2"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22061",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

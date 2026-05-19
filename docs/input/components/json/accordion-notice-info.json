@@ -1,0 +1,58 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "accordion-notice-info",
+  "category": "ogn",
+  "description": "공지 아코디언.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "paddingTop": 20.0,
+      "paddingBottom": 20.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "title",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 40.0,
+          "primaryAxisAlignItems": "SPACE_BETWEEN",
+          "counterAxisAlignItems": "CENTER",
+          "width": 329
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "txt",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 2.0,
+              "counterAxisAlignItems": "CENTER",
+              "width": 313
+            }
+          },
+          {
+            "kind": "ref",
+            "id": "-ico",
+            "component": ".Ico"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "State",
+        "values": [
+          "Close",
+          "Open"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:119115",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

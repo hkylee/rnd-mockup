@@ -1,0 +1,59 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "option-list-item",
+  "category": "mol",
+  "description": "옵션 리스트 아이템. Type(Module/List), States(Selected/Default).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 8.0,
+      "paddingTop": 24.0,
+      "paddingRight": 32.0,
+      "paddingBottom": 24.0,
+      "paddingLeft": 32.0,
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 20.0,
+      "fill": "#ffffff",
+      "stroke": "#3617ce",
+      "strokeWidth": 1.5
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "코발트-바이올렛",
+        "content": "코발트 바이올렛",
+        "exposeAs": "코발트-바이올렛"
+      },
+      {
+        "kind": "text",
+        "id": "평일-기준-18시-주문까지-가능",
+        "content": "평일 기준\n18시 주문까지 가능",
+        "exposeAs": "평일-기준-18시-주문까지-가능"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Module",
+          "List"
+        ]
+      },
+      {
+        "name": "States",
+        "values": [
+          "Selected",
+          "Default"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23759",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

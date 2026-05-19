@@ -1,0 +1,189 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "footer",
+  "category": "ogn",
+  "description": "푸터. Type 01/02.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "width": "FILL",
+      "itemSpacing": 30.0,
+      "paddingTop": 32.0,
+      "paddingRight": 32.0,
+      "paddingBottom": 120.0,
+      "paddingLeft": 32.0
+    },
+    "visual": {
+      "fill": "#f4f5fa"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "button-text-group",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 8.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "이용약관",
+            "content": "이용약관",
+            "exposeAs": "이용약관"
+          },
+          {
+            "kind": "text",
+            "id": "전자금융거래래-이용약관",
+            "content": "전자금융거래래 이용약관",
+            "exposeAs": "전자금융거래래-이용약관"
+          },
+          {
+            "kind": "text",
+            "id": "개인정보처리방침",
+            "content": "개인정보처리방침",
+            "exposeAs": "개인정보처리방침"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "info-group",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 4.0
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "frame-2147247976",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER"
+            },
+            "children": [
+              {
+                "kind": "text",
+                "id": "사업자-sk플래닛주",
+                "content": "사업자: SK플래닛(주)",
+                "exposeAs": "사업자-sk플래닛주"
+              },
+              {
+                "kind": "text",
+                "id": "대표-유재욱",
+                "content": "대표 : 유재욱",
+                "exposeAs": "대표-유재욱"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247977",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER"
+            },
+            "children": [
+              {
+                "kind": "text",
+                "id": "사업자등록번호-815-81-01244",
+                "content": "사업자등록번호 : 815-81-01244",
+                "exposeAs": "사업자등록번호-815-81-01244"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247978",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER"
+            },
+            "children": [
+              {
+                "kind": "text",
+                "id": "경기도-성남시-분당구-판교로-264삼평동",
+                "content": "경기도 성남시 분당구 판교로 264(삼평동)",
+                "exposeAs": "경기도-성남시-분당구-판교로-264삼평동"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247979",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER"
+            },
+            "children": [
+              {
+                "kind": "text",
+                "id": "통신판매매업신고-2014-경기성남-0036",
+                "content": "통신판매매업신고 : 2014-경기성남-0036",
+                "exposeAs": "통신판매매업신고-2014-경기성남-0036"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247980",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER"
+            },
+            "children": [
+              {
+                "kind": "text",
+                "id": "전화-1800-0133",
+                "content": "전화 : 1800-0133",
+                "exposeAs": "전화-1800-0133"
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "frame-2147247981",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 8.0,
+              "counterAxisAlignItems": "CENTER"
+            },
+            "children": [
+              {
+                "kind": "text",
+                "id": "gifticonskplanetcom",
+                "content": "gifticon@skplanet.com",
+                "exposeAs": "gifticonskplanetcom"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "text",
+        "id": "copyright-sk-planet-all-rights-reserved",
+        "content": "Copyright ©️ SK Planet All Rights Reserved",
+        "exposeAs": "copyright-sk-planet-all-rights-reserved"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "01",
+          "02"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23799",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

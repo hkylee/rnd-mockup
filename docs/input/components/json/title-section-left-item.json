@@ -1,0 +1,42 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "title-section-left-item",
+  "category": "mol",
+  "description": "title-section-left-item 컴포넌트.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "paddingTop": 1.0,
+      "paddingBottom": 1.0,
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "2",
+        "content": "2",
+        "exposeAs": "2"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Text",
+          "Icon",
+          "Badge"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118492",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

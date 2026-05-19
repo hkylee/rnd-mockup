@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genui 컴포넌트 파이프라인 플랜</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brand: #6366f1;
+    --brand-light: #eef2ff;
+    --green: #10b981;
+    --green-light: #ecfdf5;
+    --orange: #f59e0b;
+    --orange-light: #fffbeb;
+    --blue: #3b82f6;
+    --blue-light: #eff6ff;
+    --red: #ef4444;
+    --red-light: #fef2f2;
+    --gray: #64748b;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-2: #475569;
+    --text-3: #94a3b8;
+    --code-bg: #0f172a;
+  }
+
+  html, body {
+    font-family: "Pretendard", "Apple SD Gothic Neo", system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--code-bg);
+    color: #f1f5f9;
+    padding: 32px 48px 28px;
+    border-bottom: 3px solid var(--brand);
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 10px;
+  }
+  .header-meta {
+    font-size: 13px;
+    color: #94a3b8;
+    display: flex;
+    gap: 20px;
+  }
+  .header-meta span::before { content: "· "; }
+
+  /* ── Layout ── */
+  .body {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  /* ── Section ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .section-body {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.8;
+  }
+  .section-body p + p { margin-top: 10px; }
+
+  /* ── Card ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .card + .card { margin-top: 12px; }
+
+  /* ── Problem / Solution rows ── */
+  .ps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .ps-card {
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+  .ps-card.problem {
+    background: var(--red-light);
+    border: 1px solid #fecaca;
+  }
+  .ps-card.solution {
+    background: var(--green-light);
+    border: 1px solid #a7f3d0;
+  }
+  .ps-card-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .ps-card.problem .ps-card-label { color: var(--red); }
+  .ps-card.solution .ps-card-label { color: var(--green); }
+  .ps-card ul { padding-left: 16px; }
+  .ps-card li {
+    font-size: 13px;
+    color: var(--text-2);
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+
+  /* ── Workflow Diagram ── */
+  .workflow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 8px;
+  }
+
+  .wf-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .wf-step {
+    flex: 1;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    position: relative;
+  }
+  .wf-step.done   { border-color: var(--green);  background: var(--green-light); }
+  .wf-step.active { border-color: var(--brand);  background: var(--brand-light); box-shadow: 0 0 0 3px #c7d2fe; }
+  .wf-step.plan   { border-color: var(--orange); background: var(--orange-light); }
+  .wf-step.future { border-color: var(--border); background: #f8fafc; }
+
+  .wf-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 99px;
+    margin-bottom: 8px;
+  }
+  .done   .wf-badge { background: #d1fae5; color: #065f46; }
+  .active .wf-badge { background: #c7d2fe; color: #3730a3; }
+  .plan   .wf-badge { background: #fde68a; color: #92400e; }
+  .future .wf-badge { background: #e2e8f0; color: #475569; }
+
+  .wf-step-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .wf-step-sub {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+  .wf-step-io {
+    font-size: 12px;
+    color: var(--text-2);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .wf-io-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .wf-io-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-3);
+    min-width: 28px;
+  }
+  .wf-io-path {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 11px;
+    color: var(--text-2);
+    background: rgba(0,0,0,0.05);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* connector arrow between steps */
+  .wf-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    flex-shrink: 0;
+    color: var(--text-3);
+    font-size: 20px;
+    padding-top: 20px;
+  }
+  .wf-arrow-v {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    color: var(--text-3);
+    font-size: 18px;
+    align-self: center;
+    margin-left: 80px;
+  }
+
+  /* ── Step detail cards ── */
+  .step-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 4px;
+  }
+  .step-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .step-card-header {
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .step-card-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-card-num.done   { background: var(--green); color: #fff; }
+  .step-card-num.active { background: var(--brand); color: #fff; }
+  .step-card-num.plan   { background: var(--orange); color: #fff; }
+  .step-card-num.future { background: var(--text-3); color: #fff; }
+
+  .step-card-title { font-size: 14px; font-weight: 700; }
+  .step-card-body {
+    padding: 16px 18px;
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.7;
+  }
+  .step-card-body ul { padding-left: 16px; }
+  .step-card-body li { margin-bottom: 5px; }
+  .step-card-body code {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 11px;
+    background: #f1f5f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--brand);
+  }
+
+  /* ── Mockup plan section ── */
+  .mockup-plan {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .mockup-phase {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .mockup-phase-header {
+    padding: 14px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .mockup-phase-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--orange-light);
+    padding: 2px 8px;
+    border-radius: 99px;
+    border: 1px solid #fde68a;
+  }
+  .mockup-phase-title {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .mockup-phase-body {
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mockup-item {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.6;
+  }
+  .mockup-item-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  /* ── Big flow diagram ── */
+  .big-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding: 8px 4px 12px;
+  }
+  .bf-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 110px;
+  }
+  .bf-box {
+    width: 100px;
+    padding: 12px 8px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    border: 1.5px solid transparent;
+  }
+  .bf-box.figma  { background: #fce7f3; border-color: #fbcfe8; color: #9d174d; }
+  .bf-box.json   { background: var(--brand-light); border-color: #c7d2fe; color: #3730a3; }
+  .bf-box.tsx    { background: var(--blue-light); border-color: #bfdbfe; color: #1e40af; }
+  .bf-box.connect { background: var(--green-light); border-color: #a7f3d0; color: #065f46; }
+  .bf-box.mockup { background: var(--orange-light); border-color: #fde68a; color: #92400e; }
+  .bf-box.skill  { background: #f1f5f9; border-color: var(--border); color: var(--text-2); font-size: 11px; font-weight: 500; font-style: italic; }
+
+  .bf-label {
+    font-size: 10px;
+    color: var(--text-3);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .bf-arrow {
+    font-size: 18px;
+    color: var(--text-3);
+    margin: 0 2px;
+    padding-bottom: 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-2);
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); }
+
+  /* ── Table ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 12px;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    font-weight: 600;
+    color: var(--text-2);
+    font-size: 12px;
+  }
+  td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    vertical-align: top;
+  }
+  td code {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 11px;
+    background: #f1f5f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--brand);
+  }
+  tr:hover td { background: #f8fafc; }
+
+  /* ── Timeline ── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 8px;
+    padding-left: 16px;
+    border-left: 2px solid var(--border);
+  }
+  .tl-item {
+    position: relative;
+    padding: 0 0 24px 28px;
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot {
+    position: absolute;
+    left: -9px;
+    top: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .tl-dot.done   { background: var(--green); }
+  .tl-dot.active { background: var(--brand); }
+  .tl-dot.plan   { background: var(--orange); }
+  .tl-dot.future { background: var(--text-3); }
+
+  .tl-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .tl-desc  { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+  .tl-desc code {
+    font-family: "SF Mono", monospace;
+    font-size: 11px;
+    background: #f1f5f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--brand);
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="header-eyebrow">SKT Genui · 컴포넌트 파이프라인</div>
+  <h1>JSON → TSX → Mockup 자동화 플랜</h1>
+  <div class="header-meta">
+    <span>2026-05-19</span>
+    <span>make-cmp · make-tsx · make-mockup</span>
+    <span>Figma Code Connect 연동</span>
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- ── 1. 경위 ── -->
+  <section>
+    <div class="section-label">01 · 경위</div>
+    <div class="section-title">왜 이 파이프라인을 만들게 됐나</div>
+    <div class="section-body">
+      <p>
+        기존에는 <strong>Figma 마스터 컴포넌트 → JSON 명세</strong>까지만 자동화되어 있었다 (<code>/make-cmp</code>).
+        이 JSON은 컴포넌트의 레이아웃·색상·variants 정보를 담고 있지만, 실제로 화면을 그리거나
+        개발자에게 코드를 넘겨주려면 다음 두 가지가 없었다.
+      </p>
+      <p>
+        첫째, <strong>화면 미리보기(mockup)</strong> — JSON만으로는 컴포넌트가 실제로 어떻게 보이는지
+        시각 검증이 안 됐다. HTML로 직접 변환하면 Figma의 auto-layout, token alias 등이 어색하게
+        렌더링되는 문제가 있었다.
+      </p>
+      <p>
+        둘째, <strong>Figma 핸드오프</strong> — 개발자가 Figma에서 컴포넌트를 클릭했을 때
+        실제 사용할 수 있는 TSX 코드가 보여야 한다. 이를 위해 Figma Code Connect
+        (<code>generate-connect.js</code>) 가 이미 있었지만, 연결할 TSX 파일 자체가 없어서
+        import path가 <code>&lt;TODO&gt;</code>로 막혀 있었다.
+      </p>
+      <p>
+        이 두 문제를 해결하기 위해 <strong>JSON → TSX 자동 생성(<code>/make-tsx</code>)</strong>을
+        파이프라인 중간 단계로 추가하기로 결정했다. TSX가 생기면 mockup도 정확하게 렌더링되고,
+        Code Connect의 TODO도 자동으로 채워진다.
+      </p>
+    </div>
+
+    <div class="ps-grid">
+      <div class="ps-card problem">
+        <div class="ps-card-label">Before — 막혀있던 것들</div>
+        <ul>
+          <li>JSON만으로 화면 렌더링 시 레이아웃·토큰 어색함</li>
+          <li><code>generate-connect.js</code>의 import path가 <code>&lt;TODO&gt;</code></li>
+          <li>개발자 핸드오프 시 실제 TSX 코드 없음</li>
+          <li>make-mockup이 JSON에 직접 의존 → 렌더 품질 낮음</li>
+        </ul>
+      </div>
+      <div class="ps-card solution">
+        <div class="ps-card-label">After — make-tsx 추가로 해결</div>
+        <ul>
+          <li>JSON → TSX로 정확한 React 컴포넌트 생성</li>
+          <li>Code Connect가 TSX import path 자동 주입</li>
+          <li>Figma 검사 패널에서 실제 코드 바로 확인</li>
+          <li>make-mockup이 TSX를 재사용 → 정확한 렌더링</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2. 전체 워크플로우 ── -->
+  <section>
+    <div class="section-label">02 · 전체 워크플로우</div>
+    <div class="section-title">두 파이프라인이 합쳐지는 구조</div>
+
+    <!-- ── 파이프라인 A: 컴포넌트 ── -->
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">A · 컴포넌트 파이프라인 (make-cmp → make-tsx → Code Connect)</div>
+    <div class="big-flow">
+      <div class="bf-node">
+        <div class="bf-box figma">Figma<br>마스터 컴포넌트</div>
+        <div class="bf-label">원본 디자인</div>
+      </div>
+      <div class="bf-arrow">→</div>
+      <div class="bf-node">
+        <div class="bf-box skill">/make-cmp</div>
+        <div class="bf-label">Figma API 호출</div>
+      </div>
+      <div class="bf-arrow">→</div>
+      <div class="bf-node">
+        <div class="bf-box json">component<br>spec JSON</div>
+        <div class="bf-label">components/json/</div>
+      </div>
+      <div class="bf-arrow">→</div>
+      <div class="bf-node">
+        <div class="bf-box skill">/make-tsx</div>
+        <div class="bf-label">JSON → TSX</div>
+      </div>
+      <div class="bf-arrow">→</div>
+      <div class="bf-node">
+        <div class="bf-box tsx">React TSX<br>컴포넌트</div>
+        <div class="bf-label">components/tsx/</div>
+      </div>
+      <div class="bf-arrow">→</div>
+      <div class="bf-node">
+        <div class="bf-box skill">generate<br>-connect.js</div>
+        <div class="bf-label">Code Connect 생성</div>
+      </div>
+      <div class="bf-arrow">→</div>
+      <div class="bf-node">
+        <div class="bf-box connect">Figma<br>Code Connect</div>
+        <div class="bf-label">컴포넌트 핸드오프</div>
+      </div>
+    </div>
+
+    <div style="height:24px"></div>
+
+    <!-- ── 파이프라인 B: 화면 ── -->
+    <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">B · 화면 파이프라인 (make-mockup — 다음 플랜)</div>
+
+    <!-- 인풋 분기 -->
+    <div style="display:flex;gap:12px;margin-bottom:6px;">
+      <div style="flex:1;background:var(--orange-light);border:1.5px solid #fde68a;border-radius:8px;padding:12px 14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">현재 인풋</div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:3px;">usecase MD</div>
+        <div style="font-family:monospace;font-size:10px;color:var(--text-3)">usecase_US-MBR-CS-001.md<br>+ specs-input/*.md (보조)</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--text-3);font-size:13px;">→</div>
+      <div style="flex:1;background:var(--blue-light);border:1.5px solid #bfdbfe;border-radius:8px;padding:12px 14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">미래 인풋 (대체 예정)</div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:3px;">storyboard screen MD</div>
+        <div style="font-family:monospace;font-size:10px;color:var(--text-3)">NOVA-MBR-CP-005-0.md<br>ogn-mbr-auth-request.md</div>
+      </div>
+    </div>
+
+    <div class="big-flow" style="margin-top:4px;">
+      <div class="bf-node" style="min-width:80px">
+        <div class="bf-box skill" style="width:80px">/make-mockup<br>📋 플랜</div>
+        <div class="bf-label">인풋 파싱<br>컴포넌트 해결</div>
+      </div>
+      <div class="bf-arrow">→</div>
+      <div class="bf-node">
+        <div class="bf-box tsx" style="font-size:11px;">TSX 컴포넌트<br>조합</div>
+        <div class="bf-label">organism 조립</div>
+      </div>
+      <div class="bf-arrow">→</div>
+      <!-- 분기 -->
+      <div style="display:flex;flex-direction:column;gap:10px;padding-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="bf-box mockup" style="width:110px;font-size:11px;">HTML preview</div>
+          <div style="font-size:11px;color:var(--text-3)">시각 검증<br><span style="font-family:monospace;font-size:10px">docs/output/mockup/{SCREEN}.html</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="bf-box tsx" style="width:110px;font-size:11px;">Web 구현<br>(Next.js)</div>
+          <div style="font-size:11px;color:var(--text-3)">web/src/components/library/<br>실제 서비스 컴포넌트</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="bf-box figma" style="width:110px;font-size:11px;">Figma 핸드오프<br>(Anima 등)</div>
+          <div style="font-size:11px;color:var(--text-3)">HTML → Figma<br><span style="color:var(--text-3)">HTML to Figma / Anima</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend" style="margin-top:16px;">
+      <div class="legend-item"><div class="legend-dot" style="background:#d1fae5;border:1.5px solid var(--green)"></div> 완료</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c7d2fe;border:1.5px solid var(--brand)"></div> 이번에 완료 (make-tsx)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#fde68a;border:1.5px solid var(--orange)"></div> 다음 플랜 (make-mockup)</div>
+    </div>
+  </section>
+
+  <!-- ── 3. 단계별 상세 ── -->
+  <section>
+    <div class="section-label">03 · 단계별 상세</div>
+    <div class="section-title">각 스킬이 하는 일</div>
+
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot done">✓</div>
+        <div class="tl-title">make-cmp — Figma API → JSON 명세 추출</div>
+        <div class="tl-desc">
+          Figma의 마스터 컴포넌트를 API로 조회해 레이아웃·색상·variants·자식 구조를
+          <code>docs/input/components/json/{name}.json</code>으로 저장.
+          <code>figmaNodeId</code>와 <code>figmaFileKey</code>도 함께 기록해 이후 단계에서 활용.
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot active">★</div>
+        <div class="tl-title">make-tsx — JSON → React TSX 컴포넌트 생성 (이번 완료)</div>
+        <div class="tl-desc">
+          JSON의 <code>base.layout</code> → CSS flex, <code>base.visual</code> → background/border,
+          <code>variants.axes</code> → TypeScript union props로 변환.
+          출력: <code>docs/input/components/tsx/{name}.tsx</code>.
+          <code>data-figma</code> attribute로 <code>figmaNodeId</code> 임베드 → Code Connect 연결 포인트.
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot done">✓</div>
+        <div class="tl-title">generate-connect.js — TSX + figmaNodeId → Code Connect 파일 생성</div>
+        <div class="tl-desc">
+          이미 구현된 스크립트. make-tsx 완료 후 <code>node scripter/generate-connect.js --all</code>
+          실행하면 <code>scripter/connect/{name}.figma.tsx</code> 생성.
+          이전에는 import path가 <code>&lt;TODO&gt;</code>였지만 TSX 파일이 생기면 자동으로 채워짐.
+          이후 <code>figma connect publish</code>로 Figma에 올리면 핸드오프 완성.
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot plan">▶</div>
+        <div class="tl-title">make-mockup — TSX 컴포넌트 조합 → 화면 HTML 생성 (다음 플랜)</div>
+        <div class="tl-desc">
+          <code>specs-input/</code>의 기능내역서 또는 page spec을 읽어 TSX 컴포넌트를 조합,
+          실제 화면처럼 보이는 HTML 미리보기를 생성. JSON 직접 변환 대신 TSX 경유이므로
+          레이아웃·토큰이 정확하게 반영됨. 아래 섹션에서 상세 플랜.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 4. 폴더 구조 ── -->
+  <section>
+    <div class="section-label">04 · 폴더 구조</div>
+    <div class="section-title">docs/input/components/ 변경 사항</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>경로</th>
+          <th>역할</th>
+          <th>생성 주체</th>
+          <th>상태</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>docs/input/components/json/{name}.json</code></td>
+          <td>Figma 컴포넌트 명세 (레이아웃·variants·토큰)</td>
+          <td><code>/make-cmp</code></td>
+          <td>✅ 50개 존재</td>
+        </tr>
+        <tr>
+          <td><code>docs/input/components/tsx/{name}.tsx</code></td>
+          <td>React 컴포넌트 (프로덕션 코드)</td>
+          <td><code>/make-tsx</code></td>
+          <td>🆕 폴더 생성됨, 파일 미생성</td>
+        </tr>
+        <tr>
+          <td><code>mockup/scripter/connect/{name}.figma.tsx</code></td>
+          <td>Figma Code Connect 매핑</td>
+          <td><code>generate-connect.js</code></td>
+          <td>⏳ make-tsx 후 실행 필요</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── 5. make-mockup 플랜 ── -->
+  <section>
+    <div class="section-label">05 · 다음 플랜</div>
+    <div class="section-title">make-mockup 설계 — Phase 1~4</div>
+    <div class="section-body" style="margin-bottom:20px">
+      <p>
+        <code>/make-mockup</code>은 storyboard screen MD (또는 현재는 usecase MD)를 인풋으로 받아
+        TSX 컴포넌트를 조합해 화면을 만드는 스킬이다.
+        아웃풋은 <strong>HTML preview</strong>(시각 검증 + Figma 핸드오프 소스)이며,
+        동일한 TSX가 <strong>Web(Next.js) 구현</strong>에도 그대로 사용된다.
+        Figma 핸드오프는 생성된 HTML을 <strong>Anima / HTML to Figma</strong> 등 툴로 임포트하는 방식.
+      </p>
+    </div>
+
+    <!-- 인풋 구조 설명 -->
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">인풋 파일 구조</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px;">
+        <div>
+          <div style="font-weight:700;color:var(--orange);margin-bottom:4px;">현재 — usecase MD</div>
+          <div style="color:var(--text-2);line-height:1.7;">
+            Process → Function → Policy 계층<br>
+            <span style="color:var(--text-3)">화면 정의 없음 → specs-input/*.md 보조 필요</span><br>
+            <code style="font-size:10px;background:#f1f5f9;padding:1px 4px;border-radius:3px">usecase_US-MBR-CS-001.md</code>
+          </div>
+        </div>
+        <div>
+          <div style="font-weight:700;color:var(--blue);margin-bottom:4px;">미래 — storyboard screen MD (대체 예정)</div>
+          <div style="color:var(--text-2);line-height:1.7;">
+            YAML 헤더 + 화면 구성 테이블 + 케이스 분기<br>
+            <span style="color:var(--text-3)">area별 organism ID 목록 구조화됨</span><br>
+            <code style="font-size:10px;background:#f1f5f9;padding:1px 4px;border-radius:3px">NOVA-MBR-CP-005-0.md</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mockup-plan">
+
+      <div class="mockup-phase">
+        <div class="mockup-phase-header">
+          <div class="mockup-phase-tag">Phase 1</div>
+          <div class="mockup-phase-title">인풋 파싱 — 화면 목록 + organism 추출</div>
+        </div>
+        <div class="mockup-phase-body">
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div><strong>storyboard screen MD</strong>: YAML 헤더에서 화면 ID·케이스 추출 → <code>## 화면 구성</code> 테이블에서 area별 organism ID 목록 파싱</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div><strong>usecase MD (현재)</strong>: specs-input/*.md 보조로 함께 읽어 "사용 컴포넌트 후보" 섹션에서 컴포넌트 목록 파싱, 화면 ID 추출</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div>화면 선택 대시보드 출력 → 사용자가 처리할 화면 선택</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-phase">
+        <div class="mockup-phase-header">
+          <div class="mockup-phase-tag">Phase 2</div>
+          <div class="mockup-phase-title">컴포넌트 해결 — organism → TSX 매핑</div>
+        </div>
+        <div class="mockup-phase-body">
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div>organism ID 목록 수집 → <code>docs/input/components/json/</code> 에서 매칭 spec 탐색</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div><code>docs/input/components/tsx/{name}.tsx</code> 존재 확인. 없으면 <code>/make-tsx</code> 먼저 실행 안내 후 대기</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div>atom → mol → ogn 의존성 순서 정렬. missing 목록 표시 → 계속 여부 확인</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-phase">
+        <div class="mockup-phase-header">
+          <div class="mockup-phase-tag">Phase 3</div>
+          <div class="mockup-phase-title">HTML preview 생성 — TSX 기반, 케이스별 탭</div>
+        </div>
+        <div class="mockup-phase-body">
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div>TSX 컴포넌트 인라인 렌더링 → 정적 HTML (브라우저 직접 열기 가능)</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div><code>docs/input/variable/</code> 디자인 토큰 → CSS Variables 주입 (DS 색상·타이포 정확 반영)</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div>375px 모바일 프레임 + <strong>케이스별 탭</strong> (storyboard 케이스 분기 반영: 정상·에러1·에러2·경고)</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div>출력: <code>docs/output/mockup/{SCREEN-ID}.html</code></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mockup-phase">
+        <div class="mockup-phase-header">
+          <div class="mockup-phase-tag">Phase 4</div>
+          <div class="mockup-phase-title">HTML → Figma 핸드오프 + Web 구현</div>
+        </div>
+        <div class="mockup-phase-body">
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div><strong>Figma 핸드오프</strong>: Phase 3에서 생성된 HTML을 <strong>Anima</strong> 또는 <strong>HTML to Figma</strong> 플러그인으로 Figma에 임포트. 렌더링된 화면이 그대로 Figma 레이어로 변환됨</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div><strong>Web 구현</strong>: 동일한 TSX 컴포넌트를 <code>web/src/components/library/</code>에 배치 → Next.js 서비스에서 실제 동작. make-tsx가 생성한 TSX가 그대로 재사용됨</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div><strong>수정 루프</strong>: JSON 수정 → <code>/make-tsx</code> → <code>/make-mockup</code> → HTML 확인 → Anima로 Figma 업데이트</div>
+          </div>
+          <div class="mockup-item">
+            <div class="mockup-item-dot"></div>
+            <div><strong>Code Connect (컴포넌트 단위)</strong>: TSX 컴포넌트 개별 핸드오프는 기존 <code>generate-connect.js</code>로 별도 처리 — 화면 레벨과 무관</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 6. 완성 워크플로우 요약 ── -->
+  <section>
+    <div class="section-label">06 · 완성 워크플로우</div>
+    <div class="section-title">전체 스텝 — 컴포넌트 + 화면 두 트랙</div>
+
+    <!-- 트랙 A -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">A · 컴포넌트 트랙</div>
+    <div class="step-grid" style="margin-bottom:28px;">
+      <div class="step-card">
+        <div class="step-card-header">
+          <div class="step-card-num done">1</div>
+          <div class="step-card-title">/make-cmp</div>
+        </div>
+        <div class="step-card-body">
+          <ul>
+            <li>Figma URL → API 호출</li>
+            <li><code>components/json/{name}.json</code> 저장</li>
+            <li>figmaNodeId·figmaFileKey 포함</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-card-header">
+          <div class="step-card-num active">2</div>
+          <div class="step-card-title">/make-tsx</div>
+        </div>
+        <div class="step-card-body">
+          <ul>
+            <li>JSON → TypeScript props + JSX 변환</li>
+            <li><code>components/tsx/{name}.tsx</code> 생성</li>
+            <li>data-figma attribute로 nodeId 임베드</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-card-header">
+          <div class="step-card-num done">3</div>
+          <div class="step-card-title">generate-connect.js</div>
+        </div>
+        <div class="step-card-body">
+          <ul>
+            <li>TSX import path + figmaNodeId 자동 주입</li>
+            <li><code>connect/{name}.figma.tsx</code> 생성</li>
+            <li><code>figma connect publish</code> → 컴포넌트 핸드오프</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 트랙 B -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">B · 화면 트랙 (make-mockup — 다음 플랜)</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="step-card-header">
+          <div class="step-card-num plan">1</div>
+          <div class="step-card-title">/make-mockup · Phase 1–2</div>
+        </div>
+        <div class="step-card-body">
+          <ul>
+            <li>storyboard MD (또는 usecase MD) 인풋</li>
+            <li>화면별 organism 목록 파싱</li>
+            <li>TSX 파일 존재 확인 → 없으면 /make-tsx 안내</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-card-header">
+          <div class="step-card-num plan">2</div>
+          <div class="step-card-title">/make-mockup · Phase 3</div>
+        </div>
+        <div class="step-card-body">
+          <ul>
+            <li>TSX 컴포넌트 조합 → 정적 HTML</li>
+            <li>375px 프레임 + 케이스별 탭</li>
+            <li><code>docs/output/mockup/{SCREEN}.html</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-card-header">
+          <div class="step-card-num plan">3</div>
+          <div class="step-card-title">/make-mockup · Phase 4</div>
+        </div>
+        <div class="step-card-body">
+          <ul>
+            <li>HTML → Anima / HTML to Figma → Figma 핸드오프</li>
+            <li>TSX → <code>web/src/components/library/</code> → Web 구현</li>
+            <li>수정 시: JSON → make-tsx → make-mockup → 재반영</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 7. Figma 핸드오프 시나리오 비교 ── -->
+  <section>
+    <div class="section-label">07 · Figma 핸드오프 시나리오</div>
+    <div class="section-title">마스터 컴포넌트가 이미 있을 때 — 어떤 방식이 맞나</div>
+    <div class="section-body" style="margin-bottom:20px">
+      <p>
+        이 프로젝트는 <strong>Figma에 마스터 컴포넌트·토큰 Variables·Props가 이미 세팅된 상태</strong>다.
+        이 상황에서 코드 → Figma 방향으로 핸드오프할 때 방식에 따라 결과가 완전히 달라진다.
+      </p>
+    </div>
+
+    <!-- 시나리오 카드 3개 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px;">
+
+      <!-- 시나리오 A -->
+      <div style="border:1.5px solid #fecaca;border-radius:12px;overflow:hidden;">
+        <div style="background:var(--red-light);padding:16px 18px 12px;">
+          <div style="font-size:10px;font-weight:700;color:var(--red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">시나리오 A · 비추천</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:4px;">HTML to Figma<br>/ Anima</div>
+          <div style="font-size:12px;color:var(--text-2);">렌더된 HTML → Figma 레이어 변환</div>
+        </div>
+        <div style="padding:16px 18px;font-size:13px;color:var(--text-2);line-height:1.7;">
+          <div style="font-weight:600;color:var(--text);margin-bottom:6px;">작동 방식</div>
+          <p style="margin-bottom:10px;">브라우저에서 렌더된 HTML/CSS를 캡처해 Figma 레이어로 변환. 시각적으로 비슷한 Frame이 생성됨.</p>
+          <div style="font-weight:600;color:var(--red);margin-bottom:6px;">문제점</div>
+          <ul style="padding-left:14px;margin-bottom:0;">
+            <li style="margin-bottom:5px;">기존 마스터 컴포넌트의 <strong>인스턴스가 아닌 flat 레이어</strong>로 들어옴</li>
+            <li style="margin-bottom:5px;">토큰 Variable 연결 끊김 (raw hex로 변환됨)</li>
+            <li style="margin-bottom:5px;">Props / variants 정보 소실</li>
+            <li style="margin-bottom:5px;">마스터 업데이트 시 인스턴스 자동 반영 불가</li>
+            <li>디자이너가 수정할 수 없는 픽셀 덩어리</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 시나리오 B -->
+      <div style="border:1.5px solid #a7f3d0;border-radius:12px;overflow:hidden;">
+        <div style="background:var(--green-light);padding:16px 18px 12px;">
+          <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">시나리오 B · 컴포넌트 핸드오프</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Figma Code Connect</div>
+          <div style="font-size:12px;color:var(--text-2);">TSX ↔ 마스터 컴포넌트 연결</div>
+        </div>
+        <div style="padding:16px 18px;font-size:13px;color:var(--text-2);line-height:1.7;">
+          <div style="font-weight:600;color:var(--text);margin-bottom:6px;">작동 방식</div>
+          <p style="margin-bottom:10px;"><code>.figma.tsx</code> 파일로 TSX 컴포넌트와 Figma 마스터를 1:1 연결. 개발자가 Figma에서 컴포넌트 클릭 시 실제 TSX 코드·props 확인.</p>
+          <div style="font-weight:600;color:var(--green);margin-bottom:6px;">장점</div>
+          <ul style="padding-left:14px;margin-bottom:0;">
+            <li style="margin-bottom:5px;">마스터·토큰·Props 건드리지 않음</li>
+            <li style="margin-bottom:5px;">개발자 핸드오프 품질 최고</li>
+            <li style="margin-bottom:5px;"><code>generate-connect.js</code> 이미 구현됨</li>
+            <li>컴포넌트 단위 연결 — atom/mol/ogn 모두 가능</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 시나리오 C -->
+      <div style="border:1.5px solid #c7d2fe;border-radius:12px;overflow:hidden;">
+        <div style="background:var(--brand-light);padding:16px 18px 12px;">
+          <div style="font-size:10px;font-weight:700;color:var(--brand);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">시나리오 C · 화면 핸드오프</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:4px;">page spec JSON<br>→ bundle.js</div>
+          <div style="font-size:12px;color:var(--text-2);">마스터 인스턴스로 화면 Frame 자동 생성</div>
+        </div>
+        <div style="padding:16px 18px;font-size:13px;color:var(--text-2);line-height:1.7;">
+          <div style="font-weight:600;color:var(--text);margin-bottom:6px;">작동 방식</div>
+          <p style="margin-bottom:10px;">화면 구성을 JSON으로 정의 → <code>bundle.js</code> → Scripter → Figma에 <strong>마스터 컴포넌트의 인스턴스</strong>로 Frame 구성.</p>
+          <div style="font-weight:600;color:var(--brand);margin-bottom:6px;">장점</div>
+          <ul style="padding-left:14px;margin-bottom:0;">
+            <li style="margin-bottom:5px;">토큰 Variable 연결 살아있음</li>
+            <li style="margin-bottom:5px;">마스터 업데이트 → 인스턴스 자동 반영</li>
+            <li style="margin-bottom:5px;">디자이너가 편집 가능한 실제 Figma 화면</li>
+            <li><code>mockup/component-specs/page/</code> 이미 이 방식 사용 중</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 비교 테이블 -->
+    <table>
+      <thead>
+        <tr>
+          <th>기준</th>
+          <th>A · HTML to Figma</th>
+          <th>B · Code Connect</th>
+          <th>C · page JSON → bundle.js</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>마스터 인스턴스 유지</strong></td>
+          <td style="color:var(--red)">❌ flat 레이어</td>
+          <td style="color:var(--green)">✅ 연결만 추가</td>
+          <td style="color:var(--green)">✅ 인스턴스로 구성</td>
+        </tr>
+        <tr>
+          <td><strong>토큰 Variable 보존</strong></td>
+          <td style="color:var(--red)">❌ raw hex로 변환</td>
+          <td style="color:var(--green)">✅ 마스터에 그대로</td>
+          <td style="color:var(--green)">✅ Variable 바인딩됨</td>
+        </tr>
+        <tr>
+          <td><strong>Props / variants 보존</strong></td>
+          <td style="color:var(--red)">❌ 소실</td>
+          <td style="color:var(--green)">✅ TSX props로 매핑</td>
+          <td style="color:var(--green)">✅ spec의 variants 반영</td>
+        </tr>
+        <tr>
+          <td><strong>대상 단위</strong></td>
+          <td>화면 전체 (픽셀)</td>
+          <td>컴포넌트 단위</td>
+          <td>화면 단위 (Frame)</td>
+        </tr>
+        <tr>
+          <td><strong>기존 구현 여부</strong></td>
+          <td>외부 플러그인 필요</td>
+          <td style="color:var(--green)">✅ generate-connect.js 있음</td>
+          <td style="color:var(--green)">✅ bundle.js + scripter 있음</td>
+        </tr>
+        <tr>
+          <td><strong>이 프로젝트 적합성</strong></td>
+          <td style="color:var(--red);font-weight:600">부적합</td>
+          <td style="color:var(--green);font-weight:600">컴포넌트 핸드오프에 적합</td>
+          <td style="color:var(--brand);font-weight:600">화면 핸드오프에 적합</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── 8. 최적 워크플로우 결론 ── -->
+  <section>
+    <div class="section-label">08 · 결론</div>
+    <div class="section-title">최적 워크플로우 — B + C 조합</div>
+    <div class="section-body" style="margin-bottom:24px">
+      <p>
+        마스터 컴포넌트·토큰이 이미 Figma에 있으므로, 핸드오프는 <strong>인스턴스 기반</strong>이어야 한다.
+        <strong>시나리오 A(HTML to Figma)는 제외</strong>. 컴포넌트 단위는 B, 화면 단위는 C로 나눠 처리하는 것이 최적.
+      </p>
+    </div>
+
+    <!-- 최적 플로우 전체 -->
+    <div style="background:var(--code-bg);border-radius:12px;padding:28px 32px;color:#e2e8f0;font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:2;margin-bottom:24px;">
+      <div style="color:#94a3b8;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">최적 워크플로우</div>
+<pre style="margin:0;white-space:pre-wrap;color:#e2e8f0;">Figma 마스터 컴포넌트 (토큰·Props·variants 세팅됨)
+  │
+  ↓  /make-cmp  ─────────────────────── 토큰 참조 보존 ({semantic.color.brand.primary})
+  │
+component spec JSON  (docs/input/components/json/)
+  │
+  ↓  /make-tsx  ─────────────────────── CSS Variable + TypeScript props 매핑
+  │
+TSX 컴포넌트  (docs/input/components/tsx/)
+  │
+  ├──── generate-connect.js  ──────────── 시나리오 B: 컴포넌트 단위 핸드오프
+  │       ↓
+  │     .figma.tsx  →  figma connect publish
+  │       ↓
+  │     Figma 검사 패널: 실제 TSX 코드 + props 표시
+  │
+  ├──── /make-mockup ──────────────────── HTML preview (시각 검증)
+  │       ↓
+  │     docs/output/mockup/{SCREEN}.html
+  │
+  ├──── /make-mockup ──────────────────── 시나리오 C: 화면 단위 핸드오프
+  │       ↓ (storyboard → page spec JSON)
+  │     docs/output/pages/{MODULE}/{screen}.json
+  │       ↓  bundle.js → Scripter
+  │     Figma Frame (마스터 인스턴스 조합, 토큰·Props 살아있음)
+  │
+  └──── Web 구현 ──────────────────────── 동일 TSX → Next.js 서비스
+          ↓
+        web/src/components/library/</pre>
+    </div>
+
+    <!-- 역할 분담 요약 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="card" style="border-left:3px solid var(--green);">
+        <div style="font-size:11px;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">B · Code Connect — 컴포넌트 핸드오프</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.7;">
+          개발자가 Figma에서 <strong>badge, button 등 개별 컴포넌트</strong>를 클릭했을 때<br>
+          실제 TSX 코드와 props 사용법을 바로 확인할 수 있게 연결.<br>
+          <code>generate-connect.js</code>가 이미 구현됨 — make-tsx 완료 후 바로 실행 가능.
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--brand);">
+        <div style="font-size:11px;font-weight:700;color:var(--brand);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">C · bundle.js — 화면 핸드오프</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.7;">
+          storyboard를 인풋으로 <strong>화면 Frame</strong>을 Figma에 자동 생성.<br>
+          마스터 인스턴스로 구성되므로 토큰 Variable·variants 살아있음.<br>
+          디자이너가 편집 가능 + 마스터 변경 시 인스턴스 자동 반영.
+        </div>
+      </div>
+    </div>
+
+    <!-- 핵심 원칙 -->
+    <div style="margin-top:20px;background:var(--brand-light);border:1.5px solid #c7d2fe;border-radius:10px;padding:18px 22px;">
+      <div style="font-size:11px;font-weight:700;color:var(--brand);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">핵심 원칙</div>
+      <div style="font-size:13px;color:var(--text-2);line-height:1.8;">
+        Figma 마스터는 <strong>항상 원본</strong>. 코드는 그 마스터를 <em>추출</em>해서 쓰거나 <em>인스턴스로 조합</em>할 뿐, 마스터를 덮어쓰거나 픽셀로 대체하지 않는다.<br>
+        → <strong>HTML to Figma 방식은 이 원칙에 위배</strong>되므로 이 프로젝트에 적합하지 않다.
+      </div>
+    </div>
+  </section>
+
+</div><!-- /body -->
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "list-selected",
+  "category": "mol",
+  "description": "선택형 리스트.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 8.0,
+      "paddingBottom": 4.0,
+      "counterAxisAlignItems": "CENTER",
+      "width": "FILL"
+    },
+    "visual": {
+      "fill": "#ffbbbb"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-radiotext",
+        "component": ".Radiotext"
+      },
+      {
+        "kind": "text",
+        "id": "subtext",
+        "content": "-9,900원",
+        "exposeAs": "subtext"
+      },
+      {
+        "kind": "ref",
+        "id": "-listselectedrightitem",
+        "component": ".Listselectedrightitem"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "type",
+        "values": [
+          "Radio",
+          "Checkbox"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118314",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

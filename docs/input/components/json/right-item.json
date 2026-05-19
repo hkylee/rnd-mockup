@@ -1,0 +1,38 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "right-item",
+  "category": "atom",
+  "description": "리스트 우측 아이템. Type(Text/BadgeLevel/TextButton/Icon).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 2.0,
+      "primaryAxisAlignItems": "MAX",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "text",
+        "content": "-3,000원",
+        "exposeAs": "text"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Text",
+          "BadgeLevel",
+          "TextButton",
+          "Icon"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23874",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

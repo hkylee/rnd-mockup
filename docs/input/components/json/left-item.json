@@ -1,0 +1,58 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "left-item",
+  "category": "mol",
+  "description": "AI+Gift 좌측 아이템. Type(Ai+Gift/Ai).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 20.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "button-ai",
+        "visual": {
+          "cornerRadius": 6.599998950958252,
+          "fill": "#ecedef"
+        }
+      },
+      {
+        "kind": "group",
+        "id": "button-gift",
+        "visual": {
+          "cornerRadius": 6.599998950958252,
+          "fill": "#ecedef"
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "ico",
+            "children": [
+              {
+                "kind": "group",
+                "id": "union",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Ai+Gift",
+          "Ai"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23943",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

@@ -1,0 +1,122 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "app-bar",
+  "category": "ogn",
+  "description": "앱 바.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "paddingTop": 10.0,
+      "paddingRight": 20.0,
+      "paddingBottom": 10.0,
+      "paddingLeft": 20.0,
+      "counterAxisAlignItems": "CENTER",
+      "width": "FILL"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "title",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 4.0,
+          "counterAxisAlignItems": "CENTER",
+          "width": 285
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "btn",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 10.0,
+              "paddingTop": 2.0,
+              "paddingRight": 2.0,
+              "paddingBottom": 2.0,
+              "paddingLeft": 2.0,
+              "counterAxisAlignItems": "CENTER"
+            }
+          },
+          {
+            "kind": "text",
+            "id": "title",
+            "content": "결제하기",
+            "exposeAs": "title"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "rightitem",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 12.0,
+          "primaryAxisAlignItems": "MAX",
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "btn",
+            "layout": {
+              "mode": "VERTICAL",
+              "itemSpacing": 10.0,
+              "paddingTop": 2.0,
+              "paddingRight": 2.0,
+              "paddingBottom": 2.0,
+              "paddingLeft": 2.0
+            }
+          },
+          {
+            "kind": "group",
+            "id": "btn",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 10.0,
+              "paddingTop": 2.0,
+              "paddingRight": 2.0,
+              "paddingBottom": 2.0,
+              "paddingLeft": 2.0,
+              "counterAxisAlignItems": "CENTER"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "RightItem",
+        "values": [
+          "On",
+          "Off"
+        ]
+      },
+      {
+        "name": "Title",
+        "values": [
+          "On",
+          "Off"
+        ]
+      },
+      {
+        "name": "LeftItem",
+        "values": [
+          "On",
+          "Off"
+        ]
+      },
+      {
+        "name": "Logo",
+        "values": [
+          "Off",
+          "On"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118389",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

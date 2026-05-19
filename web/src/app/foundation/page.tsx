@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
 type DSTokens = Record<string, unknown>;
 
@@ -208,11 +209,15 @@ function ComponentPlaceholder({
 
 // ── 메인 페이지 ────────────────────────────────────────────────────
 
-export default function FoundationPage() {
+function FoundationPageInner() {
+  const searchParams = useSearchParams();
+  const focusId = searchParams?.get("focus") ?? null;
+
   const [ds, setDs] = useState<DSTokens | null>(null);
   const [active, setActive] = useState<NavId>("typography");
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
   const containerRef = useRef<HTMLDivElement>(null);
+  const didFocus = useRef(false);
 
   useEffect(() => {
     fetch("/api/spec?kind=ds")
@@ -220,6 +225,23 @@ export default function FoundationPage() {
       .then(d => setDs(d.ds ?? null))
       .catch(() => {});
   }, []);
+
+  // focus 파라미터로 자동 스크롤 (DS 로드 후 1회)
+  useEffect(() => {
+    if (!focusId || !ds || didFocus.current) return;
+    const el = sectionRefs.current[focusId];
+    if (el && containerRef.current) {
+      didFocus.current = true;
+      setTimeout(() => {
+        containerRef.current?.scrollTo({ top: el.offsetTop - 24, behavior: "smooth" });
+        setActive(focusId as NavId);
+        // 시각적 하이라이트를 위한 짧은 pulse
+        el.style.transition = "background 0.4s";
+        el.style.background = "#f0fdf4";
+        setTimeout(() => { el.style.background = ""; }, 1200);
+      }, 150);
+    }
+  }, [ds, focusId]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -263,7 +285,7 @@ export default function FoundationPage() {
   }
 
   return (
-    <div className="h-full flex bg-white">
+    <div className="h-full flex bg-white" id="foundation-root">
 
       {/* ── 좌측 네비게이션 ──────────────────────────── */}
       <aside className="w-[192px] shrink-0 border-r border-slate-100 flex flex-col pt-8 pb-8 px-4 gap-0.5 overflow-y-auto">
@@ -493,6 +515,14 @@ export default function FoundationPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function FoundationPage() {
+  return (
+    <Suspense fallback={<div className="h-full flex items-center justify-center text-slate-400 text-sm">로드 중…</div>}>
+      <FoundationPageInner />
+    </Suspense>
   );
 }
 

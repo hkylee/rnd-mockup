@@ -1,0 +1,46 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "radio-text",
+  "category": "mol",
+  "description": "라디오+텍스트.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 8.0
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-radioitem",
+        "component": ".Radioitem"
+      },
+      {
+        "kind": "text",
+        "id": "text",
+        "content": "텍스트",
+        "exposeAs": "text"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Checked",
+        "values": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "name": "Disabled",
+        "values": [
+          "Off",
+          "On"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118459",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

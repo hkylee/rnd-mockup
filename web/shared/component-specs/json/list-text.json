@@ -1,0 +1,52 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "list-text",
+  "category": "mol",
+  "description": "리스트 텍스트 행. 우측 아이템 포함.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "width": "FILL",
+      "itemSpacing": 16.0,
+      "paddingBottom": 8.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "left-item",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "text",
+            "content": "본문",
+            "exposeAs": "text"
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "-right-item",
+        "component": ".RightItem"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Table",
+        "values": [
+          "off",
+          "on"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23866",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

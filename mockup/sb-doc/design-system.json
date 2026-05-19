@@ -1,0 +1,7 @@
+{
+  "$description": "SB (화면설계서) 전용 디자인 토큰. mockup/skt-design-system.json 과 별도 운영 — mockup/scripter/bundle.js 가 두 DS 를 deep merge 후 단일 figma Variable 컬렉션에 sync. mockup DS 토큰 cross-reference 가능.",
+  "$lastUpdated": "2026.05.01",
+  "$note": "2026-05-01 v2 — NOVA HTML 양식 채택 후 sticky/dynamic/header 색 토큰 폐기. NOVA 는 brand/gray/feedback 위주 (mockup DS 호환). 본 파일은 향후 SB 전용 토큰 추가 자리로 보존.",
+  "foundation": {},
+  "semantic": {}
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "chip-image-item",
+  "category": "atom",
+  "description": "이미지 칩 아이템.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 2.0,
+      "paddingTop": 10.0,
+      "paddingRight": 16.0,
+      "paddingBottom": 10.0,
+      "paddingLeft": 12.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 999.0,
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-ico",
+        "component": ".Ico"
+      },
+      {
+        "kind": "text",
+        "id": "",
+        "content": "단말기",
+        "exposeAs": ""
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Selected",
+        "values": [
+          "On",
+          "Off"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:120407",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

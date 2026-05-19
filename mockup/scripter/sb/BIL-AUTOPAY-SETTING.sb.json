@@ -1,0 +1,120 @@
+{
+  "screenId": "BIL-AUTOPAY-SETTING",
+  "screenName": "납부방법 신청·변경·해지",
+  "screenPath": "page/BIL/autopay-setting",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/autopay-setting",
+    "spec_input": "specs-input/BIL-settings.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-autopay-current-status",
+      "sectionName": "자동납부 현재 상태 표시",
+      "sectionDescription": "현재 자동납부 설정 상태(신청 여부·수단·신청일)를 표시하고 신청/변경/해지 진입점을 제공한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 자동납부 현재 상태 표시\n[규칙:FN-SET-002] 현재 자동납부 설정 상태를 표시한다\n[규칙:FN-SET-003] 자동납부 수단 변경 진입점을 제공한다\n[규칙:FN-SET-004] 자동납부 해지 진입점을 제공한다\n[조건:미설정] \"자동납부가 설정되지 않았습니다\" 안내 + 신청 버튼\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내\n[액션:tap 수단변경] 납부수단 선택 모드 전환\n[액션:tap 해지] 자동납부 해지 확인 다이얼로그 노출",
+      "label": "기능 1: 자동납부 현재 상태 표시"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-autopay-cancel-notice",
+      "sectionName": "해지 영향 안내",
+      "sectionDescription": "자동납부 해지 시 발생하는 영향(연체·정지 위험 등)을 안내한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "0-1/1",
+        "max": ""
+      },
+      "displayPriority": 2,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 해지 영향 안내\n[고지:필수|POL-BIL-SET-001-06] 해지 시 자동납부 중단으로 인한 연체·정지 위험 안내\n[고지:필수|POL-BIL-SET-001-08] 해지 적용 시점(다음 청구주기 또는 즉시) 명시\n[고지:필수|POL-BIL-SET-001-09] 재신청 시 재적용까지 소요 시간 안내\n[조건:해지아님] 영역 미노출\n[상태:loading] 숨김",
+      "label": "기능 2: 해지 영향 안내"
+    },
+    {
+      "no": 3,
+      "kind": "footer",
+      "sectionId": "section-BIL-autopay-setting-cta",
+      "sectionName": "설정 변경 CTA",
+      "sectionDescription": "자동납부 신청·변경·해지를 최종 확정하는 버튼. 고위험 변경 시 추가 인증 절차 포함",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "버튼 비활성 유지",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 설정 변경 CTA\n[고지:필수|POL-BIL-AUTH-001-08] 고위험 변경(해지·수단변경) 시 추가 본인인증 절차 안내\n[조건:신청모드] \"자동납부 신청\" 버튼 노출\n[조건:변경모드] \"수단 변경\" 버튼 노출\n[조건:해지모드] \"자동납부 해지\" 버튼 노출 (tone=destructive)\n[조건:처리중] 버튼 비활성(loading) 처리\n[액션:tap 확인] 설정 변경 처리 → 성공 시 snack-bar 완료 안내",
+      "label": "기능 3: 설정 변경 CTA"
+    }
+  ]
+}

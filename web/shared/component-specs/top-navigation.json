@@ -1,0 +1,86 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "top-navigation",
+  "category": "ogn",
+  "description": "상단 내비게이션. devType(page-1depth/page-2depth/popup).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "width": "FILL",
+      "itemSpacing": 217.0,
+      "paddingTop": 10.0,
+      "paddingRight": 20.0,
+      "paddingBottom": 10.0,
+      "paddingLeft": 20.0,
+      "primaryAxisAlignItems": "SPACE_BETWEEN",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "btn",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 10.0,
+          "paddingTop": 2.0,
+          "paddingRight": 2.0,
+          "paddingBottom": 2.0,
+          "paddingLeft": 2.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "button",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 12.0,
+          "primaryAxisAlignItems": "MAX",
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          },
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          },
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "devType",
+        "values": [
+          "page-2depth",
+          "popup",
+          "page-1depth"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23996",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

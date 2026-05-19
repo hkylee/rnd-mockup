@@ -1,4 +1,4 @@
-// page 1개 + level (atom / mol / ogn / all) → cascade 번들 생성.
+// page 1개 + level (component / all) → cascade 번들 생성.
 // 결과: mockup/scripter/runs/ 에 .generated.js 저장 + macOS pbcopy 클립보드 복사.
 
 import { spawnSync } from "node:child_process";
@@ -13,7 +13,7 @@ import { mockupRoot } from "@/lib/paths";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const LEVELS: RunLevel[] = ["atom", "mol", "ogn", "all"];
+const LEVELS: RunLevel[] = ["component", "all"];
 
 export async function POST(request: Request) {
   try {
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     }
     if (!level || !LEVELS.includes(level)) {
       return Response.json(
-        { error: "level 은 atom / mol / ogn / all 중 하나" },
+        { error: "level 은 component / all 중 하나" },
         { status: 400 }
       );
     }
@@ -74,9 +74,7 @@ export async function POST(request: Request) {
       level,
       includePage,
       counts: {
-        atom: level === "atom" || level === "mol" || level === "ogn" || level === "all" ? deps.atom.length : 0,
-        mol: level === "mol" || level === "ogn" || level === "all" ? deps.mol.length : 0,
-        ogn: level === "ogn" || level === "all" ? deps.ogn.length : 0,
+        component: deps.components.length,
         page: includePage ? 1 : 0,
         total: specs.length + (includePage ? 1 : 0),
       },

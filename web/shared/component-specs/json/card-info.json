@@ -1,0 +1,61 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "card-info",
+  "category": "mol",
+  "description": "카드 정보.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 8.0,
+      "primaryAxisAlignItems": "SPACE_BETWEEN",
+      "width": 369
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "frame-2147248009",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 236.0,
+          "paddingTop": 24.0,
+          "paddingRight": 24.0,
+          "paddingBottom": 24.0,
+          "paddingLeft": 24.0,
+          "primaryAxisAlignItems": "SPACE_BETWEEN",
+          "counterAxisAlignItems": "CENTER",
+          "width": 369
+        },
+        "visual": {
+          "cornerRadius": 20.0,
+          "fill": "#f4f5fa"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-cardtext",
+            "component": ".Cardtext"
+          },
+          {
+            "kind": "ref",
+            "id": "-thumbnaillogoitem",
+            "component": ".Thumbnaillogoitem"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Brand",
+          "Place"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:119099",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

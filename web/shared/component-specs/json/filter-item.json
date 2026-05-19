@@ -1,0 +1,48 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "filter-item",
+  "category": "atom",
+  "description": "필터 칩 아이템. Selected On/Off.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 2.0,
+      "paddingTop": 10.0,
+      "paddingRight": 16.0,
+      "paddingBottom": 10.0,
+      "paddingLeft": 12.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 9999.0,
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-icon-set",
+        "component": ".IconSet"
+      },
+      {
+        "kind": "text",
+        "id": "단말기",
+        "content": "단말기",
+        "exposeAs": "단말기"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Selected",
+        "values": [
+          "On",
+          "Off"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23750",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

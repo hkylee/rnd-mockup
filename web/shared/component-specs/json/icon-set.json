@@ -1,0 +1,42 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "icon-set",
+  "category": "atom",
+  "description": "아이콘 컨테이너. Size 12~40.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "fill": "#ff0000"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-ico교체용",
+        "component": ".Ico/교체용"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Size",
+        "values": [
+          "40",
+          "32",
+          "24",
+          "20",
+          "16",
+          "12",
+          "28"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22483",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

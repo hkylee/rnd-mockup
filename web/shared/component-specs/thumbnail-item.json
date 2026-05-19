@@ -1,0 +1,33 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "thumbnail-item",
+  "category": "mol",
+  "description": "썸네일 아이템.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 8.0
+    }
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Size",
+        "values": [
+          "40",
+          "Movie",
+          "64",
+          "160",
+          "182"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118300",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "thumbnail",
+  "category": "atom",
+  "description": "썸네일 이미지. Size 40/64/160/182.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 8.0
+    },
+    "children": []
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Size",
+        "values": [
+          "64",
+          "160",
+          "182",
+          "40"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22051",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

@@ -1,0 +1,98 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "status-bar",
+  "category": "ogn",
+  "description": "상태바. State(Default).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "width": "FILL",
+      "itemSpacing": 221.0,
+      "paddingTop": 20.0,
+      "paddingRight": 24.0,
+      "paddingBottom": 18.0,
+      "paddingLeft": 24.0,
+      "primaryAxisAlignItems": "SPACE_BETWEEN",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "left-side",
+        "visual": {
+          "cornerRadius": 24.0,
+          "fill": "#ffffff"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "--status-bar-time",
+            "component": ".StatusBarTime"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "notch",
+        "children": [
+          {
+            "kind": "group",
+            "id": "notch",
+            "children": []
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "right-side",
+        "visual": {
+          "fill": "#ffffff"
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "battery",
+            "visual": {
+              "fill": "#ffffff"
+            },
+            "children": [
+              {
+                "kind": "group",
+                "id": "outline",
+                "children": []
+              },
+              {
+                "kind": "group",
+                "id": "battery-end",
+                "children": []
+              },
+              {
+                "kind": "group",
+                "id": "fill",
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "group",
+            "id": "icon-mobile-signal",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "State",
+        "values": [
+          "Default"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22173",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

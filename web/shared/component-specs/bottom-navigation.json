@@ -1,0 +1,111 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "bottom-navigation",
+  "category": "ogn",
+  "description": "하단 내비게이션. State(My/Search/Shopping).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "width": "FILL",
+      "itemSpacing": 12.0,
+      "paddingTop": 12.0,
+      "paddingBottom": 36.0,
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "fill": "#ebeef6",
+      "stroke": "#f4f5fa",
+      "strokeWidth": 1.0
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "my",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 2.0,
+          "paddingRight": 5.0,
+          "paddingLeft": 5.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          },
+          {
+            "kind": "text",
+            "id": "my",
+            "content": "MY",
+            "exposeAs": "my"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "search",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 2.0,
+          "paddingRight": 5.0,
+          "paddingLeft": 5.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          },
+          {
+            "kind": "text",
+            "id": "검색",
+            "content": "검색",
+            "exposeAs": "검색"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "shopping",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 2.0,
+          "paddingRight": 5.0,
+          "paddingLeft": 5.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          },
+          {
+            "kind": "text",
+            "id": "쇼핑",
+            "content": "쇼핑",
+            "exposeAs": "쇼핑"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "State",
+        "values": [
+          "My",
+          "Search",
+          "Shopping"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22358",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

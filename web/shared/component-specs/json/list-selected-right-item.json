@@ -1,0 +1,33 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "list-selected-right-item",
+  "category": "atom",
+  "description": "선택 리스트 우측 아이템. Type(ButtonXsmallSolid/Icon/TextButton).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-button-xsmall-solid",
+        "component": ".ButtonXsmallSolid"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "ButtonXsmallSolid",
+          "Icon",
+          "TextButton"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23910",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

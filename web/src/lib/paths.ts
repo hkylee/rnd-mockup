@@ -27,6 +27,11 @@ export function governanceRoot(): string {
   return resolve(process.cwd(), "..", "governance");
 }
 
+// docs/ — 스킬 공통 참조 문서 (make-cmp / make-tsx 산출물, 디자인 토큰, 목업 HTML 출력).
+export function docsRoot(): string {
+  return resolve(process.cwd(), "..", "docs");
+}
+
 // mockup/sb-doc/ — Storyboard (SB) 작성 양식·규칙 (분석 워크플로 일부).
 // 2026-05-01: production/ → sb/ rename.
 // 2026-05-02: sb/ → sb-doc/ rename (혼동 방지) → mockup/sb-doc/ 으로 이동 (mockup 통합).

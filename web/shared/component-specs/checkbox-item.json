@@ -1,0 +1,74 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "checkbox-item",
+  "category": "atom",
+  "description": "체크박스 단독 아이템. On/Off/Disabled.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "check-box",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 10.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "check-box",
+            "layout": {
+              "mode": "VERTICAL",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER"
+            },
+            "visual": {
+              "cornerRadius": 9999.0,
+              "stroke": "#05001a",
+              "strokeWidth": 1.2000000476837158
+            },
+            "children": [
+              {
+                "kind": "group",
+                "id": "vector-27829",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "속성 1",
+        "values": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "name": "속성 2",
+        "values": [
+          "Off"
+        ]
+      },
+      {
+        "name": "속성 3",
+        "values": [
+          "Off",
+          "On"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23969",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

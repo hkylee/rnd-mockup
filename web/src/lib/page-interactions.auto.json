@@ -1,17 +1,3 @@
 {
-  "$comment": "AUTO-GENERATED. 수동 override 는 page-interactions.json 에 작성. 명령: npm run build:interactions",
-  "MBR/leave-impact": {
-    "states": {
-      "confirm-check": false
-    }
-  },
-  "MBR/leave-reason": {
-    "states": {
-      "reason-1": false,
-      "reason-2": false,
-      "reason-3": false,
-      "reason-4": false,
-      "reason-5": false
-    }
-  }
+  "$comment": "AUTO-GENERATED. 수동 override 는 page-interactions.json 에 작성. 명령: npm run build:interactions"
 }

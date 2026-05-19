@@ -1,0 +1,67 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "card-contents-item",
+  "category": "mol",
+  "description": "카드 콘텐츠 리스트 아이템. Type(List/Barcode/ai).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 14.0,
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "info",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 14.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-image",
+            "component": ".Image"
+          },
+          {
+            "kind": "group",
+            "id": "text",
+            "layout": {
+              "mode": "VERTICAL"
+            },
+            "children": [
+              {
+                "kind": "text",
+                "id": "왕과-사는-남자",
+                "content": "왕과 사는 남자",
+                "exposeAs": "왕과-사는-남자"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "-button",
+        "component": ".Button"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "List",
+          "Barcode",
+          "ai"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23582",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

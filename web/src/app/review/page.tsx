@@ -16,9 +16,7 @@ import { SpecPreviewCard } from "@/components/SpecPreviewCard";
 import { CopyableDetails } from "@/components/CopyableDetails";
 
 const CATEGORY_COLOR: Record<string, string> = {
-  atom: "text-emerald-700 bg-emerald-50 border-emerald-200",
-  mol: "text-blue-700 bg-blue-50 border-blue-200",
-  ogn: "text-violet-700 bg-violet-50 border-violet-200",
+  component: "text-violet-700 bg-violet-50 border-violet-200",
   page: "text-slate-700 bg-slate-50 border-slate-200",
 };
 
@@ -32,9 +30,11 @@ type SourceEntry = { name: string; category: string };
 
 function inferCategory(name: string, fallback?: string): CandidateCategory {
   const first = name.split("/")[0];
-  if (first === "atom" || first === "mol" || first === "ogn" || first === "page") return first;
-  if (fallback === "atom" || fallback === "mol" || fallback === "ogn" || fallback === "page") return fallback;
-  return "mol";
+  if (first === "page") return "page";
+  if (first === "atom" || first === "mol" || first === "ogn" || first === "component") return "component";
+  if (fallback === "page") return "page";
+  if (fallback === "atom" || fallback === "mol" || fallback === "ogn" || fallback === "component") return "component";
+  return "component";
 }
 
 // Scripter 번들 (.generated.js) 에서 COMPONENT_SPEC = {...} 객체 추출.
@@ -238,7 +238,7 @@ export default function ReviewPage() {
       .then((r) => r.json())
       .then((d) => {
         const items = (d.items || []) as { name: string; category: string }[];
-        setSources(items.filter((x) => ["atom", "mol", "ogn", "page"].includes(x.category)));
+        setSources(items.filter((x) => ["component", "page"].includes(x.category)));
       })
       .catch(() => {});
     fetch("/api/spec?kind=ds")
@@ -375,7 +375,7 @@ export default function ReviewPage() {
                           <span
                             className={
                               "inline-block px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold border " +
-                              (CATEGORY_COLOR[c.category] || CATEGORY_COLOR.mol)
+                              (CATEGORY_COLOR[c.category] || CATEGORY_COLOR.component)
                             }
                           >
                             {c.category}
@@ -451,7 +451,7 @@ export default function ReviewPage() {
                 <span
                   className={
                     "inline-block px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-semibold border mb-2 " +
-                    (CATEGORY_COLOR[selected.category] || CATEGORY_COLOR.mol)
+                    (CATEGORY_COLOR[selected.category] || CATEGORY_COLOR.component)
                   }
                 >
                   {selected.category}

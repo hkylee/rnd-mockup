@@ -1,0 +1,52 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "radio",
+  "category": "mol",
+  "description": "라디오 버튼 + 텍스트 조합. Checked/Disabled 상태.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 8.0
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-radio-item",
+        "component": ".RadioItem"
+      },
+      {
+        "kind": "text",
+        "id": "text",
+        "content": "텍스트",
+        "exposeAs": "text"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Checked",
+        "values": [
+          "On",
+          "Off"
+        ]
+      },
+      {
+        "name": "Text",
+        "values": [
+          "On"
+        ]
+      },
+      {
+        "name": "Disabled",
+        "values": [
+          "Off",
+          "On"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22197",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

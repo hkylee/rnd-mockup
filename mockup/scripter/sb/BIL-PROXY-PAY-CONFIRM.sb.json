@@ -1,0 +1,83 @@
+{
+  "screenId": "BIL-PROXY-PAY-CONFIRM",
+  "screenName": "대리납부 실행",
+  "screenPath": "page/BIL/proxy-pay-confirm",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/proxy-pay-confirm",
+    "spec_input": "specs-input/BIL-pay-proxy.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-proxy-confirm-summary",
+      "sectionName": "대리납부 정보 요약",
+      "sectionDescription": "대리납부 대상 명의자·회선·금액·수단을 요약 표시. 대리납부 분리 기록 안내 포함",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 대리납부 정보 요약\n[규칙:FN-PAY-006] 대리납부 대상 명의자·회선·금액·수단을 표시한다\n[규칙:FN-PAY-004] 납부 확인 절차를 준수한다\n[고지:필수|POL-BIL-AGT-001-09] 대리납부 내역은 명의자 내역과 별도 기록됨을 안내한다\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내",
+      "label": "기능 1: 대리납부 정보 요약"
+    },
+    {
+      "no": 2,
+      "kind": "footer",
+      "sectionId": "section-BIL-proxy-confirm-cta",
+      "sectionName": "대리납부 실행 CTA",
+      "sectionDescription": "대리납부를 최종 실행하는 버튼",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "버튼 비활성 (처리 중)",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 대리납부 실행 CTA\n[조건:처리중] 버튼 비활성(loading) 처리\n[액션:tap 대리납부 실행] 납부 처리 요청 → 성공 시 pay-complete / 실패 시 pay-fail\n[액션:tap 취소] proxy-pay-check 화면으로 돌아가기",
+      "label": "기능 2: 대리납부 실행 CTA"
+    }
+  ]
+}

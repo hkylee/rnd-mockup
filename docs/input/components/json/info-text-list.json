@@ -1,0 +1,80 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "info-text-list",
+  "category": "mol",
+  "description": "정보 텍스트 리스트.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 4.0,
+      "paddingTop": 16.0,
+      "paddingBottom": 16.0,
+      "primaryAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "fill": "#ff0000"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "txt",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 40.0,
+          "counterAxisAlignItems": "CENTER",
+          "width": 329
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "",
+            "content": "일이삼사오육칠팔구십일이삼사오육칠팔구십",
+            "exposeAs": ""
+          },
+          {
+            "kind": "ref",
+            "id": "-badge",
+            "component": ".Badge"
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "txt-sub",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 8.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "",
+            "content": "{텍스트}",
+            "exposeAs": ""
+          },
+          {
+            "kind": "text",
+            "id": "2026-01-30",
+            "content": "2026.01.30",
+            "exposeAs": "2026-01-30"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "RightText",
+        "values": [
+          "Off",
+          "On"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118757",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

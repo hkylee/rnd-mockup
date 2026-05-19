@@ -1,0 +1,60 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "search-bar",
+  "category": "ogn",
+  "description": "검색 바.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 166.0,
+      "paddingTop": 6.0,
+      "paddingRight": 6.0,
+      "paddingBottom": 6.0,
+      "paddingLeft": 20.0,
+      "primaryAxisAlignItems": "SPACE_BETWEEN",
+      "counterAxisAlignItems": "CENTER",
+      "width": 353
+    },
+    "visual": {
+      "cornerRadius": 999.0,
+      "fill": "#f4f5fa"
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "",
+        "content": "무엇을 도와드릴까요?",
+        "exposeAs": ""
+      },
+      {
+        "kind": "group",
+        "id": "button-search",
+        "visual": {
+          "cornerRadius": 26.0,
+          "fill": "#3617ce"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-ico",
+            "component": ".Ico"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "type",
+        "values": [
+          "LLM",
+          "search"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:120398",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

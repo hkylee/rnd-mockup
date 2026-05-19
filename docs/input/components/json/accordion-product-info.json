@@ -1,0 +1,63 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "accordion-product-info",
+  "category": "ogn",
+  "description": "상품 정보 아코디언.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "paddingTop": 24.0,
+      "paddingRight": 24.0,
+      "paddingBottom": 24.0,
+      "paddingLeft": 24.0
+    },
+    "visual": {
+      "cornerRadius": 20.0,
+      "fill": "#f4f5fa"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "title",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 101.0,
+          "primaryAxisAlignItems": "SPACE_BETWEEN",
+          "counterAxisAlignItems": "CENTER",
+          "width": 321
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "leftitem",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 12.0,
+              "counterAxisAlignItems": "CENTER"
+            }
+          },
+          {
+            "kind": "ref",
+            "id": "-ico",
+            "component": ".Ico"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "States",
+        "values": [
+          "Default",
+          "Open"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:119046",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

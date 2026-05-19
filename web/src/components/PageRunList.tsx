@@ -5,22 +5,20 @@ import { useEffect, useState } from "react";
 
 type PageMeta = {
   name: string;
-  atomCount: number;
-  molCount: number;
-  ognCount: number;
+  componentCount: number;
   missingCount: number;
   missing: string[];
 };
 
-type Totals = { atom: number; mol: number; ogn: number; page: number };
+type Totals = { component: number; page: number };
 
-type RunLevel = "atom" | "mol" | "ogn" | "all";
+type RunLevel = "component" | "all";
 
 type PageRunResult = {
   ok?: boolean;
   pageName?: string;
   level?: RunLevel;
-  counts?: { atom: number; mol: number; ogn: number; page: number; total: number };
+  counts?: { component: number; page: number; total: number };
   missing?: string[];
   outPath?: string;
   bundleSize?: number;
@@ -29,7 +27,7 @@ type PageRunResult = {
   error?: string;
 };
 
-type GlobalCmd = "group-atom" | "group-mol" | "group-ogn" | "pages";
+type GlobalCmd = "group-component" | "pages";
 
 type GlobalRunResult = {
   ok?: boolean;
@@ -41,32 +39,24 @@ type GlobalRunResult = {
 };
 
 const LEVEL_LABEL: Record<RunLevel, string> = {
-  atom: "Atom",
-  mol: "Mol",
-  ogn: "Ogn",
+  component: "Component",
   all: "Page",
 };
 
 const LEVEL_HINT: Record<RunLevel, string> = {
-  atom: "이 페이지의 atom 만",
-  mol: "atom + mol (mol 의존성까지)",
-  ogn: "atom + mol + ogn (page 직전까지)",
-  all: "atom + mol + ogn + page (전체 cascade)",
+  component: "이 페이지의 컴포넌트만",
+  all: "컴포넌트 + page (전체 cascade)",
 };
 
 const LEVEL_TONE = "border-slate-300 hover:bg-slate-100 text-slate-700";
 
 const GLOBAL_HINT: Record<GlobalCmd, string> = {
-  "group-atom": "카탈로그 전체 atom 빌드 (--group atom)",
-  "group-mol": "카탈로그 전체 mol 빌드 (--group mol)",
-  "group-ogn": "카탈로그 전체 ogn 빌드 (--group ogn)",
+  "group-component": "카탈로그 전체 컴포넌트 빌드",
   "pages": "카탈로그 전체 page 빌드 (--pages)",
 };
 
 const GLOBAL_LABEL: Record<GlobalCmd, string> = {
-  "group-atom": "Atom",
-  "group-mol": "Mol",
-  "group-ogn": "Ogn",
+  "group-component": "Component",
   "pages": "Page",
 };
 
@@ -181,9 +171,7 @@ export function PageRunList({ onFilesChanged }: Props) {
 
   const isAnyRunning = running !== null;
   const globalCounts: Record<GlobalCmd, number | null> = {
-    "group-atom": totals?.atom ?? null,
-    "group-mol": totals?.mol ?? null,
-    "group-ogn": totals?.ogn ?? null,
+    "group-component": totals?.component ?? null,
     "pages": totals?.page ?? null,
   };
 
@@ -210,7 +198,7 @@ export function PageRunList({ onFilesChanged }: Props) {
             </div>
 
             <div className="flex gap-1.5 shrink-0">
-              {(["group-atom", "group-mol", "group-ogn", "pages"] as GlobalCmd[]).map((cmd) => {
+              {(["group-component", "pages"] as GlobalCmd[]).map((cmd) => {
                 const key = "global__" + cmd;
                 const isRunning = running === key;
                 const count = globalCounts[cmd];
@@ -238,9 +226,7 @@ export function PageRunList({ onFilesChanged }: Props) {
 
         {pages.map((p) => {
           const counts: Record<RunLevel, number> = {
-            atom: p.atomCount,
-            mol: p.molCount,
-            ogn: p.ognCount,
+            component: p.componentCount,
             all: 1,
           };
           return (
@@ -268,7 +254,7 @@ export function PageRunList({ onFilesChanged }: Props) {
                 </div>
 
                 <div className="flex gap-1.5 shrink-0">
-                  {(["atom", "mol", "ogn", "all"] as RunLevel[]).map((lv) => {
+                  {(["component", "all"] as RunLevel[]).map((lv) => {
                     const key = "page__" + p.name + "__" + lv;
                     const isRunning = running === key;
                     return (

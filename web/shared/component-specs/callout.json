@@ -1,0 +1,59 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "callout",
+  "category": "mol",
+  "description": "콜아웃 텍스트 블록.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "width": "FILL"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "callout",
+        "layout": {
+          "mode": "VERTICAL",
+          "width": "FILL",
+          "itemSpacing": 4.0,
+          "paddingTop": 12.0,
+          "paddingRight": 16.0,
+          "paddingBottom": 12.0,
+          "paddingLeft": 16.0,
+          "primaryAxisAlignItems": "CENTER"
+        },
+        "visual": {
+          "cornerRadius": 10.0,
+          "fill": "#f4f5fa"
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "title",
+            "content": "타이틀",
+            "exposeAs": "title"
+          },
+          {
+            "kind": "text",
+            "id": "구독-주기마다-요금이-정기-결제돼요",
+            "content": "구독 주기마다 요금이 정기 결제돼요",
+            "exposeAs": "구독-주기마다-요금이-정기-결제돼요"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Property 1",
+        "values": [
+          "Default"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23794",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

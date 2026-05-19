@@ -1,0 +1,126 @@
+{
+  "screenId": "BIL-AUTO-PREPAY-SETTING",
+  "screenName": "자동 선결제 설정",
+  "screenPath": "page/BIL/auto-prepay-setting",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/auto-prepay-setting",
+    "spec_input": "specs-input/BIL-settings.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-auto-prepay-status",
+      "sectionName": "자동 선결제 현재 상태 및 조건 표시",
+      "sectionDescription": "자동 선결제 현재 설정 상태와 신청 조건(5종) 충족 여부를 표시한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 자동 선결제 현재 상태 및 조건 표시\n[규칙:FN-SET-007] 자동 선결제 현재 상태와 신청 조건을 표시한다\n[고지:필수|POL-BIL-AUTO-001-01] 자동 선결제 신청 가능 조건 1: 정상 회선\n[고지:필수|POL-BIL-AUTO-001-02] 자동 선결제 신청 가능 조건 2: 자동납부 설정 완료\n[고지:필수|POL-BIL-AUTO-001-03] 자동 선결제 신청 가능 조건 3: 미납 없음\n[고지:필수|POL-BIL-AUTO-001-04] 자동 선결제 신청 가능 조건 4: 유효 납부수단 등록\n[고지:필수|POL-BIL-AUTO-001-05] 자동 선결제 신청 가능 조건 5: 본인 명의 회선\n[조건:설정중] 현재 설정 정보 카드 노출 + 해지 버튼\n[조건:미설정] 신청 조건 체크리스트 노출 + 신청 버튼\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내",
+      "label": "기능 1: 자동 선결제 현재 상태 및 조건 표시"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-auto-prepay-cancel-notice",
+      "sectionName": "자동 선결제 해지 안내",
+      "sectionDescription": "자동 선결제 해지 시 영향과 재신청 조건을 안내한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "0-1/1",
+        "max": ""
+      },
+      "displayPriority": 2,
+      "errorHandling": "영역 숨김",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 자동 선결제 해지 안내\n[고지:필수|POL-BIL-AUTO-001-06] 해지 시 자동 선결제 중단 및 영향 안내\n[고지:필수|POL-BIL-AUTO-001-07] 해지 후 재신청 시 조건 재충족 필요 안내\n[고지:필수|POL-BIL-AUTO-001-08] 해지 적용 시점 명시\n[조건:해지아님] 영역 미노출",
+      "label": "기능 2: 자동 선결제 해지 안내"
+    },
+    {
+      "no": 3,
+      "kind": "footer",
+      "sectionId": "section-BIL-auto-prepay-cta",
+      "sectionName": "설정 신청·해지 CTA",
+      "sectionDescription": "자동 선결제 신청 또는 해지를 확정하는 버튼",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "버튼 비활성 유지",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 설정 신청·해지 CTA\n[조건:조건미충족] \"신청\" 버튼 비활성(disabled) 처리\n[조건:설정중] \"해지\" 버튼 노출 (tone=destructive)\n[조건:미설정] \"신청\" 버튼 노출\n[조건:처리중] 버튼 비활성(loading) 처리\n[액션:tap 신청] 자동 선결제 신청 처리 → 성공 시 snack-bar 완료 안내\n[액션:tap 해지] 자동 선결제 해지 확인 다이얼로그 노출",
+      "label": "기능 3: 설정 신청·해지 CTA"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "text-field",
+  "category": "ogn",
+  "description": "텍스트 필드. 5가지 상태 + Error on/off.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 8.0,
+      "primaryAxisAlignItems": "MAX"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-label",
+        "component": ".Label"
+      },
+      {
+        "kind": "ref",
+        "id": "-text-field-default",
+        "component": ".TextFieldDefault"
+      },
+      {
+        "kind": "group",
+        "id": "help-text",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 10.0
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "help-text",
+            "content": "Help Text",
+            "exposeAs": "help-text"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "States",
+        "values": [
+          "Default",
+          "Disabled",
+          "Focused",
+          "Typed",
+          "Typing"
+        ]
+      },
+      {
+        "name": "Error",
+        "values": [
+          "on",
+          "off"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22256",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

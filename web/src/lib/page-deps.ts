@@ -1,4 +1,4 @@
-// page spec → 재귀적으로 의존하는 atom / mol / ogn 추출.
+// page spec → 재귀적으로 의존하는 component 추출.
 // "이 화면 cascade 빌드" 시 어떤 컴포넌트가 필요한지 계산.
 
 import { collectAllSpecs, type CollectedSpec, type SpecCategory } from "./collect-specs";
@@ -18,9 +18,7 @@ function collectRefNames(node: unknown, out: Set<string>): void {
 
 export type PageDeps = {
   page: CollectedSpec;
-  atom: CollectedSpec[];
-  mol: CollectedSpec[];
-  ogn: CollectedSpec[];
+  components: CollectedSpec[];
   /** 누락된 ref (카탈로그에 없음) — 진단용 */
   missing: string[];
 };
@@ -65,49 +63,34 @@ export function getPageDeps(pageName: string, allSpecs?: CollectedSpec[]): PageD
     for (const c of childRefs) if (!visited.has(c)) queue.push(c);
   }
 
-  const buckets: Record<SpecCategory, CollectedSpec[]> = {
-    atom: [],
-    mol: [],
-    ogn: [],
-    page: [],
-  };
+  const components: CollectedSpec[] = [];
   for (const name of visited) {
     const spec = byName.get(name);
     if (!spec) continue;
-    buckets[spec.category].push(spec);
+    if (spec.category !== "page") components.push(spec);
   }
-  for (const cat of ["atom", "mol", "ogn"] as const) {
-    buckets[cat].sort((a, b) => a.name.localeCompare(b.name));
-  }
+  components.sort((a, b) => a.name.localeCompare(b.name));
 
   return {
     page,
-    atom: buckets.atom,
-    mol: buckets.mol,
-    ogn: buckets.ogn,
+    components,
     missing: [...missing].sort(),
   };
 }
 
-export type RunLevel = "atom" | "mol" | "ogn" | "all";
+export type RunLevel = "component" | "all";
 
 /**
  * level 에 따라 page 의존성을 누적 필터.
- * - atom: atom 만
- * - mol:  atom + mol
- * - ogn:  atom + mol + ogn
- * - all:  atom + mol + ogn + page
+ * - component: 컴포넌트만
+ * - all:       컴포넌트 + page
  */
 export function filterDepsByLevel(deps: PageDeps, level: RunLevel): {
   specs: CollectedSpec[];
   includePage: boolean;
 } {
-  const specs: CollectedSpec[] = [...deps.atom];
-  if (level === "atom") return { specs, includePage: false };
-  specs.push(...deps.mol);
-  if (level === "mol") return { specs, includePage: false };
-  specs.push(...deps.ogn);
-  if (level === "ogn") return { specs, includePage: false };
+  const specs: CollectedSpec[] = [...deps.components];
+  if (level === "component") return { specs, includePage: false };
   // all
   return { specs, includePage: true };
 }

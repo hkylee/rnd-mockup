@@ -4,7 +4,7 @@ import { useEffect, useImperativeHandle, useMemo, useState, forwardRef } from "r
 
 type FileEntry = {
   name: string;
-  category: "sync" | "library" | "pages" | "atom" | "mol" | "ogn" | "page" | "icon" | "other";
+  category: "sync" | "library" | "pages" | "component" | "page" | "icon" | "other";
   size: number;
   mtime: number;
 };
@@ -13,15 +13,13 @@ const CATEGORY_LABEL: Record<string, string> = {
   sync: "🔄 sync",
   library: "📦 library",
   pages: "📄 pages",
-  atom: "⚛ atom",
-  mol: "🧬 mol",
-  ogn: "🦠 ogn",
+  component: "◻ component",
   page: "📄 page",
   icon: "🖼 icon",
   other: "기타",
 };
 
-const CATEGORY_ORDER = ["sync", "library", "pages", "atom", "mol", "ogn", "page", "icon", "other"];
+const CATEGORY_ORDER = ["sync", "library", "pages", "component", "page", "icon", "other"];
 
 function fmtBytes(n: number): string {
   if (n < 1024) return n + " B";

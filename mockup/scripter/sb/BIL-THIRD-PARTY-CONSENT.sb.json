@@ -1,0 +1,114 @@
+{
+  "screenId": "BIL-THIRD-PARTY-CONSENT",
+  "screenName": "타인 명의 동의",
+  "screenPath": "page/BIL/third-party-consent",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/third-party-consent",
+    "spec_input": "specs-input/BIL-pay-proxy.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-third-party-consent-info",
+      "sectionName": "타인 명의 동의 요청 안내",
+      "sectionDescription": "타인 명의 납부수단 사용을 위한 동의 요청 내용과 절차를 안내한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 타인 명의 동의 요청 안내\n[규칙:FN-PAY-003] 타인 명의 납부수단 사용 시 명의자 동의 절차를 제공한다\n[고지:필수|POL-BIL-AUTH-001-07] 타인 명의 수단 사용 시 명의자 동의가 필수임을 안내한다\n[고지:필수|POL-BIL-AGT-001-06] 동의의 유효 시간이 24시간임을 명시한다\n[고지:필수|POL-BIL-AGT-001-08] 명의자 승인 후 철회가 불가함을 명확히 고지한다\n[상태:loading] skeleton 표시\n[상태:error] snack-bar 재시도 안내",
+      "label": "기능 1: 타인 명의 동의 요청 안내"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-third-party-consent-status",
+      "sectionName": "동의 상태 확인",
+      "sectionDescription": "동의 요청 발송 후 명의자의 승인/거부/만료 상태를 실시간으로 확인한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "0-1/1",
+        "max": ""
+      },
+      "displayPriority": 2,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 동의 상태 확인\n[조건:동의대기] atom/tag(tone=neutral, label=대기중) 노출\n[조건:동의승인] atom/tag(tone=positive, label=승인완료) 노출 → 납부 진행 CTA 활성\n[조건:동의거부] atom/tag(tone=negative, label=거부) 노출 + 다른 수단 안내\n[조건:동의만료] atom/tag(tone=warning, label=만료) 노출 + 재요청 버튼\n[상태:loading] skeleton 표시",
+      "label": "기능 2: 동의 상태 확인"
+    },
+    {
+      "no": 3,
+      "kind": "footer",
+      "sectionId": "section-BIL-third-party-consent-cta",
+      "sectionName": "동의 요청 및 진행 CTA",
+      "sectionDescription": "동의 요청 발송 버튼과 동의 승인 후 납부 진행 버튼을 상태에 따라 표시",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "버튼 비활성 유지",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 동의 요청 및 진행 CTA\n[조건:동의전] \"동의 요청 발송\" 버튼 노출\n[조건:동의대기] 버튼 비활성(loading) — \"승인 대기 중\" 문구\n[조건:동의승인] \"납부 진행\" 버튼 활성\n[조건:동의거부] \"다른 수단으로 납부\" 버튼 노출\n[조건:동의만료] \"동의 재요청\" 버튼 노출\n[액션:tap 동의요청발송] 동의 요청 발송 API 호출\n[액션:tap 납부진행] pay-confirm 화면으로 이동\n[액션:tap 다른수단으로] pay-method-select 화면으로 이동",
+      "label": "기능 3: 동의 요청 및 진행 CTA"
+    }
+  ]
+}

@@ -10,7 +10,7 @@ import { CodeGenerationResult } from "@/components/CodeGenerationResult";
 
 type CandidateInputForGen = {
   name: string;
-  category: "atom" | "mol" | "ogn" | "page";
+  category: "component" | "page";
   description?: string;
   baseOn?: string;
 };
@@ -18,7 +18,7 @@ type CandidateInputForGen = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Spec = any;
 
-export type TierKind = "atom" | "mol" | "ogn" | "page";
+export type TierKind = "component" | "page";
 
 export type TierBundles = Record<TierKind, string | null>;
 
@@ -51,9 +51,11 @@ function saveLatest(r: SpecAnalysisResult) {
 
 function inferCategory(name: string, fallback?: string): CandidateCategory {
   const first = name.split("/")[0];
-  if (first === "atom" || first === "mol" || first === "ogn" || first === "page") return first;
-  if (fallback === "atom" || fallback === "mol" || fallback === "ogn" || fallback === "page") return fallback;
-  return "mol";
+  if (first === "page") return "page";
+  if (first === "atom" || first === "mol" || first === "ogn" || first === "component") return "component";
+  if (fallback === "page") return "page";
+  if (fallback === "atom" || fallback === "mol" || fallback === "ogn" || fallback === "component") return "component";
+  return "component";
 }
 
 // AI 응답 정규화 — 다중 화면일 때 객체로 오는 케이스 방어 + 신규 screenRoles 처리.
@@ -321,9 +323,7 @@ export default function SpecAnalysisPage() {
 
       setGenStatus("번들 생성 중… (전체 + tier 별)");
       const tierGroups: Record<TierKind, Spec[]> = {
-        atom: newSpecs.filter((s: { name?: string }) => inferCategory(s?.name || "") === "atom"),
-        mol: newSpecs.filter((s: { name?: string }) => inferCategory(s?.name || "") === "mol"),
-        ogn: newSpecs.filter((s: { name?: string }) => inferCategory(s?.name || "") === "ogn"),
+        component: newSpecs,
         page: pageSpecs,
       };
       const fetchBundle = async (body: { newSpecs?: Spec[]; pageSpecs?: Spec[] }) => {
@@ -339,18 +339,14 @@ export default function SpecAnalysisPage() {
         return r.text();
       };
 
-      const [fullBundle, atomBundle, molBundle, ognBundle, pageBundle] = await Promise.all([
+      const [fullBundle, componentBundle, pageBundle] = await Promise.all([
         fetchBundle({ newSpecs, pageSpecs }),
-        tierGroups.atom.length > 0 ? fetchBundle({ newSpecs: tierGroups.atom }) : Promise.resolve<string | null>(null),
-        tierGroups.mol.length > 0 ? fetchBundle({ newSpecs: tierGroups.mol }) : Promise.resolve<string | null>(null),
-        tierGroups.ogn.length > 0 ? fetchBundle({ newSpecs: tierGroups.ogn }) : Promise.resolve<string | null>(null),
+        tierGroups.component.length > 0 ? fetchBundle({ newSpecs: tierGroups.component }) : Promise.resolve<string | null>(null),
         tierGroups.page.length > 0 ? fetchBundle({ pageSpecs: tierGroups.page }) : Promise.resolve<string | null>(null),
       ]);
 
       const tierBundles: TierBundles = {
-        atom: atomBundle,
-        mol: molBundle,
-        ogn: ognBundle,
+        component: componentBundle,
         page: pageBundle,
       };
 

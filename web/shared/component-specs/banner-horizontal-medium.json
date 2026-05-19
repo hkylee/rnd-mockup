@@ -1,0 +1,56 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "banner-horizontal-medium",
+  "category": "mol",
+  "description": "가로형 배너.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "paddingBottom": 4.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "banner",
+        "visual": {
+          "cornerRadius": 24.0,
+          "fill": "#fdfdfe",
+          "stroke": "#ffffff",
+          "strokeWidth": 1.0
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "textarea",
+            "layout": {
+              "mode": "VERTICAL",
+              "itemSpacing": 4.0,
+              "primaryAxisAlignItems": "CENTER",
+              "width": 219
+            }
+          }
+        ]
+      },
+      {
+        "kind": "ref",
+        "id": "-indicator",
+        "component": ".Indicator"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "SubTitle",
+        "values": [
+          "on"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118791",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "card-section",
+  "category": "ogn",
+  "description": "카드 섹션.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "paddingBottom": 4.0
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "card",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 24.0,
+          "paddingTop": 28.0,
+          "paddingRight": 28.0,
+          "paddingBottom": 28.0,
+          "paddingLeft": 28.0,
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "MAX"
+        },
+        "visual": {
+          "cornerRadius": 24.0,
+          "fill": "#ffffff",
+          "stroke": "#ffffff",
+          "strokeWidth": 1.0
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-cardsectiontitle",
+            "component": ".Cardsectiontitle"
+          },
+          {
+            "kind": "ref",
+            "id": "-local-cardcontents",
+            "component": ".LocalCardcontents"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Medium",
+          "Large"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118800",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PR-MBR-CS-001-01 약관 동의</title>
+  <style>
+    /* ── Design Tokens (Light.tokens.json) ─────────────────────── */
+    :root {
+      --color-fill-brand:        #3617CE;
+      --color-fill-brand-hover:  #4D2EE0;
+      --color-fill-brand-dim:    #EAE6FB;
+      --color-text-primary:      #05001A;
+      --color-text-secondary:    #5E6085;
+      --color-text-subtle:       #B4C0DE;
+      --color-text-white:        #FFFFFF;
+      --color-bg-page:           #F4F5FA;
+      --color-bg-elevated:       #FFFFFF;
+      --color-border:            #E2E6F1;
+      --color-border-strong:     #D2D9EB;
+      --color-danger:            #E42939;
+    }
+
+    /* ── Base ───────────────────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, 'Pretendard', sans-serif;
+      background: #e8eaf0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0 48px;
+      gap: 16px;
+    }
+
+    /* ── Case Tabs ───────────────────────────────────────────────── */
+    .case-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    .case-tabs button {
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--color-border-strong);
+      background: #fff;
+      color: var(--color-text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .case-tabs button.active {
+      background: var(--color-fill-brand);
+      border-color: var(--color-fill-brand);
+      color: #fff;
+    }
+
+    /* ── Phone Frame ─────────────────────────────────────────────── */
+    .phone-frame {
+      width: 375px;
+      min-height: 812px;
+      background: var(--color-bg-page);
+      border-radius: 40px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      display: none;
+      flex-direction: column;
+      position: relative;
+    }
+    .phone-frame.active { display: flex; }
+
+    /* ── Status Bar ──────────────────────────────────────────────── */
+    .status-bar {
+      /* status-bar.tsx: padding 20 24 18 24 */
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px 18px 24px;
+      background: var(--color-bg-elevated);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      flex-shrink: 0;
+    }
+    .status-bar .time { font-size: 15px; font-weight: 700; }
+    .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+    .status-bar .icons span { font-size: 12px; }
+
+    /* ── App Bar ─────────────────────────────────────────────────── */
+    .app-bar {
+      /* app-bar.tsx: padding 10 20, flex row, gap varies */
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 10px 20px;
+      background: var(--color-bg-elevated);
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .app-bar .back-btn {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--color-text-primary); flex-shrink: 0;
+    }
+    .app-bar .title {
+      flex: 1;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      text-align: center;
+      margin-right: 32px; /* balance back button */
+    }
+    .app-bar .skip {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ── Progress Bar ────────────────────────────────────────────── */
+    .progress-wrap {
+      background: var(--color-bg-elevated);
+      padding: 0 20px 16px;
+    }
+    .progress-track {
+      height: 4px;
+      background: var(--color-border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: var(--color-fill-brand);
+      transition: width 0.3s;
+    }
+    .progress-label {
+      font-size: 12px;
+      color: var(--color-text-subtle);
+      margin-top: 6px;
+      text-align: right;
+    }
+
+    /* ── Content Area ────────────────────────────────────────────── */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── All Agree Block ─────────────────────────────────────────── */
+    .all-agree-block {
+      background: var(--color-bg-elevated);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .all-agree-block .label {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+    .all-agree-block .sub {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ── Checkbox ────────────────────────────────────────────────── */
+    .checkbox-circle {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--color-border-strong);
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .checkbox-circle.checked {
+      background: var(--color-fill-brand);
+      border-color: var(--color-fill-brand);
+    }
+    .checkbox-circle.checked::after {
+      content: '';
+      width: 6px; height: 10px;
+      border: 2px solid #fff;
+      border-top: none; border-left: none;
+      transform: rotate(45deg) translateY(-1px);
+    }
+
+    /* ── Divider ─────────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 0 -20px;
+    }
+    .section-divider {
+      height: 8px;
+      background: var(--color-bg-page);
+      margin: 0 -20px;
+    }
+
+    /* ── Term Group ──────────────────────────────────────────────── */
+    .term-group {
+      background: var(--color-bg-elevated);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .term-group-header {
+      padding: 14px 16px 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-subtle);
+      letter-spacing: 0.04em;
+    }
+    .term-item {
+      /* checkbox-item.tsx: flex row, gap 10 */
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+    }
+    .term-item + .term-item {
+      border-top: 1px solid var(--color-border);
+    }
+    .term-item .term-label {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .term-item .term-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+    .term-item .term-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+    .term-badge.required { background: #FEE8EA; color: var(--color-danger); }
+    .term-badge.optional { background: #EAE6FB; color: var(--color-fill-brand); }
+    .term-item .view-btn {
+      font-size: 12px;
+      color: var(--color-text-subtle);
+      text-decoration: underline;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── CTA Button ──────────────────────────────────────────────── */
+    .cta-wrap {
+      padding: 12px 20px 28px;
+      background: var(--color-bg-elevated);
+      flex-shrink: 0;
+    }
+    .cta-btn {
+      /* button.tsx: background #3617ce, borderRadius 9999 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 16px;
+      background: var(--color-fill-brand);
+      border-radius: 9999px;
+      color: var(--color-text-white);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+    }
+    .cta-btn:hover { background: var(--color-fill-brand-hover); }
+    .cta-btn.disabled {
+      background: var(--color-border);
+      color: var(--color-text-subtle);
+      cursor: not-allowed;
+    }
+
+    /* ── Error State ─────────────────────────────────────────────── */
+    .error-toast {
+      background: #FEE8EA;
+      border: 1px solid #FFBFC4;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--color-danger);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Case Tab Selector -->
+  <div class="case-tabs">
+    <button class="active" onclick="showCase('0')">Case 0 · 정상</button>
+    <button onclick="showCase('E1')">Case E1 · 필수 미동의</button>
+  </div>
+
+  <!-- ════════════════ Case 0 — 정상 ════════════════ -->
+  <div class="phone-frame active" id="case-0">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">약관 동의</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" style="width:33%"></div></div>
+      <div class="progress-label">1 / 3</div>
+    </div>
+
+    <div class="content">
+      <!-- 전체 동의 -->
+      <div class="all-agree-block">
+        <div class="checkbox-circle checked"></div>
+        <div>
+          <div class="label">전체 동의</div>
+          <div class="sub">필수 및 선택 약관에 모두 동의합니다</div>
+        </div>
+      </div>
+
+      <!-- 필수 항목 -->
+      <div class="term-group">
+        <div class="term-group-header">필수 항목</div>
+        <div class="term-item">
+          <div class="checkbox-circle checked"></div>
+          <div class="term-label">
+            <div class="term-name">
+              <span class="term-badge required">필수</span>서비스이용약관 동의
+            </div>
+          </div>
+          <div class="view-btn">보기 ›</div>
+        </div>
+        <div class="term-item">
+          <div class="checkbox-circle checked"></div>
+          <div class="term-label">
+            <div class="term-name">
+              <span class="term-badge required">필수</span>개인정보 수집·이용 동의
+            </div>
+          </div>
+          <div class="view-btn">보기 ›</div>
+        </div>
+      </div>
+
+      <!-- 선택 항목 -->
+      <div class="term-group">
+        <div class="term-group-header">선택 항목</div>
+        <div class="term-item">
+          <div class="checkbox-circle checked"></div>
+          <div class="term-label">
+            <div class="term-name">
+              <span class="term-badge optional">선택</span>마케팅 정보 수신 동의
+            </div>
+          </div>
+          <div class="view-btn">보기 ›</div>
+        </div>
+        <div class="term-item">
+          <div class="checkbox-circle checked"></div>
+          <div class="term-label">
+            <div class="term-name">
+              <span class="term-badge optional">선택</span>맞춤혜택 제공 동의
+            </div>
+          </div>
+          <div class="view-btn">보기 ›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="cta-btn">다음</button>
+    </div>
+  </div>
+
+  <!-- ════════════════ Case E1 — 필수 미동의 ════════════════ -->
+  <div class="phone-frame" id="case-E1">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons"><span>SKT</span><span>▲</span><span>🔋</span></div>
+    </div>
+    <div class="app-bar">
+      <div class="back-btn">
+        <svg width="9" height="16" viewBox="0 0 9 16" fill="none"><path d="M8 1L1 8L8 15" stroke="#05001A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="title">약관 동의</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" style="width:33%"></div></div>
+      <div class="progress-label">1 / 3</div>
+    </div>
+
+    <div class="content">
+      <!-- 에러 메시지 -->
+      <div class="error-toast">
+        <span>⚠</span> 필수 약관에 동의해 주세요
+      </div>
+
+      <!-- 전체 동의 미체크 -->
+      <div class="all-agree-block">
+        <div class="checkbox-circle"></div>
+        <div>
+          <div class="label">전체 동의</div>
+          <div class="sub">필수 및 선택 약관에 모두 동의합니다</div>
+        </div>
+      </div>
+
+      <!-- 필수 항목 (미체크) -->
+      <div class="term-group">
+        <div class="term-group-header">필수 항목</div>
+        <div class="term-item">
+          <div class="checkbox-circle" style="border-color: var(--color-danger);"></div>
+          <div class="term-label">
+            <div class="term-name" style="color:var(--color-danger)">
+              <span class="term-badge required">필수</span>서비스이용약관 동의
+            </div>
+          </div>
+          <div class="view-btn">보기 ›</div>
+        </div>
+        <div class="term-item">
+          <div class="checkbox-circle" style="border-color: var(--color-danger);"></div>
+          <div class="term-label">
+            <div class="term-name" style="color:var(--color-danger)">
+              <span class="term-badge required">필수</span>개인정보 수집·이용 동의
+            </div>
+          </div>
+          <div class="view-btn">보기 ›</div>
+        </div>
+      </div>
+
+      <!-- 선택 항목 -->
+      <div class="term-group">
+        <div class="term-group-header">선택 항목</div>
+        <div class="term-item">
+          <div class="checkbox-circle"></div>
+          <div class="term-label">
+            <div class="term-name">
+              <span class="term-badge optional">선택</span>마케팅 정보 수신 동의
+            </div>
+          </div>
+          <div class="view-btn">보기 ›</div>
+        </div>
+        <div class="term-item">
+          <div class="checkbox-circle"></div>
+          <div class="term-label">
+            <div class="term-name">
+              <span class="term-badge optional">선택</span>맞춤혜택 제공 동의
+            </div>
+          </div>
+          <div class="view-btn">보기 ›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="cta-btn disabled">다음</button>
+    </div>
+  </div>
+
+  <script>
+    function showCase(id) {
+      document.querySelectorAll('.phone-frame').forEach(f => f.classList.remove('active'));
+      document.querySelectorAll('.case-tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById('case-' + id).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

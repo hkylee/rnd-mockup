@@ -1,0 +1,114 @@
+{
+  "screenId": "BIL-BILL-GUIDE",
+  "screenName": "요금안내서",
+  "screenPath": "page/BIL/bill-guide",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/bill-guide",
+    "spec_input": "specs-input/BIL-history.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-bill-guide-view",
+      "sectionName": "요금안내서 조회",
+      "sectionDescription": "선택 월의 요금안내서를 인앱 뷰어 또는 PDF 다운로드로 제공",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김 + snack-bar",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/button",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/month-picker",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 요금안내서 조회\n[규칙:FN-CHK-006] 선택 월의 요금안내서 파일(PDF)을 인앱 뷰어 또는 다운로드로 제공한다\n[조건:안내서없음] \"해당 월의 요금안내서가 없습니다\" empty 안내 + 수신 설정 링크\n[상태:loading] skeleton 표시\n[상태:empty] 안내 문구 + notice-setting 이동 링크\n[상태:error] snack-bar 재시도 안내\n[액션:tap 요금안내서열기] 인앱 PDF 뷰어 또는 외부 다운로드",
+      "label": "기능 1: 요금안내서 조회"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-bill-guide-reissue",
+      "sectionName": "요금안내서 재발행",
+      "sectionDescription": "요금안내서 재발행을 요청한다. 본인인증 필수이며 처리 후 지정 수신처로 발송",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 2,
+      "errorHandling": "오류 메시지 inline 표시",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "atom/button",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 요금안내서 재발행\n[고지:필수|POL-BIL-DOC-001-02] 재발행 요청 전 본인인증 절차를 반드시 수행한다\n[규칙:FN-CHK-006] 본인인증 성공 후 재발행 API를 호출하고 결과를 snack-bar로 안내한다\n[상태:loading] 버튼 로딩 스피너 표시\n[상태:error] inline 오류 메시지 표시\n[액션:tap 재발행요청] 본인인증 플로우 진입 → 인증 성공 후 재발행 요청",
+      "label": "기능 2: 요금안내서 재발행"
+    },
+    {
+      "no": 3,
+      "kind": "body",
+      "sectionId": "section-BIL-bill-guide-setting-link",
+      "sectionName": "수신 설정 안내 링크",
+      "sectionDescription": "요금안내서 수신 방식(이메일/우편) 설정 화면으로 이동하는 링크 제공",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 3,
+      "errorHandling": "영역 숨김",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 수신 설정 안내 링크\n[규칙:FN-CHK-006] 요금안내서 수신 방식 변경 화면으로 이동하는 링크를 하단에 제공한다\n[액션:tap 수신방식설정] notice-setting 화면으로 이동",
+      "label": "기능 3: 수신 설정 안내 링크"
+    }
+  ]
+}

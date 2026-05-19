@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Pretendard", "Inter", sans-serif;
+    margin: 0;
+    padding: 12px;
+    background: #f8fafc;
+    color: #0f172a;
+    font-size: 12px;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  h1 { font-size: 14px; font-weight: 700; margin: 0 0 8px; }
+  .desc { color: #64748b; font-size: 11px; margin-bottom: 10px; }
+
+  button {
+    border: 0;
+    background: #0f172a;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  button:hover { background: #1e293b; }
+  button.secondary { background: #e2e8f0; color: #1e293b; }
+  button.secondary:hover { background: #cbd5e1; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* 메인 탭 (모드 전환) — 좌우 full 균등 분할, 선택 시 블럭 강조 */
+  .main-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+  .main-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    background: transparent;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .main-tab:hover { background: #f1f5f9; }
+  .main-tab.active {
+    color: white;
+    background: #0f172a;
+  }
+  .main-tab.active:hover { background: #1e293b; }
+
+  textarea {
+    width: 100%;
+    flex: 1;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 8px;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 11px;
+    resize: none;
+    background: white;
+    line-height: 1.4;
+  }
+
+  /* 액션 행 (상단/하단 공용) */
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .actions.bottom {
+    margin-bottom: 0;
+    margin-top: 8px;
+  }
+  .actions .status {
+    flex: 1;
+    font-size: 11px;
+    color: #64748b;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .actions .status.ok { color: #059669; }
+  .actions .status.err { color: #dc2626; }
+
+  /* 모드별 컨텐츠 영역 */
+  .panel { display: none; flex: 1; flex-direction: column; }
+  .panel.active { display: flex; }
+</style>
+</head>
+<body>
+
+<h1>Genui Spec Tool</h1>
+
+<div class="main-tabs">
+  <div class="main-tab active" data-panel="extract">Figma → JSON</div>
+  <div class="main-tab" data-panel="build">JSON → Figma</div>
+</div>
+
+<!-- ============== Extract 패널 ============== -->
+<div class="panel active" id="panel-extract">
+  <div class="desc">Figma 노드 → component-specs JSON 추출. 선택된 노드가 있으면 그것만, 없으면 현재 페이지 전체. 추출 시 클립보드 자동 복사.</div>
+
+  <div class="actions">
+    <span class="status" id="extract-status">준비됨.</span>
+    <button id="extract-btn">추출</button>
+    <button class="secondary" id="copy-btn" disabled>📋 복사</button>
+  </div>
+
+  <textarea id="extract-output" placeholder="추출된 spec JSON 이 여기 표시됩니다."></textarea>
+</div>
+
+<!-- ============== Build 패널 ============== -->
+<div class="panel" id="panel-build">
+  <div class="desc">scripter 빌드 코드 (.generated.js) 를 ⌘V 로 붙여넣고 Run.</div>
+
+  <textarea id="build-input" placeholder="빌드 코드를 여기 ⌘V 로 붙여넣고 Run."></textarea>
+
+  <div class="actions bottom">
+    <span class="status" id="build-status">코드를 붙여넣으세요 (⌘V).</span>
+    <button id="run-btn">▶ Run</button>
+  </div>
+</div>
+
+<script>
+  const els = {
+    mainTabs: document.querySelectorAll(".main-tab"),
+    panels: document.querySelectorAll(".panel"),
+
+    // extract
+    extractOutput: document.getElementById("extract-output"),
+    extractStatus: document.getElementById("extract-status"),
+    extractBtn: document.getElementById("extract-btn"),
+    copyBtn: document.getElementById("copy-btn"),
+
+    // build
+    buildInput: document.getElementById("build-input"),
+    buildStatus: document.getElementById("build-status"),
+    runBtn: document.getElementById("run-btn"),
+  };
+
+  // 메인 탭 전환
+  els.mainTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const panelName = tab.dataset.panel;
+      els.mainTabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+      els.panels.forEach((p) => p.classList.remove("active"));
+      document.getElementById("panel-" + panelName).classList.add("active");
+    });
+  });
+
+  // 추출 — 선택된 노드 있으면 selection, 없으면 page (자동 판단은 code.js 에서)
+  els.extractBtn.addEventListener("click", () => {
+    setStatus("extract", "추출 중…");
+    els.extractOutput.value = "";
+    els.copyBtn.disabled = true;
+    parent.postMessage({ pluginMessage: { type: "extract-auto" } }, "*");
+  });
+
+  // 복사 — 추출된 결과 다시 클립보드로
+  els.copyBtn.addEventListener("click", async () => {
+    if (!els.extractOutput.value) return;
+    try {
+      await navigator.clipboard.writeText(els.extractOutput.value);
+      setStatus("extract", "✓ 클립보드 복사됨.", "ok");
+    } catch (e) {
+      try {
+        els.extractOutput.select();
+        document.execCommand("copy");
+        setStatus("extract", "✓ 복사됨 (fallback).", "ok");
+      } catch (e2) {
+        setStatus("extract", "✗ 복사 실패. 수동으로 ⌘A ⌘C.", "err");
+      }
+    }
+  });
+
+  // Run
+  els.runBtn.addEventListener("click", () => {
+    const code = els.buildInput.value.trim();
+    if (!code) {
+      setStatus("build", "✗ 빌드 코드가 비었습니다.", "err");
+      return;
+    }
+    setStatus("build", "빌드 실행 중…");
+    parent.postMessage({ pluginMessage: { type: "build-from-code", code } }, "*");
+  });
+
+  // ===== plugin sandbox 메시지 수신 =====
+  window.addEventListener("message", async (event) => {
+    const msg = event.data.pluginMessage;
+    if (!msg) return;
+    console.log("[ui] received:", msg.type);
+    if (msg.type === "result") {
+      const json = JSON.stringify(msg.specs.length === 1 ? msg.specs[0] : msg.specs, null, 2);
+      els.extractOutput.value = json;
+      els.copyBtn.disabled = false;
+      // 자동 클립보드 복사
+      let copyNote = "";
+      try {
+        await navigator.clipboard.writeText(json);
+        copyNote = " · 클립보드 복사됨";
+      } catch (e) {
+        // fallback — execCommand
+        try {
+          els.extractOutput.select();
+          document.execCommand("copy");
+          copyNote = " · 클립보드 복사됨";
+        } catch (e2) {
+          copyNote = " · (📋 버튼으로 수동 복사)";
+        }
+      }
+      setStatus("extract", "✓ " + msg.specs.length + "개 spec 추출" + copyNote, "ok");
+    } else if (msg.type === "build-done") {
+      setStatus("build", "✓ 빌드 완료. " + (msg.note || ""), "ok");
+    } else if (msg.type === "build-error") {
+      setStatus("build", "✗ 빌드 실패: " + msg.message, "err");
+    } else if (msg.type === "error") {
+      els.extractOutput.value = msg.message;
+      setStatus("extract", "✗ " + msg.message.split("\n")[0], "err");
+    }
+  });
+
+  function setStatus(panel, msg, kind) {
+    const el = panel === "build" ? els.buildStatus : els.extractStatus;
+    el.textContent = msg;
+    el.className = "status" + (kind ? " " + kind : "");
+  }
+</script>
+</body>
+</html>

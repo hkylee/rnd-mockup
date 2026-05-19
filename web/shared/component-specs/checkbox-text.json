@@ -1,0 +1,46 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "checkbox-text",
+  "category": "mol",
+  "description": "체크박스+텍스트.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 8.0
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-checkboxitem",
+        "component": ".Checkboxitem"
+      },
+      {
+        "kind": "text",
+        "id": "text",
+        "content": "텍스트",
+        "exposeAs": "text"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Checked",
+        "values": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "name": "Disabled",
+        "values": [
+          "Off",
+          "On"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118472",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

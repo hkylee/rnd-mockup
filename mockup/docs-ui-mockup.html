@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genui DS Docs — badge</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brand: #6366f1;
+    --brand-hover: #4f46e5;
+    --sidebar-w: 240px;
+    --header-h: 56px;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --text-tertiary: #94a3b8;
+    --active-bg: #1e293b;
+    --active-text: #ffffff;
+    --code-bg: #0f172a;
+    --code-text: #cbd5e1;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: var(--bg);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 16px;
+    z-index: 100;
+  }
+
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-primary);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .header-logo .logo-mark {
+    width: 28px;
+    height: 28px;
+    background: var(--brand);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .header-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+  }
+
+  .header-title {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .header-search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 6px 12px;
+    width: 240px;
+    cursor: text;
+    transition: border-color 0.15s;
+  }
+
+  .header-search:focus-within {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+  }
+
+  .header-search svg {
+    flex-shrink: 0;
+    color: var(--text-tertiary);
+  }
+
+  .header-search input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+    color: var(--text-primary);
+    width: 100%;
+  }
+
+  .header-search input::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  .kbd {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-family: monospace;
+    flex-shrink: 0;
+  }
+
+  /* ── Layout ── */
+  .layout {
+    display: flex;
+    margin-top: var(--header-h);
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    width: var(--sidebar-w);
+    height: calc(100vh - var(--header-h));
+    background: #ffffff;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 2px; }
+
+  .sidebar-search-wrap {
+    padding: 0 12px 12px;
+  }
+
+  .sidebar-search {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 5px 10px;
+    transition: border-color 0.15s;
+  }
+
+  .sidebar-search:focus-within {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+  }
+
+  .sidebar-search input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 12px;
+    color: var(--text-primary);
+    width: 100%;
+  }
+
+  .sidebar-search input::placeholder { color: var(--text-tertiary); }
+
+  .sidebar-section {
+    margin-bottom: 4px;
+  }
+
+  .sidebar-section-label {
+    padding: 6px 16px 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.1s, color 0.1s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    gap: 6px;
+    user-select: none;
+  }
+
+  .sidebar-item:hover {
+    background: #f8fafc;
+    color: var(--text-primary);
+  }
+
+  .sidebar-item.active {
+    background: var(--active-bg);
+    color: var(--active-text);
+    font-weight: 500;
+  }
+
+  .sidebar-item.active:hover {
+    background: #263244;
+  }
+
+  .sidebar-item .item-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--brand);
+    flex-shrink: 0;
+    display: none;
+  }
+
+  .sidebar-item.active .item-dot {
+    display: block;
+    background: #818cf8;
+  }
+
+  .sidebar-separator {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 16px;
+  }
+
+  .no-results {
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-style: italic;
+    display: none;
+  }
+
+  /* ── Main content ── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 40px 48px 80px;
+    max-width: 900px;
+  }
+
+  /* ── Breadcrumb ── */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-bottom: 20px;
+  }
+
+  .breadcrumb a {
+    color: var(--text-tertiary);
+    text-decoration: none;
+    transition: color 0.1s;
+  }
+
+  .breadcrumb a:hover { color: var(--brand); }
+
+  .breadcrumb .sep { color: var(--text-tertiary); }
+  .breadcrumb .current { color: var(--text-primary); font-weight: 500; }
+
+  /* ── Component Header ── */
+  .comp-header {
+    margin-bottom: 32px;
+  }
+
+  .comp-header-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .comp-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+
+  .category-chip {
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #ede9fe;
+    color: #6d28d9;
+    flex-shrink: 0;
+  }
+
+  .comp-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 40px;
+  }
+
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Preview card ── */
+  .preview-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .preview-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: #f8fafc;
+  }
+
+  .variant-selector {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #e2e8f0;
+    border-radius: var(--radius-sm);
+    padding: 3px;
+  }
+
+  .variant-btn {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .variant-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.5); }
+
+  .variant-btn.active {
+    background: #ffffff;
+    color: var(--brand);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-weight: 600;
+  }
+
+  .bg-toggle-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .bg-toggle-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: white;
+    color: var(--text-secondary);
+    user-select: none;
+  }
+
+  .bg-toggle-btn:hover { border-color: var(--brand); color: var(--brand); }
+  .bg-toggle-btn.active { background: var(--brand); border-color: var(--brand); color: white; }
+
+  .preview-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    padding: 40px 24px;
+    transition: background 0.2s;
+    background: #f1f5f9;
+    position: relative;
+  }
+
+  .preview-stage.dark-bg { background: #1e293b; }
+
+  .preview-stage.grid-bg {
+    background-image:
+      linear-gradient(rgba(148,163,184,0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148,163,184,0.3) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-color: #f8fafc;
+  }
+
+  /* ── Badge preview ── */
+  .preview-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+
+  .preview-badge.gray { background: #ebeef6; color: #4a4a68; }
+  .preview-badge.blue { background: #3617ce; color: #ffffff; }
+  .preview-badge.black { background: #08002c; color: #ffffff; }
+
+  /* ── Props table ── */
+  .props-table-wrap {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .props-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .props-table th {
+    background: #f8fafc;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.02em;
+  }
+
+  .props-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .props-table tr:last-child td { border-bottom: none; }
+
+  .props-table td:first-child {
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 12px;
+    color: #e11d48;
+    font-weight: 500;
+  }
+
+  .value-chips {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: default;
+  }
+
+  .chip-neutral { background: #ebeef6; color: #4a4a68; }
+  .chip-blue { background: #3617ce; color: #ffffff; }
+  .chip-black { background: #08002c; color: #ffffff; }
+  .chip-purple-default { background: var(--brand); color: white; border: 2px solid #4f46e5; }
+
+  .default-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #ede9fe;
+    color: #6d28d9;
+  }
+
+  /* ── Design Tokens ── */
+  .token-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .token-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .token-group-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .token-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .token-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: 11.5px;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    color: var(--text-primary);
+    background: white;
+    transition: border-color 0.15s, background 0.15s;
+    cursor: default;
+  }
+
+  .token-pill:hover { border-color: var(--brand); }
+
+  .token-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    flex-shrink: 0;
+  }
+
+  .token-prefix-foundation .token-pill { border-left: 3px solid #22c55e; }
+  .token-prefix-semantic .token-pill { border-left: 3px solid #f59e0b; }
+  .token-prefix-component .token-pill { border-left: 3px solid var(--brand); }
+
+  /* Foundation / Semantic token pills are clickable */
+  .token-prefix-foundation .token-pill,
+  .token-prefix-semantic .token-pill {
+    cursor: pointer;
+  }
+  .token-prefix-foundation .token-pill:hover,
+  .token-prefix-semantic .token-pill:hover {
+    background: #f0fdf4;
+    border-color: #22c55e;
+  }
+  .token-prefix-semantic .token-pill:hover {
+    background: #fffbeb;
+    border-color: #f59e0b;
+  }
+  .token-pill .pill-arrow {
+    display: none;
+    color: var(--text-tertiary);
+    font-size: 10px;
+    margin-left: 2px;
+  }
+  .token-prefix-foundation .token-pill:hover .pill-arrow,
+  .token-prefix-semantic .token-pill:hover .pill-arrow {
+    display: inline;
+  }
+
+  /* ── Token Detail Panel ── */
+  #token-detail-panel {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 340px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  #token-detail-panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .tdp-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+  }
+  .tdp-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 99px;
+    flex-shrink: 0;
+  }
+  .tdp-badge-foundation { background: #dcfce7; color: #15803d; }
+  .tdp-badge-semantic   { background: #fef3c7; color: #b45309; }
+  .tdp-badge-component  { background: #ede9fe; color: #6d28d9; }
+  .tdp-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-tertiary);
+    padding: 2px;
+    line-height: 1;
+    flex-shrink: 0;
+    border-radius: 4px;
+  }
+  .tdp-close:hover { background: var(--bg); color: var(--text-primary); }
+  .tdp-body { padding: 12px 16px 14px; }
+  .tdp-token-name {
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    word-break: break-all;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  .tdp-value-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .tdp-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.1);
+    flex-shrink: 0;
+  }
+  .tdp-value {
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .tdp-chain {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 10.5px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .tdp-chain-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tdp-chain-arrow { color: var(--text-tertiary); }
+  .tdp-chain-step.final { color: var(--text-primary); font-weight: 600; }
+  .tdp-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #15803d;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+    justify-content: center;
+  }
+  .tdp-nav-btn:hover { background: #dcfce7; }
+  .tdp-nav-btn.semantic { color: #b45309; background: #fffbeb; border-color: #fde68a; }
+  .tdp-nav-btn.semantic:hover { background: #fef3c7; }
+  .sidebar-item.flash-active {
+    animation: sidebarFlash 0.8s ease;
+  }
+  @keyframes sidebarFlash {
+    0%   { background: #dcfce7; color: #15803d; }
+    60%  { background: #dcfce7; color: #15803d; }
+    100% { background: transparent; }
+  }
+
+  /* ── Code block ── */
+  .code-card {
+    background: var(--code-bg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid #1e293b;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #1e293b;
+    background: #0a0f1e;
+  }
+
+  .code-filename {
+    font-size: 12px;
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .code-filename .dot { font-size: 16px; color: #475569; }
+
+  .code-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .code-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: #94a3b8;
+    transition: all 0.15s;
+  }
+
+  .code-btn:hover { background: #334155; color: #e2e8f0; border-color: #475569; }
+  .code-btn.copied { background: #166534; color: #86efac; border-color: #15803d; }
+
+  .code-body {
+    padding: 16px;
+    overflow-x: auto;
+    max-height: 320px;
+    overflow-y: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .code-body.expanded { max-height: 2000px; }
+
+  pre {
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--code-text);
+    white-space: pre;
+    margin: 0;
+  }
+
+  .code-fade {
+    height: 40px;
+    background: linear-gradient(transparent, var(--code-bg));
+    margin-top: -40px;
+    position: relative;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .code-fade.hidden { opacity: 0; }
+
+  .code-expand-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    font-size: 12px;
+    color: #64748b;
+    cursor: pointer;
+    border-top: 1px solid #1e293b;
+    background: #0a0f1e;
+    transition: color 0.15s;
+    gap: 4px;
+    user-select: none;
+  }
+
+  .code-expand-btn:hover { color: #94a3b8; }
+
+  /* JSON syntax highlighting */
+  .json-key { color: #93c5fd; }
+  .json-string { color: #86efac; }
+  .json-number { color: #fbbf24; }
+  .json-bool { color: #f472b6; }
+  .json-null { color: #94a3b8; }
+  .json-punct { color: #64748b; }
+
+  /* ── Nav (prev/next) ── */
+  .page-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .nav-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+    color: inherit;
+    max-width: 260px;
+  }
+
+  .nav-card:hover {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.08);
+  }
+
+  .nav-card.next { margin-left: auto; flex-direction: row-reverse; text-align: right; }
+
+  .nav-card .nav-arrow {
+    font-size: 18px;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+  }
+
+  .nav-card:hover .nav-arrow { color: var(--brand); }
+
+  .nav-card .nav-label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .nav-card .nav-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+    margin-top: 1px;
+  }
+
+  /* ── Misc ── */
+  .highlight-mark {
+    background: #fef9c3;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+  <a class="header-logo" href="#">
+    <div class="logo-mark">G</div>
+    <span>Genui DS</span>
+  </a>
+  <div class="header-divider"></div>
+  <span class="header-title">Mobile</span>
+  <div class="header-search">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" placeholder="검색…" id="header-search-input">
+    <span class="kbd">⌘K</span>
+  </div>
+</header>
+
+<!-- ── Layout ── -->
+<div class="layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <!-- Sidebar search -->
+    <div class="sidebar-search-wrap">
+      <div class="sidebar-search">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-tertiary)">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" placeholder="컴포넌트 검색" id="sidebar-search-input">
+      </div>
+    </div>
+
+    <!-- Foundation -->
+    <div class="sidebar-section" id="foundation-section">
+      <div class="sidebar-section-label">Foundation</div>
+      <div class="sidebar-item" data-filter="typography">
+        <span class="item-dot"></span>Typography
+      </div>
+      <div class="sidebar-item" data-filter="color">
+        <span class="item-dot"></span>Color
+      </div>
+      <div class="sidebar-item" data-filter="spacing">
+        <span class="item-dot"></span>Spacing
+      </div>
+      <div class="sidebar-item" data-filter="radius">
+        <span class="item-dot"></span>Radius
+      </div>
+      <div class="sidebar-item" data-filter="icon set">
+        <span class="item-dot"></span>Icon Set
+      </div>
+    </div>
+
+    <div class="sidebar-separator"></div>
+
+    <!-- Components -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Components</div>
+
+      <div id="component-list">
+        <div class="sidebar-item" data-filter="accordion-notice-info"><span class="item-dot"></span>accordion-notice-info</div>
+        <div class="sidebar-item" data-filter="accordion-price-info"><span class="item-dot"></span>accordion-price-info</div>
+        <div class="sidebar-item" data-filter="accordion-product-info"><span class="item-dot"></span>accordion-product-info</div>
+        <div class="sidebar-item" data-filter="action-button"><span class="item-dot"></span>action-button</div>
+        <div class="sidebar-item" data-filter="app-bar"><span class="item-dot"></span>app-bar</div>
+        <div class="sidebar-item active" data-filter="badge"><span class="item-dot"></span>badge</div>
+        <div class="sidebar-item" data-filter="badge-icon"><span class="item-dot"></span>badge-icon</div>
+        <div class="sidebar-item" data-filter="banner-horizontal-medium"><span class="item-dot"></span>banner-horizontal-medium</div>
+        <div class="sidebar-item" data-filter="bottom-navigation"><span class="item-dot"></span>bottom-navigation</div>
+        <div class="sidebar-item" data-filter="bottomsheet"><span class="item-dot"></span>bottomsheet</div>
+        <div class="sidebar-item" data-filter="button-xsmall-solid"><span class="item-dot"></span>button-xsmall-solid</div>
+        <div class="sidebar-item" data-filter="button"><span class="item-dot"></span>button</div>
+        <div class="sidebar-item" data-filter="card-contents-item"><span class="item-dot"></span>card-contents-item</div>
+        <div class="sidebar-item" data-filter="card-contents-line"><span class="item-dot"></span>card-contents-line</div>
+        <div class="sidebar-item" data-filter="card-info"><span class="item-dot"></span>card-info</div>
+        <div class="sidebar-item" data-filter="card-section"><span class="item-dot"></span>card-section</div>
+        <div class="sidebar-item" data-filter="card-summary"><span class="item-dot"></span>card-summary</div>
+        <div class="sidebar-item" data-filter="carousel-product-text"><span class="item-dot"></span>carousel-product-text</div>
+        <div class="sidebar-item" data-filter="checkbox-item"><span class="item-dot"></span>checkbox-item</div>
+        <div class="sidebar-item" data-filter="checkbox-text"><span class="item-dot"></span>checkbox-text</div>
+        <div class="sidebar-item" data-filter="chip-image-item"><span class="item-dot"></span>chip-image-item</div>
+        <div class="sidebar-item" data-filter="chip-item"><span class="item-dot"></span>chip-item</div>
+        <div class="sidebar-item" data-filter="divider"><span class="item-dot"></span>divider</div>
+        <div class="sidebar-item" data-filter="footer"><span class="item-dot"></span>footer</div>
+        <div class="sidebar-item" data-filter="icon"><span class="item-dot"></span>icon</div>
+        <div class="sidebar-item" data-filter="info-text-list"><span class="item-dot"></span>info-text-list</div>
+        <div class="sidebar-item" data-filter="list-selected"><span class="item-dot"></span>list-selected</div>
+        <div class="sidebar-item" data-filter="list-text"><span class="item-dot"></span>list-text</div>
+        <div class="sidebar-item" data-filter="option-list-item"><span class="item-dot"></span>option-list-item</div>
+        <div class="sidebar-item" data-filter="option-list"><span class="item-dot"></span>option-list</div>
+        <div class="sidebar-item" data-filter="pagestack"><span class="item-dot"></span>pagestack</div>
+        <div class="sidebar-item" data-filter="pay-product-list-item"><span class="item-dot"></span>pay-product-list-item</div>
+        <div class="sidebar-item" data-filter="payment-logo-item"><span class="item-dot"></span>payment-logo-item</div>
+        <div class="sidebar-item" data-filter="pin"><span class="item-dot"></span>pin</div>
+        <div class="sidebar-item" data-filter="popup-action-button"><span class="item-dot"></span>popup-action-button</div>
+        <div class="sidebar-item" data-filter="radio-item"><span class="item-dot"></span>radio-item</div>
+        <div class="sidebar-item" data-filter="radio-text"><span class="item-dot"></span>radio-text</div>
+        <div class="sidebar-item" data-filter="search-bar"><span class="item-dot"></span>search-bar</div>
+        <div class="sidebar-item" data-filter="status-bar"><span class="item-dot"></span>status-bar</div>
+        <div class="sidebar-item" data-filter="tab-item"><span class="item-dot"></span>tab-item</div>
+        <div class="sidebar-item" data-filter="text-button"><span class="item-dot"></span>text-button</div>
+        <div class="sidebar-item" data-filter="text-field"><span class="item-dot"></span>text-field</div>
+        <div class="sidebar-item" data-filter="thumbnail-item"><span class="item-dot"></span>thumbnail-item</div>
+        <div class="sidebar-item" data-filter="thumbnail"><span class="item-dot"></span>thumbnail</div>
+        <div class="sidebar-item" data-filter="title-bottom-sheet"><span class="item-dot"></span>title-bottom-sheet</div>
+        <div class="sidebar-item" data-filter="title-contents"><span class="item-dot"></span>title-contents</div>
+        <div class="sidebar-item" data-filter="title-main"><span class="item-dot"></span>title-main</div>
+        <div class="sidebar-item" data-filter="tooltip"><span class="item-dot"></span>tooltip</div>
+        <div class="sidebar-item" data-filter="underline-tab"><span class="item-dot"></span>underline-tab</div>
+      </div>
+
+      <div class="no-results" id="no-results">결과 없음</div>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a href="#">Docs</a>
+      <span class="sep">›</span>
+      <a href="#">Components</a>
+      <span class="sep">›</span>
+      <span class="current">badge</span>
+    </nav>
+
+    <!-- Component Header -->
+    <div class="comp-header">
+      <div class="comp-header-top">
+        <h1 class="comp-name">badge</h1>
+        <span class="category-chip">component</span>
+      </div>
+      <p class="comp-desc">인라인 배지 — 상태·레이블 강조를 위한 소형 레이블 컴포넌트.<br>Gray(중립) / Blue(브랜드 강조) / Black(다크 인버티드) 3가지 타입을 제공합니다.</p>
+    </div>
+
+    <!-- Live Preview -->
+    <div class="section">
+      <div class="section-title">미리보기</div>
+      <div class="preview-card">
+        <div class="preview-toolbar">
+          <!-- Variant selector -->
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:12px; font-weight:600; color:var(--text-secondary);">Type</span>
+            <div class="variant-selector">
+              <button class="variant-btn active" data-variant="Gray" onclick="setVariant(this)">Gray</button>
+              <button class="variant-btn" data-variant="Blue" onclick="setVariant(this)">Blue</button>
+              <button class="variant-btn" data-variant="Black" onclick="setVariant(this)">Black</button>
+            </div>
+          </div>
+          <!-- BG toggles -->
+          <div class="bg-toggle-group">
+            <button class="bg-toggle-btn active" data-bg="light" onclick="setBg(this)" title="Light">L</button>
+            <button class="bg-toggle-btn" data-bg="dark" onclick="setBg(this)" title="Dark">D</button>
+            <button class="bg-toggle-btn" data-bg="grid" onclick="setBg(this)" title="Grid">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M0 4h12M0 8h12M4 0v12M8 0v12" stroke="currentColor" stroke-width="1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="preview-stage" id="preview-stage">
+          <span class="preview-badge gray" id="preview-badge">Badge</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Props / Variants -->
+    <div class="section">
+      <div class="section-title">Props / Variants</div>
+      <div class="props-table-wrap">
+        <table class="props-table">
+          <thead>
+            <tr>
+              <th>속성</th>
+              <th>값</th>
+              <th>기본값</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Type</td>
+              <td>
+                <div class="value-chips">
+                  <span class="chip chip-neutral">Gray</span>
+                  <span class="chip chip-blue">Blue</span>
+                  <span class="chip chip-black">Black</span>
+                </div>
+              </td>
+              <td><span class="default-badge">Gray</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Design Tokens -->
+    <div class="section">
+      <div class="section-title">디자인 토큰</div>
+      <div class="token-groups">
+
+        <div class="token-group token-prefix-foundation">
+          <div class="token-group-label">Foundation</div>
+          <div class="token-pills">
+            <span class="token-pill" data-token="dimension.radius.pill" data-prefix="foundation" data-foundation-category="radius">
+              <span class="token-swatch" style="background:#c7d2fe;"></span>
+              dimension.radius.pill
+              <span class="pill-arrow">↗</span>
+            </span>
+            <span class="token-pill" data-token="dimension.spacing.xs" data-prefix="foundation" data-foundation-category="spacing">
+              <span class="token-swatch" style="background:#22c55e;"></span>
+              dimension.spacing.xs
+              <span class="pill-arrow">↗</span>
+            </span>
+            <span class="token-pill" data-token="typography.fontSize.sub-label" data-prefix="foundation" data-foundation-category="typography">
+              <span class="token-swatch" style="background:#f1f5f9; border:1px solid #e2e8f0;"></span>
+              typography.fontSize.sub-label
+              <span class="pill-arrow">↗</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="token-group token-prefix-semantic">
+          <div class="token-group-label">Semantic</div>
+          <div class="token-pills">
+            <span class="token-pill" data-token="semantic.color.surface.tooltip" data-prefix="semantic" data-foundation-category="color">
+              <span class="token-swatch" style="background:#08002c;"></span>
+              color.surface.tooltip
+              <span class="pill-arrow">↗</span>
+            </span>
+            <span class="token-pill" data-token="semantic.typography.sub-label" data-prefix="semantic" data-foundation-category="typography">
+              <span class="token-swatch" style="background:#f1f5f9; border:1px solid #e2e8f0;"></span>
+              typography.sub-label
+              <span class="pill-arrow">↗</span>
+            </span>
+            <span class="token-pill" data-token="semantic.color.text.on-dark" data-prefix="semantic" data-foundation-category="color">
+              <span class="token-swatch" style="background:#ffffff; border:1px solid #e2e8f0;"></span>
+              color.text.on-dark
+              <span class="pill-arrow">↗</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="token-group token-prefix-component">
+          <div class="token-group-label">Component</div>
+          <div class="token-pills">
+            <span class="token-pill" data-token="component.badge.neutral.background" data-prefix="component">
+              <span class="token-swatch" style="background:#ebeef6;"></span>
+              badge.neutral.background
+            </span>
+            <span class="token-pill" data-token="component.badge.neutral.text" data-prefix="component">
+              <span class="token-swatch" style="background:#4a4a68;"></span>
+              badge.neutral.text
+            </span>
+            <span class="token-pill" data-token="component.badge.neutral.textStyle" data-prefix="component">
+              <span class="token-swatch" style="background:#f1f5f9; border:1px solid #e2e8f0;"></span>
+              badge.neutral.textStyle
+            </span>
+            <span class="token-pill" data-token="component.badge.neutral.paddingHorizontal" data-prefix="component">
+              <span class="token-swatch" style="background:#e2e8f0;"></span>
+              badge.neutral.paddingHorizontal
+            </span>
+            <span class="token-pill" data-token="component.badge.neutral.radius" data-prefix="component">
+              <span class="token-swatch" style="background:#c7d2fe;"></span>
+              badge.neutral.radius
+            </span>
+            <span class="token-pill" data-token="component.badge.emphasis.background" data-prefix="component">
+              <span class="token-swatch" style="background:#3617ce;"></span>
+              badge.emphasis.background
+            </span>
+            <span class="token-pill" data-token="component.badge.emphasis.text" data-prefix="component">
+              <span class="token-swatch" style="background:#ffffff; border:1px solid #e2e8f0;"></span>
+              badge.emphasis.text
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Spec JSON -->
+    <div class="section">
+      <div class="section-title">Spec JSON</div>
+      <div class="code-card">
+        <div class="code-header">
+          <div class="code-filename">
+            <span class="dot">·</span>
+            badge.json
+          </div>
+          <div class="code-actions">
+            <button class="code-btn" id="copy-json-btn" onclick="copyJson()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              JSON 복사
+            </button>
+            <button class="code-btn" onclick="copyScripter()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+              Scripter 복사
+            </button>
+          </div>
+        </div>
+        <div class="code-body" id="code-body">
+<pre id="json-pre"><span class="json-punct">{</span>
+  <span class="json-key">"$schema"</span><span class="json-punct">:</span> <span class="json-string">"component-spec-v1"</span><span class="json-punct">,</span>
+  <span class="json-key">"name"</span><span class="json-punct">:</span> <span class="json-string">"badge"</span><span class="json-punct">,</span>
+  <span class="json-key">"category"</span><span class="json-punct">:</span> <span class="json-string">"component"</span><span class="json-punct">,</span>
+  <span class="json-key">"description"</span><span class="json-punct">:</span> <span class="json-string">"인라인 배지 — Gray(중립) / Blue(브랜드 강조) / Black(다크 인버티드) 3종"</span><span class="json-punct">,</span>
+  <span class="json-key">"base"</span><span class="json-punct">:</span> <span class="json-punct">{</span>
+    <span class="json-key">"layout"</span><span class="json-punct">:</span> <span class="json-punct">{</span>
+      <span class="json-key">"mode"</span><span class="json-punct">:</span> <span class="json-string">"HORIZONTAL"</span><span class="json-punct">,</span>
+      <span class="json-key">"primaryAxisSizingMode"</span><span class="json-punct">:</span> <span class="json-string">"AUTO"</span><span class="json-punct">,</span>
+      <span class="json-key">"paddingLeft"</span><span class="json-punct">:</span> <span class="json-string">"{component.badge.neutral.paddingHorizontal}"</span><span class="json-punct">,</span>
+      <span class="json-key">"paddingRight"</span><span class="json-punct">:</span> <span class="json-string">"{component.badge.neutral.paddingHorizontal}"</span><span class="json-punct">,</span>
+      <span class="json-key">"paddingTop"</span><span class="json-punct">:</span> <span class="json-number">2</span><span class="json-punct">,</span>
+      <span class="json-key">"paddingBottom"</span><span class="json-punct">:</span> <span class="json-number">2</span>
+    <span class="json-punct">},</span>
+    <span class="json-key">"visual"</span><span class="json-punct">:</span> <span class="json-punct">{</span>
+      <span class="json-key">"cornerRadius"</span><span class="json-punct">:</span> <span class="json-string">"{component.badge.neutral.radius}"</span><span class="json-punct">,</span>
+      <span class="json-key">"fill"</span><span class="json-punct">:</span> <span class="json-string">"{component.badge.neutral.background}"</span><span class="json-punct">,</span>
+      <span class="json-key">"stroke"</span><span class="json-punct">:</span> <span class="json-null">null</span>
+    <span class="json-punct">},</span>
+    <span class="json-key">"children"</span><span class="json-punct">:</span> <span class="json-punct">[</span>
+      <span class="json-punct">{</span>
+        <span class="json-key">"kind"</span><span class="json-punct">:</span> <span class="json-string">"text"</span><span class="json-punct">,</span>
+        <span class="json-key">"id"</span><span class="json-punct">:</span> <span class="json-string">"label"</span><span class="json-punct">,</span>
+        <span class="json-key">"content"</span><span class="json-punct">:</span> <span class="json-string">"Badge"</span><span class="json-punct">,</span>
+        <span class="json-key">"textStyle"</span><span class="json-punct">:</span> <span class="json-string">"{component.badge.neutral.textStyle}"</span><span class="json-punct">,</span>
+        <span class="json-key">"color"</span><span class="json-punct">:</span> <span class="json-string">"{component.badge.neutral.text}"</span><span class="json-punct">,</span>
+        <span class="json-key">"exposeAs"</span><span class="json-punct">:</span> <span class="json-string">"label"</span>
+      <span class="json-punct">}</span>
+    <span class="json-punct">]</span>
+  <span class="json-punct">},</span>
+  <span class="json-key">"variants"</span><span class="json-punct">:</span> <span class="json-punct">{</span>
+    <span class="json-key">"axes"</span><span class="json-punct">:</span> <span class="json-punct">[{</span> <span class="json-key">"name"</span><span class="json-punct">:</span> <span class="json-string">"Type"</span><span class="json-punct">,</span> <span class="json-key">"values"</span><span class="json-punct">:</span> <span class="json-punct">[</span><span class="json-string">"Gray"</span><span class="json-punct">,</span> <span class="json-string">"Blue"</span><span class="json-punct">,</span> <span class="json-string">"Black"</span><span class="json-punct">]</span> <span class="json-punct">}],</span>
+    <span class="json-key">"overrides"</span><span class="json-punct">:</span> <span class="json-punct">{</span>
+      <span class="json-key">"Type=Blue"</span><span class="json-punct">:</span> <span class="json-punct">{</span> <span class="json-key">"visual"</span><span class="json-punct">:</span> <span class="json-punct">{</span> <span class="json-key">"fill"</span><span class="json-punct">:</span> <span class="json-string">"{component.badge.emphasis.background}"</span> <span class="json-punct">}</span> <span class="json-punct">},</span>
+      <span class="json-key">"Type=Black"</span><span class="json-punct">:</span> <span class="json-punct">{</span> <span class="json-key">"visual"</span><span class="json-punct">:</span> <span class="json-punct">{</span> <span class="json-key">"fill"</span><span class="json-punct">:</span> <span class="json-string">"{semantic.color.surface.tooltip}"</span> <span class="json-punct">}</span> <span class="json-punct">}</span>
+    <span class="json-punct">}</span>
+  <span class="json-punct">}</span>
+<span class="json-punct">}</span></pre>
+        </div>
+        <div class="code-fade" id="code-fade"></div>
+        <div class="code-expand-btn" id="expand-btn" onclick="toggleExpand()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="expand-icon">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+          <span id="expand-label">더 보기</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prev / Next nav -->
+    <nav class="page-nav">
+      <a class="nav-card" href="#">
+        <span class="nav-arrow">‹</span>
+        <div>
+          <div class="nav-label">이전</div>
+          <div class="nav-name">app-bar</div>
+        </div>
+      </a>
+      <a class="nav-card next" href="#">
+        <span class="nav-arrow">›</span>
+        <div>
+          <div class="nav-label">다음</div>
+          <div class="nav-name">badge-icon</div>
+        </div>
+      </a>
+    </nav>
+
+  </main>
+</div>
+
+<script>
+// ── Variant selector ──
+const variantStyles = {
+  Gray:  { bg: '#ebeef6', color: '#4a4a68' },
+  Blue:  { bg: '#3617ce', color: '#ffffff' },
+  Black: { bg: '#08002c', color: '#ffffff' },
+};
+
+function setVariant(btn) {
+  document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const v = btn.dataset.variant;
+  const badge = document.getElementById('preview-badge');
+  badge.className = 'preview-badge ' + v.toLowerCase();
+  badge.style.background = variantStyles[v].bg;
+  badge.style.color = variantStyles[v].color;
+}
+
+// ── BG toggle ──
+function setBg(btn) {
+  document.querySelectorAll('.bg-toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const stage = document.getElementById('preview-stage');
+  stage.className = 'preview-stage';
+  const bg = btn.dataset.bg;
+  if (bg === 'dark') stage.classList.add('dark-bg');
+  if (bg === 'grid') stage.classList.add('grid-bg');
+}
+
+// ── JSON expand/collapse ──
+let expanded = false;
+function toggleExpand() {
+  expanded = !expanded;
+  const body = document.getElementById('code-body');
+  const fade = document.getElementById('code-fade');
+  const icon = document.getElementById('expand-icon');
+  const label = document.getElementById('expand-label');
+
+  if (expanded) {
+    body.classList.add('expanded');
+    fade.classList.add('hidden');
+    icon.setAttribute('points', '18 15 12 9 6 15');
+    label.textContent = '접기';
+  } else {
+    body.classList.remove('expanded');
+    fade.classList.remove('hidden');
+    icon.setAttribute('points', '6 9 12 15 18 9');
+    label.textContent = '더 보기';
+  }
+}
+
+// ── JSON copy ──
+const badgeJson = {
+  "$schema": "component-spec-v1",
+  "name": "badge",
+  "category": "component",
+  "description": "인라인 배지 — Gray(중립) / Blue(브랜드 강조) / Black(다크 인버티드) 3종",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "primaryAxisSizingMode": "AUTO",
+      "paddingLeft": "{component.badge.neutral.paddingHorizontal}",
+      "paddingRight": "{component.badge.neutral.paddingHorizontal}",
+      "paddingTop": 2,
+      "paddingBottom": 2
+    },
+    "visual": {
+      "cornerRadius": "{component.badge.neutral.radius}",
+      "fill": "{component.badge.neutral.background}",
+      "stroke": null
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "label",
+        "content": "Badge",
+        "textStyle": "{component.badge.neutral.textStyle}",
+        "color": "{component.badge.neutral.text}",
+        "exposeAs": "label"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [{ "name": "Type", "values": ["Gray", "Blue", "Black"] }],
+    "overrides": {
+      "Type=Blue": { "visual": { "fill": "{component.badge.emphasis.background}" } },
+      "Type=Black": { "visual": { "fill": "{semantic.color.surface.tooltip}" } }
+    }
+  }
+};
+
+function copyJson() {
+  const btn = document.getElementById('copy-json-btn');
+  navigator.clipboard.writeText(JSON.stringify(badgeJson, null, 2)).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 복사됨`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> JSON 복사`;
+    }, 2000);
+  });
+}
+
+function copyScripter() {
+  const scripterCode = `figma.currentPage.selection.forEach(node => {
+  // badge — Type: Gray / Blue / Black
+  // Generated from badge.json (component-spec-v1)
+  console.log(JSON.stringify(${JSON.stringify(badgeJson)}, null, 2));
+});`;
+  navigator.clipboard.writeText(scripterCode);
+}
+
+// ── Sidebar search ──
+const sidebarInput = document.getElementById('sidebar-search-input');
+const componentItems = document.querySelectorAll('#component-list .sidebar-item');
+const noResults = document.getElementById('no-results');
+const foundationSection = document.getElementById('foundation-section');
+
+sidebarInput.addEventListener('input', () => {
+  const q = sidebarInput.value.trim().toLowerCase();
+  let visible = 0;
+
+  // Filter component items
+  componentItems.forEach(item => {
+    const name = item.dataset.filter || '';
+    const match = !q || name.includes(q);
+    item.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+
+  // Hide/show foundation section based on search
+  if (q) {
+    const foundationItems = foundationSection.querySelectorAll('.sidebar-item');
+    let fVisible = 0;
+    foundationItems.forEach(item => {
+      const name = item.dataset.filter || '';
+      const match = name.includes(q);
+      item.style.display = match ? '' : 'none';
+      if (match) fVisible++;
+    });
+    foundationSection.style.display = fVisible > 0 ? '' : 'none';
+    document.querySelector('.sidebar-separator').style.display = fVisible > 0 ? '' : 'none';
+  } else {
+    foundationSection.style.display = '';
+    document.querySelector('.sidebar-separator').style.display = '';
+    foundationSection.querySelectorAll('.sidebar-item').forEach(i => i.style.display = '');
+  }
+
+  noResults.style.display = (visible === 0 && q) ? 'block' : 'none';
+});
+
+// Header search just for show — blur effect
+document.getElementById('header-search-input').addEventListener('focus', function() {
+  this.placeholder = '컴포넌트 이름 검색…';
+});
+document.getElementById('header-search-input').addEventListener('blur', function() {
+  this.placeholder = '검색…';
+});
+
+// ── Token Detail Panel ──
+
+const TOKEN_DB = {
+  'dimension.radius.pill': {
+    type: 'foundation',
+    foundationCategory: 'radius',
+    value: '999px',
+    swatch: '#c7d2fe',
+    chain: [
+      { label: 'dimension.radius.pill', final: false },
+      { label: '999px', final: true }
+    ]
+  },
+  'dimension.spacing.xs': {
+    type: 'foundation',
+    foundationCategory: 'spacing',
+    value: '4px',
+    swatch: '#22c55e',
+    chain: [
+      { label: 'dimension.spacing.xs', final: false },
+      { label: '4px', final: true }
+    ]
+  },
+  'typography.fontSize.sub-label': {
+    type: 'foundation',
+    foundationCategory: 'typography',
+    value: '10px',
+    swatch: null,
+    chain: [
+      { label: 'typography.fontSize.sub-label', final: false },
+      { label: '10px (Pretendard, weight 500)', final: true }
+    ]
+  },
+  'semantic.color.surface.tooltip': {
+    type: 'semantic',
+    foundationCategory: 'color',
+    value: '#08002c',
+    swatch: '#08002c',
+    chain: [
+      { label: 'semantic.color.surface.tooltip', final: false },
+      { label: 'primitive.color.brand-900', final: false },
+      { label: '#08002c', final: true }
+    ]
+  },
+  'semantic.typography.sub-label': {
+    type: 'semantic',
+    foundationCategory: 'typography',
+    value: 'fontSize 10px · lineHeight 120% · letterSpacing 0',
+    swatch: null,
+    chain: [
+      { label: 'semantic.typography.sub-label', final: false },
+      { label: 'typography.fontSize.sub-label → 10px', final: false },
+      { label: 'typography.lineHeight.base → 120%', final: true }
+    ]
+  },
+  'semantic.color.text.on-dark': {
+    type: 'semantic',
+    foundationCategory: 'color',
+    value: '#ffffff',
+    swatch: '#ffffff',
+    chain: [
+      { label: 'semantic.color.text.on-dark', final: false },
+      { label: 'primitive.color.white', final: false },
+      { label: '#ffffff', final: true }
+    ]
+  }
+};
+
+const FOUNDATION_LABEL = {
+  radius: 'Radius',
+  spacing: 'Spacing',
+  typography: 'Typography',
+  color: 'Color',
+  'icon set': 'Icon Set'
+};
+
+// Inject panel HTML
+document.body.insertAdjacentHTML('beforeend', `
+<div id="token-detail-panel">
+  <div class="tdp-header">
+    <span id="tdp-badge" class="tdp-badge"></span>
+    <button class="tdp-close" onclick="closeTokenPanel()" title="닫기">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="tdp-body">
+    <div class="tdp-token-name" id="tdp-name"></div>
+    <div class="tdp-value-row" id="tdp-value-row">
+      <span class="tdp-swatch" id="tdp-swatch"></span>
+      <span class="tdp-value" id="tdp-value"></span>
+    </div>
+    <div class="tdp-chain" id="tdp-chain"></div>
+    <button class="tdp-nav-btn" id="tdp-nav-btn" onclick="navigateFoundation()"></button>
+  </div>
+</div>
+`);
+
+const panel = document.getElementById('token-detail-panel');
+let currentFoundationCategory = null;
+
+function showTokenDetail(tokenPath, prefix) {
+  const data = TOKEN_DB[tokenPath];
+  if (!data) return;
+
+  currentFoundationCategory = data.foundationCategory;
+  const isSemantic = data.type === 'semantic';
+
+  // Badge
+  const badge = document.getElementById('tdp-badge');
+  badge.textContent = data.type === 'foundation' ? 'Foundation' : data.type === 'semantic' ? 'Semantic' : 'Component';
+  badge.className = 'tdp-badge tdp-badge-' + data.type;
+
+  // Token name (strip semantic. prefix for display)
+  const displayName = tokenPath.replace(/^(semantic|component)\./, '');
+  document.getElementById('tdp-name').textContent = tokenPath;
+
+  // Swatch + value
+  const swatchEl = document.getElementById('tdp-swatch');
+  if (data.swatch) {
+    swatchEl.style.display = 'block';
+    swatchEl.style.background = data.swatch;
+    swatchEl.style.border = data.swatch === '#ffffff' ? '1px solid #e2e8f0' : '1px solid rgba(0,0,0,0.08)';
+  } else {
+    swatchEl.style.display = 'none';
+  }
+  document.getElementById('tdp-value').textContent = data.value;
+
+  // Resolution chain
+  const chainEl = document.getElementById('tdp-chain');
+  chainEl.innerHTML = data.chain.map((step, i) =>
+    `<div class="tdp-chain-step${step.final ? ' final' : ''}">
+      ${i > 0 ? '<span class="tdp-chain-arrow">→</span>' : ''}
+      <span>${step.label}</span>
+    </div>`
+  ).join('');
+
+  // Nav button
+  const navBtn = document.getElementById('tdp-nav-btn');
+  const catLabel = FOUNDATION_LABEL[data.foundationCategory] || data.foundationCategory;
+  navBtn.innerHTML = `
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Foundation · ${catLabel} 에서 보기
+  `;
+  if (isSemantic) {
+    navBtn.className = 'tdp-nav-btn semantic';
+  } else {
+    navBtn.className = 'tdp-nav-btn';
+  }
+
+  panel.classList.add('visible');
+}
+
+function closeTokenPanel() {
+  panel.classList.remove('visible');
+  currentFoundationCategory = null;
+}
+
+function navigateFoundation() {
+  if (!currentFoundationCategory) return;
+
+  // Deactivate all sidebar items
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+
+  // Find and activate the matching foundation sidebar item
+  const target = document.querySelector(`#foundation-section .sidebar-item[data-filter="${currentFoundationCategory}"]`);
+  if (target) {
+    target.classList.add('active');
+    target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Flash animation to draw the eye
+    target.classList.remove('flash-active');
+    void target.offsetWidth; // reflow to restart animation
+    target.classList.add('flash-active');
+    target.addEventListener('animationend', () => target.classList.remove('flash-active'), { once: true });
+  }
+
+  // Keep panel open but update button to show "이동됨"
+  const navBtn = document.getElementById('tdp-nav-btn');
+  const catLabel = FOUNDATION_LABEL[currentFoundationCategory] || currentFoundationCategory;
+  navBtn.innerHTML = `
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="1.5 6.5 4.5 9.5 10.5 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Foundation · ${catLabel} 로 이동했어요
+  `;
+  navBtn.style.opacity = '0.6';
+  navBtn.style.cursor = 'default';
+  setTimeout(() => {
+    navBtn.style.opacity = '';
+    navBtn.style.cursor = '';
+    const isSemantic = TOKEN_DB[document.getElementById('tdp-name').textContent]?.type === 'semantic';
+    navBtn.innerHTML = `
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Foundation · ${catLabel} 에서 보기
+    `;
+  }, 2000);
+}
+
+// Attach click handlers to foundation + semantic pills
+document.querySelectorAll('.token-prefix-foundation .token-pill, .token-prefix-semantic .token-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const tokenPath = pill.dataset.token;
+    const prefix = pill.dataset.prefix;
+    if (tokenPath) showTokenDetail(tokenPath, prefix);
+  });
+});
+
+// Click outside panel to close
+document.addEventListener('click', (e) => {
+  if (panel.classList.contains('visible') && !panel.contains(e.target) && !e.target.closest('.token-pill')) {
+    closeTokenPanel();
+  }
+});
+</script>
+</body>
+</html>

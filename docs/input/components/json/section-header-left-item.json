@@ -1,0 +1,42 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "section-header-left-item",
+  "category": "atom",
+  "description": "섹션 헤더 좌측 아이템. Type(Text/Icon/Badge).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0,
+      "paddingTop": 1.0,
+      "paddingBottom": 1.0,
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "2",
+        "content": "2",
+        "exposeAs": "2"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Text",
+          "Icon",
+          "Badge"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22230",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

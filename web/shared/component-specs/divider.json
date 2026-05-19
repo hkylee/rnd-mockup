@@ -1,0 +1,41 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "divider",
+  "category": "atom",
+  "description": "구분선. Type(Contents/Section).",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "width": "FILL",
+      "itemSpacing": 10.0
+    },
+    "visual": {
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "divider",
+        "layout": {
+          "mode": "VERTICAL",
+          "width": "FILL",
+          "itemSpacing": 10.0
+        }
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Contents",
+          "Section"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22223",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "icon",
+  "category": "atom",
+  "description": "아이콘.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "counterAxisAlignItems": "CENTER",
+      "width": 40
+    },
+    "visual": {
+      "fill": "#ff0000"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-ico",
+        "component": ".Ico교체용"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Size",
+        "values": [
+          "40",
+          "32",
+          "24",
+          "20",
+          "16",
+          "12"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:119165",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

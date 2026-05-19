@@ -1,0 +1,59 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "badge-icon",
+  "category": "mol",
+  "description": "아이콘+배지 조합. Subtext On/Off.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 20.0,
+      "paddingTop": 6.0,
+      "paddingRight": 10.0,
+      "paddingBottom": 6.0,
+      "paddingLeft": 8.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 10.0,
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "main",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 4.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          },
+          {
+            "kind": "text",
+            "id": "text",
+            "content": "{Text}",
+            "exposeAs": "text"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Subtext",
+        "values": [
+          "Off",
+          "On"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23848",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

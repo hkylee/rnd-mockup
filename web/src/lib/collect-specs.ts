@@ -1,11 +1,11 @@
 // component-specs/ 전체를 crawl 해서 의존성 순서로 반환.
-// atom → mol → ogn (공통) → ogn (모듈 종속) → page
+// component → page
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { resolve, join } from "node:path";
 import { sharedRoot } from "./paths";
 
-export type SpecCategory = "atom" | "mol" | "ogn" | "page";
+export type SpecCategory = "component" | "page";
 
 export type CollectedSpec = {
   name: string;
@@ -24,7 +24,10 @@ function walkJson(dir: string, acc: string[]) {
   }
 }
 
-const CATEGORY_ORDER: SpecCategory[] = ["atom", "mol", "ogn", "page"];
+const CATEGORY_ORDER: SpecCategory[] = ["component", "page"];
+
+// Legacy tier prefixes that map to "component"
+const LEGACY_TIERS = new Set(["atom", "mol", "ogn"]);
 
 export function collectAllSpecs(opts?: { excludePage?: boolean }): CollectedSpec[] {
   const root = sharedRoot();
@@ -43,8 +46,15 @@ export function collectAllSpecs(opts?: { excludePage?: boolean }): CollectedSpec
       continue;
     }
     const name = typeof json.name === "string" ? json.name : "";
-    const category = name.split("/")[0] as SpecCategory;
-    if (!CATEGORY_ORDER.includes(category)) continue;
+    const firstSegment = name.split("/")[0];
+    // Map legacy tiers (atom/mol/ogn) and "component" all to "component"
+    const category: SpecCategory =
+      firstSegment === "page"
+        ? "page"
+        : LEGACY_TIERS.has(firstSegment) || firstSegment === "component"
+        ? "component"
+        : (null as unknown as SpecCategory);
+    if (!category) continue;
     if (opts?.excludePage && category === "page") continue;
 
     out.push({ name, category, filePath: fp, spec: json });

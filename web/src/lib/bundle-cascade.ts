@@ -1,5 +1,5 @@
-// Cascade 번들 빌더 — 신규 atom/mol/ogn spec + page spec 을 한 번의 Run 으로 처리.
-// generator-core 가 ALL_SPECS 를 순차로 await 처리 (atom → mol → ogn → page).
+// Cascade 번들 빌더 — 신규 component spec + page spec 을 한 번의 Run 으로 처리.
+// generator-core 가 ALL_SPECS 를 순차로 await 처리 (component → page).
 
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -8,7 +8,7 @@ import { sharedRoot } from "./paths";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Spec = any;
 
-const CATEGORY_ORDER = ["atom", "mol", "ogn", "page"] as const;
+const CATEGORY_ORDER = ["component", "atom", "mol", "ogn", "page"] as const;
 
 function categoryRank(name: string): number {
   const first = name.split("/")[0];

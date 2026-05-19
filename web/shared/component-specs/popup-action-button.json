@@ -1,0 +1,42 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "popup-action-button",
+  "category": "mol",
+  "description": "팝업 액션 버튼.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 8.0,
+      "paddingTop": 12.0,
+      "paddingRight": 24.0,
+      "paddingLeft": 24.0,
+      "width": 361
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-button",
+        "component": ".Button"
+      },
+      {
+        "kind": "ref",
+        "id": "-button",
+        "component": ".Button"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Options",
+        "values": [
+          "2Buttons",
+          "1Button"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:118961",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

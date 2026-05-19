@@ -1,0 +1,34 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "title-contents-right-item",
+  "category": "atom",
+  "description": "콘텐츠 타이틀 우측 아이템. Type(Button/Icon).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-icon-set",
+        "component": ".IconSet"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Button",
+          "Icon"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23905",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

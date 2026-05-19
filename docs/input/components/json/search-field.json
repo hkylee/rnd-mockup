@@ -1,0 +1,59 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "search-field",
+  "category": "mol",
+  "description": "검색 입력창. type(LLM/search).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 166.0,
+      "paddingTop": 6.0,
+      "paddingRight": 6.0,
+      "paddingBottom": 6.0,
+      "paddingLeft": 20.0,
+      "primaryAxisAlignItems": "SPACE_BETWEEN",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 9999.0,
+      "fill": "#f4f5fa"
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "무엇을-도와드릴까요",
+        "content": "무엇을 도와드릴까요?",
+        "exposeAs": "무엇을-도와드릴까요"
+      },
+      {
+        "kind": "group",
+        "id": "button-search",
+        "visual": {
+          "cornerRadius": 26.0,
+          "fill": "#3617ce"
+        },
+        "children": [
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "type",
+        "values": [
+          "LLM",
+          "search"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23858",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

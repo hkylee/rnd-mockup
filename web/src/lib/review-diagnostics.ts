@@ -47,18 +47,14 @@ export function diagnose(candidate: Candidate, sources: SourceEntry[], others: C
       suggestion: "kebab-case (소문자 + 숫자 + 하이픈) 만 사용. 예: my-card-header",
     });
   }
-  // 첫 segment 가 category prefix 와 일치해야
-  if (segments[0] !== candidate.category && segments[0] !== "atom" && segments[0] !== "mol" && segments[0] !== "ogn" && segments[0] !== "page") {
+  // 첫 segment 가 category prefix 와 일치해야 (legacy atom/mol/ogn 도 component 로 허용)
+  const legacyTiers = new Set(["atom", "mol", "ogn"]);
+  const effectiveCategory = legacyTiers.has(segments[0]) ? "component" : segments[0];
+  if (effectiveCategory !== candidate.category && segments[0] !== candidate.category) {
     out.push({
       level: "error",
       type: "naming-rule",
       message: `이름이 카테고리 prefix 로 시작해야 함: ${candidate.category}/...`,
-    });
-  } else if (segments[0] !== candidate.category) {
-    out.push({
-      level: "error",
-      type: "naming-rule",
-      message: `이름의 prefix (${segments[0]}) 와 category (${candidate.category}) 불일치`,
     });
   }
 

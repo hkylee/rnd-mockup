@@ -15,9 +15,7 @@ export async function GET() {
       const deps = getPageDeps(p.name, all);
       return {
         name: p.name,
-        atomCount: deps?.atom.length ?? 0,
-        molCount: deps?.mol.length ?? 0,
-        ognCount: deps?.ogn.length ?? 0,
+        componentCount: deps?.components.length ?? 0,
         missingCount: deps?.missing.length ?? 0,
         missing: deps?.missing ?? [],
       };
@@ -27,9 +25,7 @@ export async function GET() {
 
     // 카탈로그 전체 카테고리별 spec 수
     const totals = {
-      atom: all.filter((s) => s.category === "atom").length,
-      mol: all.filter((s) => s.category === "mol").length,
-      ogn: all.filter((s) => s.category === "ogn").length,
+      component: all.filter((s) => s.category === "component").length,
       page: all.filter((s) => s.category === "page").length,
     };
 

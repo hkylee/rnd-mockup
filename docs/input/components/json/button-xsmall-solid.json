@@ -1,0 +1,48 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "button-xsmall-solid",
+  "category": "atom",
+  "description": "XSmall 솔리드 버튼. State(Active/Disabled).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "paddingTop": 4.0,
+      "paddingRight": 7.0,
+      "paddingBottom": 4.0,
+      "paddingLeft": 7.0,
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 9999.0,
+      "fill": "#05001a"
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "쿠폰-받기",
+        "content": "쿠폰 받기",
+        "exposeAs": "쿠폰-받기"
+      },
+      {
+        "kind": "ref",
+        "id": "-icon-set",
+        "component": ".IconSet"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "State",
+        "values": [
+          "Active",
+          "Disabled"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22453",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

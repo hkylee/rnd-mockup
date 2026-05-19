@@ -11,7 +11,9 @@
 ├── docs/                        ← 스킬 공통 참조 문서 (make-atomic 등)
 │   ├── format/
 │   │   └── atomic-guidelines.md (atom/mol/ogn 분류 기준 — Classifier 에이전트가 읽음)
-│   └── components/              (생성된 component-spec JSON. atom/ mol/ ogn/ page/ 하위)
+│   └── components/              (컴포넌트 산출물)
+│       ├── json/                (make-cmp 생성 component-spec JSON)
+│       └── tsx/                 (make-cmp 자동 생성 React 컴포넌트)
 ├── mockup/                      ← 디자인 시스템 & Figma 자동화 (원본, source of truth)
 │   ├── CLAUDE.md                (mockup 전용 컨텍스트 — 함정·네이밍·도구)
 │   └── README.md
@@ -31,9 +33,15 @@
 
 ## 스킬 문서 경로
 
-| 스킬 | 분류 기준 | 컴포넌트 스펙 저장 위치 |
+| 스킬 | 역할 | 저장 위치 |
 |---|---|---|
-| `/make-atomic` | `docs/format/atomic-guidelines.md` | `docs/components/{tier}/{name}.json` |
+| `/make-cmp` | Figma API → component-spec JSON + TSX 자동 생성 | `json/{name}.json` + `tsx/{name}.tsx` |
+| `/make-mockup` | storyboard MD → HTML preview + page spec JSON → Figma | `docs/output/mockup/{SCREEN-ID}.html` |
+| ~~`/make-tsx`~~ | ~~(폐기 — make-cmp 에 통합)~~ | — |
+| ~~`/make-atomic`~~ | ~~(폐기 — make-cmp 로 대체)~~ | — |
+
+`/make-cmp` 상세: `.claude/skills/make-cmp/orchestrator.md`  
+`/make-mockup` 상세: `.claude/skills/make-mockup/orchestrator.md`
 
 ## 요약 포인터
 

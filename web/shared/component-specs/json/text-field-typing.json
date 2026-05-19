@@ -1,0 +1,59 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "text-field-typing",
+  "category": "mol",
+  "description": "텍스트 필드 입력 중 상태. Button on/off.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 10.0
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "text-field",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "paddingTop": 14.0,
+          "paddingRight": 20.0,
+          "paddingBottom": 14.0,
+          "paddingLeft": 20.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "visual": {
+          "cornerRadius": 16.0,
+          "fill": "#d3e0f8",
+          "stroke": "#040019",
+          "strokeWidth": 1.0
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "텍스트를-입력하세요",
+            "content": "텍스트를 입력하세요",
+            "exposeAs": "텍스트를-입력하세요"
+          },
+          {
+            "kind": "ref",
+            "id": "-caret",
+            "component": ".Caret"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Button",
+        "values": [
+          "off",
+          "on"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22332",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

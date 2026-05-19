@@ -1,0 +1,45 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "badge",
+  "category": "atom",
+  "description": "뱃지 컴포넌트. Type(Gray/Blue/Black).",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL",
+      "itemSpacing": 10.0,
+      "paddingTop": 2.0,
+      "paddingRight": 6.0,
+      "paddingBottom": 2.0,
+      "paddingLeft": 6.0,
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "visual": {
+      "cornerRadius": 4.0,
+      "fill": "#e2e6f1"
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "badge",
+        "content": "Badge",
+        "exposeAs": "badge"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Gray",
+          "Blue",
+          "Black"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22190",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

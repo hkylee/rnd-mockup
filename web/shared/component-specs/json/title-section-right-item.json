@@ -1,0 +1,38 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "title-section-right-item",
+  "category": "mol",
+  "description": "title-section-right-item 컴포넌트.",
+  "base": {
+    "layout": {
+      "mode": "HORIZONTAL"
+    },
+    "visual": {
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-ico",
+        "component": ".Ico"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Icon",
+          "TextButton",
+          "TextItemButton",
+          "ButtonListOrder",
+          "Text"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:120357",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

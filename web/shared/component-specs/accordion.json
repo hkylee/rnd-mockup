@@ -1,0 +1,68 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "accordion",
+  "category": "mol",
+  "description": "아코디언. Open/Close 상태.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "counterAxisAlignItems": "CENTER"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "title",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 40.0,
+          "primaryAxisAlignItems": "SPACE_BETWEEN",
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "txt",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 2.0,
+              "counterAxisAlignItems": "CENTER"
+            },
+            "children": [
+              {
+                "kind": "text",
+                "id": "q",
+                "content": "Q.",
+                "exposeAs": "q"
+              },
+              {
+                "kind": "text",
+                "id": "title-text",
+                "content": "Title Text",
+                "exposeAs": "title-text"
+              }
+            ]
+          },
+          {
+            "kind": "ref",
+            "id": "-icon-set",
+            "component": ".IconSet"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "State",
+        "values": [
+          "Close",
+          "Open"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:22464",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

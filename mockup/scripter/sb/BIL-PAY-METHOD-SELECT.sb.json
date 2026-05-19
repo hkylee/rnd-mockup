@@ -1,0 +1,95 @@
+{
+  "screenId": "BIL-PAY-METHOD-SELECT",
+  "screenName": "납부수단 선택",
+  "screenPath": "page/BIL/pay-method-select",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/pay-method-select",
+    "spec_input": "specs-input/BIL-pay-flow.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-method-list",
+      "sectionName": "납부수단 목록",
+      "sectionDescription": "등록된 납부수단을 카드번호·계좌번호 마스킹 처리하여 목록으로 표시. 타인 명의 수단은 별도 표시",
+      "container": "vertical",
+      "displayCount": {
+        "min": "N/N (등록 수단 수)",
+        "max": ""
+      },
+      "displayPriority": 1,
+      "errorHandling": "영역 숨김",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/icon",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 납부수단 목록\n[규칙:FN-PAY-002] 등록된 납부수단을 목록으로 표시한다\n[고지:필수|POL-BIL-SEC-001-02] 카드번호·계좌번호는 마스킹 처리하여 표시한다\n[고지:필수|POL-BIL-AUTH-001-07] 타인 명의 납부수단은 별도 표시하고 선택 시 동의 절차 안내\n[고지:필수|POL-BIL-AUTH-001-09] 인증 5회 실패 시 잠금 처리 및 잠금 해제 안내 표시\n[상태:loading] skeleton 표시\n[상태:empty] \"등록된 납부수단이 없습니다\" 안내 + 신규 등록 버튼\n[상태:error] snack-bar 재시도 안내\n[액션:tap 수단 선택] 해당 납부수단 선택 → 타인 명의 여부에 따라 분기\n[액션:tap 타인명의수단] third-party-consent 화면으로 이동",
+      "label": "기능 1: 납부수단 목록"
+    },
+    {
+      "no": 2,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-method-add",
+      "sectionName": "납부수단 추가",
+      "sectionDescription": "새 납부수단(카드·계좌)을 등록하는 링크 또는 버튼. 목록 하단에 고정 노출",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 2,
+      "errorHandling": "항상 노출",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/icon",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 납부수단 추가\n[규칙:FN-PAY-003] 새 납부수단 등록 진입점을 제공한다\n[액션:tap 납부수단 추가] 납부수단 등록 외부 플로우 진입",
+      "label": "기능 2: 납부수단 추가"
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import { useState } from "react";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Spec = any;
 
-type TierKind = "atom" | "mol" | "ogn" | "page";
+type TierKind = "component" | "page";
 
 type Props = {
   newSpecs: Spec[];
@@ -17,7 +17,8 @@ type Props = {
 
 function categoryOf(name: string): TierKind | "other" {
   const first = (name || "").split("/")[0];
-  if (first === "atom" || first === "mol" || first === "ogn" || first === "page") return first;
+  if (first === "page") return "page";
+  if (first === "atom" || first === "mol" || first === "ogn" || first === "component") return "component";
   return "other";
 }
 
@@ -25,37 +26,23 @@ const TIER_META: Record<
   TierKind,
   { label: string; num: number; chip: string; ring: string; btn: string }
 > = {
-  atom: {
-    label: "Atom",
+  component: {
+    label: "Component",
     num: 1,
-    chip: "bg-emerald-100 text-emerald-700 border-emerald-200",
-    ring: "border-emerald-200",
-    btn: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-200",
-  },
-  mol: {
-    label: "Molecule",
-    num: 2,
-    chip: "bg-blue-100 text-blue-700 border-blue-200",
-    ring: "border-blue-200",
-    btn: "bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-200",
-  },
-  ogn: {
-    label: "Organism",
-    num: 3,
     chip: "bg-violet-100 text-violet-700 border-violet-200",
     ring: "border-violet-200",
     btn: "bg-violet-600 hover:bg-violet-700 text-white shadow-md shadow-violet-200",
   },
   page: {
     label: "Page",
-    num: 4,
+    num: 2,
     chip: "bg-slate-200 text-slate-700 border-slate-300",
     ring: "border-slate-300",
     btn: "bg-slate-700 hover:bg-slate-800 text-white shadow-md shadow-slate-200",
   },
 };
 
-const TIER_ORDER: TierKind[] = ["atom", "mol", "ogn", "page"];
+const TIER_ORDER: TierKind[] = ["component", "page"];
 
 export function CodeGenerationResult({
   newSpecs,
@@ -70,9 +57,7 @@ export function CodeGenerationResult({
 
   // tier 별 spec 그룹 (이름 표시용)
   const tierSpecs: Record<TierKind, Spec[]> = {
-    atom: newSpecs.filter((s) => categoryOf(s?.name || "") === "atom"),
-    mol: newSpecs.filter((s) => categoryOf(s?.name || "") === "mol"),
-    ogn: newSpecs.filter((s) => categoryOf(s?.name || "") === "ogn"),
+    component: newSpecs.filter((s) => categoryOf(s?.name || "") === "component"),
     page: pageSpecs,
   };
 
@@ -129,7 +114,7 @@ export function CodeGenerationResult({
             바인딩 필요)
           </li>
           <li>
-            <strong>2.</strong> 아래 <strong>Atom → Molecule → Organism → Page</strong> 순서로
+            <strong>2.</strong> 아래 <strong>Component → Page</strong> 순서로
             각 단계마다: <span className="text-indigo-700">[복사]</span> → Figma Scripter ⌘V →{" "}
             <strong>Run ▶</strong>
           </li>

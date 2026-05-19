@@ -3,7 +3,7 @@
 
 import { readFileSync, existsSync } from "node:fs";
 import { resolve as pResolve, join } from "node:path";
-import { sharedRoot } from "@/lib/paths";
+import { sharedRoot, docsRoot } from "@/lib/paths";
 import { getSpecDeps } from "@/lib/spec-deps";
 
 export const runtime = "nodejs";
@@ -76,7 +76,12 @@ export async function GET(request: Request) {
       }
 
       const deps = getSpecDeps(name);
-      return Response.json({ kind: "spec", name, spec, ds, icons, deps });
+
+      // TSX 파일 — docs/input/components/tsx/{name}.tsx
+      const tsxPath = pResolve(docsRoot(), "input", "components", "tsx", name + ".tsx");
+      const tsx = existsSync(tsxPath) ? readFileSync(tsxPath, "utf8") : null;
+
+      return Response.json({ kind: "spec", name, spec, ds, icons, deps, tsx });
     }
 
     return Response.json({ error: "kind 파라미터 필요 (ds | icon | spec)" }, { status: 400 });

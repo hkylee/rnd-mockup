@@ -1,0 +1,38 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "option-list",
+  "category": "ogn",
+  "description": "옵션 리스트.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 4.0
+    },
+    "children": [
+      {
+        "kind": "ref",
+        "id": "-optionlistitem",
+        "component": ".Optionlistitem"
+      },
+      {
+        "kind": "ref",
+        "id": "-optionlistitem",
+        "component": ".Optionlistitem"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "속성 1",
+        "values": [
+          "Volume",
+          "Color"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:120615",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

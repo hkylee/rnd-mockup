@@ -1,0 +1,33 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "text-button",
+  "category": "atom",
+  "description": "텍스트 버튼.",
+  "base": {
+    "visual": {
+      "fill": "#ffffff"
+    },
+    "children": [
+      {
+        "kind": "text",
+        "id": "버튼",
+        "content": "버튼",
+        "exposeAs": "버튼"
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Property 1",
+        "values": [
+          "Default",
+          "Variant2"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12391:23961",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

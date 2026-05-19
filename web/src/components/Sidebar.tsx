@@ -26,9 +26,6 @@ const SECTIONS: Section[] = [
     items: [
       { href: "/sources?s=foundation", label: "Foundation" },
       { href: "/sources", label: "All Components" },
-      { href: "/sources#atom", label: "Atom" },
-      { href: "/sources#mol", label: "Molecule" },
-      { href: "/sources#ogn", label: "Organism" },
     ],
   },
   {

@@ -1,0 +1,78 @@
+{
+  "$schema": "component-spec-v1",
+  "name": "title-main",
+  "category": "mol",
+  "description": "메인 타이틀.",
+  "base": {
+    "layout": {
+      "mode": "VERTICAL",
+      "itemSpacing": 12.0,
+      "paddingBottom": 32.0,
+      "width": "FILL"
+    },
+    "children": [
+      {
+        "kind": "group",
+        "id": "titletext",
+        "layout": {
+          "mode": "VERTICAL",
+          "itemSpacing": 4.0
+        },
+        "children": [
+          {
+            "kind": "group",
+            "id": "titlesubtext",
+            "layout": {
+              "mode": "HORIZONTAL",
+              "itemSpacing": 4.0,
+              "counterAxisAlignItems": "CENTER"
+            }
+          },
+          {
+            "kind": "text",
+            "id": "",
+            "content": "축하드려요 은진님, 개통이 완료되었어요",
+            "exposeAs": ""
+          }
+        ]
+      },
+      {
+        "kind": "group",
+        "id": "subtext",
+        "layout": {
+          "mode": "HORIZONTAL",
+          "itemSpacing": 8.0,
+          "counterAxisAlignItems": "CENTER"
+        },
+        "children": [
+          {
+            "kind": "text",
+            "id": "",
+            "content": "지금부터 새로운 휴대폰 사용이 가능해요.",
+            "exposeAs": ""
+          },
+          {
+            "kind": "text",
+            "id": "2026-05-06",
+            "content": "2026.05.06",
+            "exposeAs": "2026-05-06"
+          }
+        ]
+      }
+    ]
+  },
+  "variants": {
+    "axes": [
+      {
+        "name": "Type",
+        "values": [
+          "Complete",
+          "Search"
+        ]
+      }
+    ],
+    "overrides": {}
+  },
+  "figmaNodeId": "12372:120371",
+  "figmaFileKey": "wLwyHV2L5wUz0fotXmN5dK"
+}

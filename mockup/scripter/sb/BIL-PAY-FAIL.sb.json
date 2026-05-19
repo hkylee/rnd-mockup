@@ -1,0 +1,95 @@
+{
+  "screenId": "BIL-PAY-FAIL",
+  "screenName": "납부 실패",
+  "screenPath": "page/BIL/pay-fail",
+  "sectionName": "SB-BIL",
+  "lastUpdated": "2026.05.06",
+  "writer": "(generate-sb.js)",
+  "version": "v1.0",
+  "mapping": {
+    "policy": "page/BIL/pay-fail",
+    "spec_input": "specs-input/BIL-pay-flow.md"
+  },
+  "areas": [
+    {
+      "no": 1,
+      "kind": "body",
+      "sectionId": "section-BIL-pay-fail-reason",
+      "sectionName": "납부 실패 사유 안내",
+      "sectionDescription": "납부 실패 사유(8종)를 사용자가 이해할 수 있는 언어로 표시하고 대처 방법을 안내한다",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "최소 실패 상태 항상 노출",
+      "dynamic": true,
+      "organisms": [
+        {
+          "organismId": "ogn/status-bar",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "ogn/header",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/notice-card",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/banner",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "atom/tag",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 납부 실패 사유 안내\n[규칙:FN-PAY-009] 납부 실패 시 실패 사유를 사용자 언어로 표시한다\n[고지:필수|POL-BIL-EXC-001-01] 실패 사유 8종 각각에 대해 명확한 안내 문구 제공\n[고지:필수|POL-BIL-CUS-001-04] 실패 사유와 함께 대체 납부수단 안내를 제공한다\n[상태:loading] skeleton 표시\n[상태:error] 기본 실패 메시지(\"납부 처리에 실패했습니다\") 표시",
+      "label": "기능 1: 납부 실패 사유 안내"
+    },
+    {
+      "no": 2,
+      "kind": "footer",
+      "sectionId": "section-BIL-pay-fail-actions",
+      "sectionName": "재시도 및 대체수단 CTA",
+      "sectionDescription": "납부 재시도 및 다른 납부수단으로 변경하는 버튼 제공",
+      "container": "vertical",
+      "displayCount": {
+        "min": "1",
+        "max": "1"
+      },
+      "displayPriority": 1,
+      "errorHandling": "재시도 버튼 항상 노출",
+      "dynamic": false,
+      "organisms": [
+        {
+          "organismId": "atom/btn",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        },
+        {
+          "organismId": "mol/list-item-link",
+          "organismName": "",
+          "organismDescription": "",
+          "serverControl": ""
+        }
+      ],
+      "descriptions": "[영역명] 재시도 및 대체수단 CTA\n[규칙:FN-PAY-010] 납부 실패 시 재시도 및 대체수단 선택 경로를 제공한다\n[고지:필수|POL-BIL-EXC-001-02] 재시도 가능 여부를 서버에서 제어하고 불가 시 버튼 숨김\n[액션:tap 재시도] pay-confirm 화면으로 돌아가기\n[액션:tap 다른수단으로] pay-method-select 화면으로 이동\n[액션:tap 고객센터] 고객센터 연결",
+      "label": "기능 2: 재시도 및 대체수단 CTA"
+    }
+  ]
+}

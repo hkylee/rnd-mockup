@@ -1,54 +1,62 @@
-// spec path → Figma node ID (file: wLwyHV2L5wUz0fotXmN5dK, section: 12241:12498)
+// spec name → Figma node ID (file: wLwyHV2L5wUz0fotXmN5dK, section: 12372:118298)
 export const FIGMA_NODE_MAP: Record<string, string> = {
-  "atom/icon":                "12241:13619",
-  "atom/badge":               "12241:12692",
-  "atom/checkbox":            "12241:15062",
-  "atom/radio":               "12241:15077",
-  "atom/divider":             "12241:12725",
-  "atom/btn":                 "12241:15010",
-  "atom/btn-text":            "12241:15054",
-  "atom/btn-xsmall":          "12241:13281",
-  "atom/tab-item":            "12241:13015",
-  "atom/chip":                "12241:13036",
-  "atom/chip-image":          "12241:14879",
-  "atom/pin":                 "12241:14740",
-  "atom/payment-logo":        "12241:13397",
-  "mol/radio-text":           "12241:12699",
-  "mol/checkbox-text":        "12241:12712",
-  "mol/thumb-item":           "12241:12533",
-  "mol/badge-icon":           "12241:14860",
-  "mol/tooltip":              "12241:12739",
-  "mol/info-text-list":       "12241:12997",
-  "mol/card-item":            "12241:13099",
-  "mol/card-info":            "12241:13519",
-  "mol/title-contents":       "12241:14919",
-  "mol/list-text":            "12241:14886",
-  "mol/list-selected":        "12241:12554",
-  "mol/option-list-item":     "12241:13438",
-  "mol/banner-horizontal":    "12241:13062",
-  "mol/card-summary":         "12241:14749",
-  "mol/card-contents-line":   "12241:14728",
-  "mol/action-button":        "12241:12563",
-  "mol/title-bottomsheet":    "12241:12546",
-  "mol/title-main":           "12241:14838",
-  "mol/carousel-product-text":"12241:13250",
-  "mol/popup-action-btn":     "12241:13275",
-  "ogn/app-bar":              "12241:12629",
-  "ogn/status-bar":           "12241:12675",
-  "ogn/bottom-nav":           "12241:12860",
-  "ogn/bottomsheet":          "12241:13235",
-  "ogn/footer":               "12241:14789",
-  "ogn/text-field":           "12241:12758",
-  "ogn/search-bar":           "12241:14870",
-  "ogn/card-section":         "12241:13078",
-  "ogn/thumbnail":            "12241:13416",
-  "ogn/tab":                  "12241:12606",
-  "ogn/accordion-product":    "12241:13466",
-  "ogn/accordion-notice":     "12241:13547",
-  "ogn/accordion-price":      "12241:14942",
-  "ogn/option-list":          "12241:15089",
-  "ogn/pay-product-item":     "12241:15096",
-  "ogn/pagestack":            "12241:13410",
+  // ── 기본 원자 컴포넌트 ──────────────────────────────────
+  "icon":                       "12372:119165",  // .Ico
+  "badge":                      "12372:118452",  // .Badge
+  "divider":                    "12372:118485",  // Divider
+  "tooltip":                    "12372:118499",  // .Tooltip
+  "tab-item":                   "12372:118775",  // .TabItem
+  "chip-item":                  "12372:118782",  // .ChipItem
+  "chip-image-item":            "12372:120407",  // .ChipImageItem
+  "payment-logo-item":          "12372:118980",  // .PaymentLogoItem
+  "button":                     "12372:120536",  // .Button
+  "text-button":                "12372:120580",  // .TextButton
+  "button-xsmall-solid":        "12372:118967",  // .ButtonXsmallSolid
+  "checkbox-item":              "12372:120588",  // .CheckboxItem
+  "radio-item":                 "12372:120603",  // .RadioItem
+
+  // ── 복합 분자 컴포넌트 ──────────────────────────────────
+  "badge-icon":                 "12372:120388",  // .BadgeIcon
+  "radio-text":                 "12372:118459",  // .RadioText
+  "checkbox-text":              "12372:118472",  // .CheckboxText
+  "thumbnail-item":             "12372:118300",  // .ThumbnailItem
+  "info-text-list":             "12372:118757",  // InfoTextList
+  "card-contents-item":         "12372:118812",  // .CardContentsItem
+  "card-info":                  "12372:119099",  // CardInfo
+  "list-text":                  "12372:120414",  // ListText
+  "list-selected":              "12372:118314",  // ListSelected
+  "option-list-item":           "12372:119018",  // .OptionListItem
+  "banner-horizontal-medium":   "12372:118791",  // BannerHorizontalMedium
+  "card-summary":               "12372:120282",  // CardSummary
+  "action-button":              "12372:118323",  // ActionButton
+  "title-main":                 "12372:120371",  // TitleMain
+  "popup-action-button":        "12372:118961",  // .PopupActionButton
+  "thumbnail":                  "12372:118996",  // Thumbnail
+
+  // ── 헬퍼 서브컴포넌트 ──────────────────────────────────
+  "left-item":                  "12372:120562",  // .LeftItem
+  "right-item":                 "12372:120432",  // .RightItem
+  "title-section-left-item":    "12372:118492",  // .TitleSectionLeftItem
+  "title-section-right-item":   "12372:120357",  // .TitleSectionRightItem
+  "title-contents-right-item":  "12372:120463",  // .TitleContentsRightItem
+  "list-selected-right-item":   "12372:120529",  // .ListSelectedRightItem
+
+  // ── 오거니즘 / 복합 컨테이너 ────────────────────────────
+  "app-bar":                    "12372:118389",  // AppBar
+  "status-bar":                 "12372:118435",  // StatusBar
+  "bottom-navigation":          "12372:118620",  // BottomNavigation
+  "bottomsheet":                "12372:118942",  // Bottomsheet
+  "footer":                     "12372:120322",  // Footer
+  "text-field":                 "12372:118518",  // TextField
+  "search-bar":                 "12372:120398",  // SearchBar
+  "card-section":               "12372:118800",  // CardSection
+  "underline-tab":              "12372:118366",  // UnderlineTab
+  "accordion-product-info":     "12372:119046",  // AccordionProductInfo
+  "accordion-notice-info":      "12372:119115",  // AccordionNoticeInfo
+  "accordion-price-info":       "12372:120468",  // AccordionPriceInfo
+  "option-list":                "12372:120615",  // OptionList
+  "pay-product-list-item":      "12372:120622",  // PayProdutListItem
+  "top-navigation":             "12372:104285",  // top-navigation
 };
 
 export const FIGMA_FILE_KEY = "wLwyHV2L5wUz0fotXmN5dK";
